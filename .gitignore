@@ -93,4 +93,6 @@ $RECYCLE.BIN/
 Temp/
 Library/
 
+.idea/
+Ligth Mind/.idea/
 # End of https://www.gitignore.io/api/unity,osx,windows
