@@ -14,6 +14,5 @@ public class Cell
 		this.sprite = sprite;
 		this.coords = coords;
 	}
-		
 }
 

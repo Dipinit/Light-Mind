@@ -11,6 +11,10 @@ public class snapToGrid : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		GameObject[] gridObjects = GetComponents<GameObject>();
+		foreach (GameObject gridObject in gridObjects)
+		{
+			
+		}
 	}
 }
