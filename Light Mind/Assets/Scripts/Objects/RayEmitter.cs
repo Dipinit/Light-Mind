@@ -64,7 +64,7 @@ public class RayEmitter {
 				}
 				else if (hitGameObject != null)
 				{
-					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString() + " and color " + rayColor.GetColor());
+					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString());
 					hitGameObject.GetComponent<HitObject>().HitExit();
 					hitGameObject = null;
 				}
@@ -74,7 +74,7 @@ public class RayEmitter {
 				lineRenderer.SetPosition(1, Orientable.DirectionToVector3(direction) * 5000);
 				if (hitGameObject != null)
 				{
-					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString() + " and color " + rayColor.GetColor());
+					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString());
 					hitGameObject.GetComponent<HitObject>().HitExit();
 					hitGameObject = null;
 				}
@@ -100,7 +100,7 @@ public class RayEmitter {
 			Enabled = false;
 			if (hitGameObject != null)
 			{
-				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with color " + rayColor.GetColor());
+				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID());
 				hitGameObject.GetComponent<HitObject>().HitExit();
 				hitGameObject = null;
 			}
@@ -124,7 +124,7 @@ public class RayEmitter {
 			this.rayColor = rayColor;
 			if (hitGameObject != null)
 			{
-				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with color " + rayColor.GetColor());
+				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID());
 				hitGameObject.GetComponent<HitObject>().HitExit();
 				hitGameObject = null;
 			}

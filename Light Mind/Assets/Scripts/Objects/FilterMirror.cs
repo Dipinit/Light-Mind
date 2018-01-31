@@ -2,37 +2,64 @@
 using Utilities;
 
 
-public class Mirror : MonoBehaviour, HitObject {
+public class FilterMirror : MonoBehaviour, HitObject {
 
+	//Global 
+	private RayColor _hitColor;
+	private RayColor _color;
+
+	// Mirror
+	private RayEmitter _mirrorRayEmitter;
 	private Orientable _orientable;
 	private Direction _reflectionDirection;
-	private Direction _hitDirection;
 	private bool _isReflecting;
 	private bool _isHit;
-	private RayEmitter _rayEmitter;
+	
+	// Filter
+	private RayEmitter _filterRayEmitter;
+	private Direction _hitDirection;
+	private MeshRenderer _meshRenderer;
+	
+	public bool red;
+	public bool green;
+	public bool blue;
 
 	// Use this for initialization
 	void Start ()
 	{
-		_rayEmitter = new RayEmitter(GetComponent<LineRenderer>());
-		_rayEmitter.Enable(false);
-
+		// Mirror
+		_mirrorRayEmitter = new RayEmitter(transform.Find("Mirror").GetComponent<LineRenderer>());
+		_mirrorRayEmitter.Enable(false);
 		_isReflecting = false;
 		_isHit = false;
 		_hitDirection = Direction.East;
 		_reflectionDirection = Direction.East;
-
-		_orientable = GetComponent<Orientable>();	
+		_orientable = GetComponent<Orientable>();
+		
+		// Filter
+		_filterRayEmitter = new RayEmitter(transform.Find("Filter").GetComponent<LineRenderer>());
+		_filterRayEmitter.Enable(false);
+		_meshRenderer = GetComponent<MeshRenderer>();
+		_hitColor = new RayColor(true, true, true, 0.9f);
+		SetColor();
 	}
 	
-	// Update is called once per frame
 	void Update ()
 	{
+		// Mirror
 		UpdateReflection();
-		_rayEmitter.Enable(_isReflecting);
-		_rayEmitter.Emit(_reflectionDirection);
+		_mirrorRayEmitter.Enable(_isReflecting);
+		_mirrorRayEmitter.Emit(_reflectionDirection);
+		
+		// Filter
+		if (_color.r != red || _color.g != green || _color.b != blue)
+		{
+			SetColor();
+		}
+		_filterRayEmitter.Emit(_hitDirection);
 	}
 
+	// Mirror
 	void UpdateReflection()
 	{
 		if (!_isHit)
@@ -166,18 +193,45 @@ public class Mirror : MonoBehaviour, HitObject {
 			}
 		}
 	}
+	
+	void SetColor()
+	{
+		_color = new RayColor(red, green, blue, 0.9f);
+		_meshRenderer.material.color = _color.GetColor();
+		FilterColors();
+	}
+
+	void FilterColors()
+	{
+		RayColor _filteredColor = new RayColor(red && _hitColor.r, green && _hitColor.g, blue && _hitColor.b, 0.9f);
+		_filterRayEmitter.SetRayColor(_filteredColor);
+		
+		RayColor _reboundColor = new RayColor(!red && _hitColor.r, !green && _hitColor.g, !blue && _hitColor.b, 0.9f);
+		_mirrorRayEmitter.SetRayColor(_reboundColor);
+	}
 
 	public void HitEnter(Direction hitDirection, RayColor rayColor)
 	{
+		_hitColor = rayColor;
+		FilterColors();
+		
+		// Mirror
 		_hitDirection = hitDirection;
 		_isHit = true;
-		_rayEmitter.SetRayColor(rayColor);
+		
+		// Filter
+		_filterRayEmitter.Enable(true);
+		_hitDirection = hitDirection;
 	}
 	
 	public void HitExit()
 	{
+		// Mirror
 		_isHit = false;
-		_rayEmitter.Enable(false);
+		_mirrorRayEmitter.Enable(false);
+		
+		// Filter
+		_filterRayEmitter.Enable(false);
 	}
 
 }

@@ -21,6 +21,7 @@ public class Filter : MonoBehaviour, HitObject {
 		_rayEmitter.Enable(false);
 		_hitDirection = Direction.East;
 		_meshRenderer = GetComponent<MeshRenderer>();
+		_hitColor = new RayColor(true, true, true, 0.9f);
 		SetColor();
 	}
 	
