@@ -115,7 +115,7 @@ public class Prism : MonoBehaviour, HitObject
 		// Check if laser hit an object
 		RaycastHit hit;
                
-		if (Physics.Raycast(transform.position,  direction, out hit))
+		if (Physics.Raycast(transform.position, direction, out hit))
 		{
 			if (hit.collider)
 			{
@@ -208,5 +208,22 @@ public class Prism : MonoBehaviour, HitObject
 		_blueLineRenderer.enabled = false;
 		_greenLineRenderer.enabled = false;
 		_redLineRenderer.enabled = false;
+		if (_redHitGameObject != null)
+		{
+			_redHitGameObject.GetComponent<HitObject>().HitExit();
+			_redHitGameObject = null;
+		}
+
+		if (_blueHitGameObject != null)
+		{
+			_blueHitGameObject.GetComponent<HitObject>().HitExit();
+			_blueHitGameObject = null;
+		}
+
+		if (_greenHitGameObject != null)
+		{
+			_greenHitGameObject.GetComponent<HitObject>().HitExit();
+			_greenHitGameObject = null;
+		}
 	}
 }

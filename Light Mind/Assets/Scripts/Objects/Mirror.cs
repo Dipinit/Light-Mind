@@ -238,6 +238,11 @@ public class Mirror : MonoBehaviour, HitObject {
 	public void HitExit()
 	{
 		_isHit = false;
+		if (_hitGameObject != null)
+		{
+			_hitGameObject.GetComponent<HitObject>().HitExit();
+			_hitGameObject = null;
+		}
 	}
 
 }
