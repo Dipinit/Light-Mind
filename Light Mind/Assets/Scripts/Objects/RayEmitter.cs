@@ -5,10 +5,10 @@ using Utilities;
 
 public class RayEmitter {
 
-	public LineRenderer lineRenderer;
-	public GameObject hitGameObject;
+	private LineRenderer lineRenderer;
+	private GameObject hitGameObject;
 	public RayColor rayColor;
-	public bool Enabled;
+	private bool Enabled;
 
 	public RayEmitter(LineRenderer lineRenderer)
 	{
@@ -22,15 +22,6 @@ public class RayEmitter {
 		this.lineRenderer = lineRenderer;
 		this.rayColor = rayColor;
 		this.Enabled = true;
-	}
-	
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void Emit(Direction direction)
@@ -88,6 +79,23 @@ public class RayEmitter {
 			if (lineRenderer.enabled)
 			{
 				lineRenderer.enabled = false;
+			}
+		}
+	}
+
+	public void Enable(bool boolean)
+	{
+		if (boolean)
+		{
+			Enabled = true;
+		}
+		else
+		{
+			Enabled = false;
+			if (hitGameObject != null)
+			{
+				hitGameObject.GetComponent<HitObject>().HitExit();
+				hitGameObject = null;
 			}
 		}
 	}

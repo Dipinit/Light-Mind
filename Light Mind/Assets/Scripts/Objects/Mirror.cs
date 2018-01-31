@@ -15,7 +15,7 @@ public class Mirror : MonoBehaviour, HitObject {
 	void Start ()
 	{
 		_rayEmitter = new RayEmitter(GetComponent<LineRenderer>());
-		_rayEmitter.Enabled = false;
+		_rayEmitter.Enable(false);
 
 		_isReflecting = false;
 		_isHit = false;
@@ -29,7 +29,7 @@ public class Mirror : MonoBehaviour, HitObject {
 	void Update ()
 	{
 		UpdateReflection();
-		_rayEmitter.Enabled = _isReflecting;
+		_rayEmitter.Enable(_isReflecting);
 		_rayEmitter.Emit(_reflectionDirection);
 	}
 
@@ -177,11 +177,7 @@ public class Mirror : MonoBehaviour, HitObject {
 	public void HitExit()
 	{
 		_isHit = false;
-		if (_rayEmitter.hitGameObject != null)
-		{
-			_rayEmitter.hitGameObject.GetComponent<HitObject>().HitExit();
-			_rayEmitter.hitGameObject = null;
-		}
+		_rayEmitter.Enable(false);
 	}
 
 }

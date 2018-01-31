@@ -14,13 +14,13 @@ public class Prism : MonoBehaviour, HitObject
 	void Start ()
 	{
 		_blueRayEmitter = new RayEmitter(transform.Find("Blue").GetComponent<LineRenderer>(), new RayColor(false, false, true, 0.9f));
-		_blueRayEmitter.Enabled = false;
+		_blueRayEmitter.Enable(false);
 		
 		_greenRayEmitter = new RayEmitter(transform.Find("Green").GetComponent<LineRenderer>(), new RayColor(false, true, false, 0.9f));
-		_greenRayEmitter.Enabled = false;
+		_greenRayEmitter.Enable(false);
 		
 		_redRayEmitter = new RayEmitter(transform.Find("Red").GetComponent<LineRenderer>(), new RayColor(true, false, false, 0.9f));
-		_redRayEmitter.Enabled = false;
+		_redRayEmitter.Enable(false);
 	}
 	
 	// Update is called once per frame
@@ -63,32 +63,16 @@ public class Prism : MonoBehaviour, HitObject
 	public void HitEnter(Direction hitDirection, RayColor rayColor)
 	{
 		_hitDirection = hitDirection;
-		_blueRayEmitter.Enabled = rayColor.b;
-		_greenRayEmitter.Enabled = rayColor.g;
-		_redRayEmitter.Enabled = rayColor.r;
+		_blueRayEmitter.Enable(rayColor.b);
+		_greenRayEmitter.Enable(rayColor.g);
+		_redRayEmitter.Enable(rayColor.r);
 	}
 
 	public void HitExit()
 	{
-		_blueRayEmitter.Enabled = false;
-		if (_blueRayEmitter.hitGameObject != null)
-		{
-			_blueRayEmitter.hitGameObject.GetComponent<HitObject>().HitExit();
-			_blueRayEmitter.hitGameObject = null;
-		}
-		
-		_redRayEmitter.Enabled = false;
-		if (_redRayEmitter.hitGameObject != null)
-		{
-			_redRayEmitter.hitGameObject.GetComponent<HitObject>().HitExit();
-			_redRayEmitter.hitGameObject = null;
-		}
-		
-		_greenRayEmitter.Enabled = false;
-		if (_greenRayEmitter.hitGameObject != null)
-		{
-			_greenRayEmitter.hitGameObject.GetComponent<HitObject>().HitExit();
-			_greenRayEmitter.hitGameObject = null;
-		}
+		_blueRayEmitter.Enable(false);
+		_greenRayEmitter.Enable(false);
+		_redRayEmitter.Enable(false);
+
 	}
 }
