@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngineInternal;
 using Utilities;
 
 namespace Objects
@@ -13,7 +14,7 @@ namespace Objects
 
         private RayColor _rayColor;
         private LineRenderer _lineRenderer;
-        private HitObject _hitObject;
+        private GameObject _hitGameObject;
         private Orientable _orientable;
 
         // Use this for initialization
@@ -21,6 +22,7 @@ namespace Objects
         {
             _lineRenderer = GetComponent<LineRenderer>();
             _lineRenderer.enabled = On;
+            _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
 
             _orientable = GetComponent<Orientable>();
         }
@@ -49,25 +51,31 @@ namespace Objects
                     if (hit.collider)
                     {
                         _lineRenderer.SetPosition(1, hit.point + 0.5F * _orientable.GetVector3());
-                        HitObject obj = hit.transform.gameObject.GetComponent<HitObject>();
-                        if (obj != null)
-                        {
-                            if (_hitObject != null && obj != _hitObject)
+                        GameObject obj = hit.transform.gameObject;
+                        HitObject hitObject = obj.GetComponent<HitObject>();
+                        if (hitObject != null)
+                        {                        
+                            if (_hitGameObject == null || (_hitGameObject != null && obj != _hitGameObject))
                             {
-                                _hitObject.HitExit();
+                                if (_hitGameObject != null)
+                                    _hitGameObject.GetComponent<HitObject>().HitExit();
+
+                                _hitGameObject = obj;
+                                Debug.Log("Laser hit " + _hitGameObject.transform.parent.gameObject.ToString() + " " + _hitGameObject.GetInstanceID() + " with direction " + _orientable.Orientation.ToString() + " and color " + _rayColor.GetColor());
+                                hitObject.HitEnter(_orientable.Orientation, _rayColor);
                             }
-                            _hitObject = obj;
-                            _hitObject.HitEnter(_orientable.Orientation, _rayColor);
                         }
                     }
                 }
                 else
                 {
                     _lineRenderer.SetPosition(1, _orientable.GetVector3() * 5000);
-                    if (_hitObject != null)
+                    if (_hitGameObject != null)
                     {
-                        _hitObject.HitExit();
+                        _hitGameObject.GetComponent<HitObject>().HitExit();
                     }
+
+                    _hitGameObject = null;
                 }
             }
             else

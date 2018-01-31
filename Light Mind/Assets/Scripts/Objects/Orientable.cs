@@ -127,4 +127,23 @@ public class Orientable : MonoBehaviour {
 				return new Vector3(0, 0, 0);
 		}
 	}
+	
+	public static Direction Vector3ToDirection(Vector3 vector3)
+	{
+		if (vector3 == new Vector3(1, 0, 0))
+			return Direction.East;
+		if (vector3 == new Vector3(1, 1, 0))
+			return Direction.NorthEast;
+		if (vector3 == new Vector3(0, 1, 0))
+			return Direction.North;
+		if (vector3 == new Vector3(-1, 1, 0))
+			return Direction.NorthWest;
+		if (vector3 == new Vector3(-1, 0, 0))
+			return Direction.West;
+		if (vector3 == new Vector3(-1, -1, 0))
+			return Direction.SouthWest;
+		if (vector3 == new Vector3(0, -1, 0))
+			return Direction.South;
+		return Direction.SouthEast;
+	}
 }
