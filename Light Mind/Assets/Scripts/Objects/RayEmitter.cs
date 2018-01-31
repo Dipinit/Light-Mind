@@ -26,7 +26,7 @@ public class RayEmitter {
 
 	public void Emit(Direction direction)
 	{
-	  if (Enabled)
+	  	if (Enabled && (rayColor.r || rayColor.b || rayColor.g))
 		{
 			SetRayColor();
 			
@@ -38,7 +38,7 @@ public class RayEmitter {
 			// Set initial position
 			lineRenderer.SetPosition(0, lineRenderer.transform.position);
 			lineRenderer.positionCount = 2;
-
+	
 			// Check if laser hit an object
 			RaycastHit hit;
 		   
@@ -55,12 +55,18 @@ public class RayEmitter {
 						{
 							if (hitGameObject != null)
 								hitGameObject.GetComponent<HitObject>().HitExit();
-
+	
 							hitGameObject = obj;
 							Debug.Log("Ray hit " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString() + " and color " + rayColor.GetColor());
 							hitObject.HitEnter(direction, rayColor);
 						}
 					}
+				}
+				else if (hitGameObject != null)
+				{
+					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString() + " and color " + rayColor.GetColor());
+					hitGameObject.GetComponent<HitObject>().HitExit();
+					hitGameObject = null;
 				}
 			}
 			else
@@ -68,10 +74,10 @@ public class RayEmitter {
 				lineRenderer.SetPosition(1, Orientable.DirectionToVector3(direction) * 5000);
 				if (hitGameObject != null)
 				{
+					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString() + " and color " + rayColor.GetColor());
 					hitGameObject.GetComponent<HitObject>().HitExit();
+					hitGameObject = null;
 				}
-
-				hitGameObject = null;
 			}
 		}
 		else
@@ -94,6 +100,7 @@ public class RayEmitter {
 			Enabled = false;
 			if (hitGameObject != null)
 			{
+				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with color " + rayColor.GetColor());
 				hitGameObject.GetComponent<HitObject>().HitExit();
 				hitGameObject = null;
 			}

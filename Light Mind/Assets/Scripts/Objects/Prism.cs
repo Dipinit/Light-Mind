@@ -73,6 +73,5 @@ public class Prism : MonoBehaviour, HitObject
 		_blueRayEmitter.Enable(false);
 		_greenRayEmitter.Enable(false);
 		_redRayEmitter.Enable(false);
-
 	}
 }
