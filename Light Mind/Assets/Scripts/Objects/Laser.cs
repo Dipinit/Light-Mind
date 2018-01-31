@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngineInternal;
-using Utilities;
+using Random = System.Random;
 
 namespace Objects
 {
@@ -11,11 +10,14 @@ namespace Objects
         public bool Green;
         public bool Blue;
         public float Alpha;
+        public float LongClickTime = 3f;
 
         private RayColor _rayColor;
         private LineRenderer _lineRenderer;
         private GameObject _hitGameObject;
         private Orientable _orientable;
+        private float _lastClickTime;
+
 
         // Use this for initialization
         void Start()
@@ -85,6 +87,23 @@ namespace Objects
                     _lineRenderer.enabled = false;
                 }
             }
+        }
+        
+        private void OnMouseUpAsButton()
+        {
+            // Detect double click
+            if(Time.time - _lastClickTime > LongClickTime)
+            {
+                RandomColor();
+            }
+            _lastClickTime = Time.time;
+        }
+
+        void RandomColor()
+        {
+            Red = UnityEngine.Random.value > 0.5f;
+            Blue = UnityEngine.Random.value > 0.5f;
+            Green = UnityEngine.Random.value > 0.5f;
         }
 
         void SetRayColor()

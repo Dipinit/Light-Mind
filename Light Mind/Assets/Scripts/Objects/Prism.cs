@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TreeEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities;
 
 public class Prism : MonoBehaviour, HitObject

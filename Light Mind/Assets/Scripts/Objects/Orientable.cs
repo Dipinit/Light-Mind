@@ -6,7 +6,7 @@ using Utilities;
 public class Orientable : MonoBehaviour {
 	
 	public Direction Orientation;
-	public float CatchTime = 0.25f;
+	public float DoubleClickTime = 0.25f;
 
 	private Direction _orientation;
 	private float _lastClickTime;
@@ -27,7 +27,7 @@ public class Orientable : MonoBehaviour {
 	private void OnMouseUpAsButton()
 	{
 		// Detect double click
-		if(Time.time - _lastClickTime < CatchTime)
+		if(Time.time - _lastClickTime < DoubleClickTime)
 		{
 			Rotate();
 		}
