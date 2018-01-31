@@ -4,21 +4,18 @@ using Utilities;
 
 public class Mirror : MonoBehaviour, HitObject {
 
-	private LineRenderer _lineRenderer;
 	private Orientable _orientable;
 	private Direction _reflectionDirection;
 	private Direction _hitDirection;
 	private bool _isReflecting;
 	private bool _isHit;
-	private GameObject _hitGameObject;
-	private RayColor _rayColor;
-	
+	private RayEmitter _rayEmitter;
 
 	// Use this for initialization
 	void Start ()
 	{
-		_lineRenderer = GetComponent<LineRenderer>();
-		_lineRenderer.enabled = false;
+		_rayEmitter = new RayEmitter(GetComponent<LineRenderer>());
+		_rayEmitter.Enabled = false;
 
 		_isReflecting = false;
 		_isHit = false;
@@ -32,66 +29,8 @@ public class Mirror : MonoBehaviour, HitObject {
 	void Update ()
 	{
 		UpdateReflection();
-		RenderLaser();
-	}
-
-	void RenderLaser()
-	{
-		// Set initial position
-		_lineRenderer.SetPosition(0, transform.position);
-
-		if (_isReflecting)
-		{
-			_lineRenderer.enabled = true;
-			Gradient gradient = new Gradient();
-			gradient.SetKeys(
-				new GradientColorKey[] { new GradientColorKey(_rayColor.GetColor(), 0.0f), new GradientColorKey(_rayColor.GetColor(), 1.0f) },
-				new GradientAlphaKey[] { new GradientAlphaKey(_rayColor.alpha, 0.0f), new GradientAlphaKey(_rayColor.alpha, 1.0f) }
-			);
-			_lineRenderer.colorGradient = gradient;
-
-			Vector3 reflectionVector3 = Orientable.DirectionToVector3(_reflectionDirection);			
-			
-			// Check if laser hit an object
-			RaycastHit hit;
-
-			if (Physics.Raycast(transform.position, reflectionVector3, out hit))
-			{
-				if (hit.collider)
-				{
-					_lineRenderer.SetPosition(1, hit.point);
-					
-					GameObject obj = hit.transform.gameObject;
-					HitObject hitObject = obj.GetComponent<HitObject>();
-					if (hitObject != null)
-					{                        
-						if (_hitGameObject == null || (_hitGameObject != null && obj != _hitGameObject))
-						{
-							if (_hitGameObject != null)
-								_hitGameObject.GetComponent<HitObject>().HitExit();
-
-							_hitGameObject = obj;
-							Debug.Log("Laser hit " + _hitGameObject.transform.parent.gameObject.ToString() + " " + _hitGameObject.GetInstanceID() + " with direction " + _reflectionDirection.ToString() + " and color " + _rayColor.GetColor());
-							hitObject.HitEnter(_reflectionDirection, _rayColor);
-						}
-					}
-				}
-			}
-			else
-			{
-				_lineRenderer.SetPosition(1, reflectionVector3 * 5000);
-				if (_hitGameObject != null)
-				{
-					_hitGameObject.GetComponent<HitObject>().HitExit();
-				}
-				_hitGameObject = null;
-
-			}
-		}
-		else
-		{
-			_lineRenderer.enabled = false;
-		}
+		_rayEmitter.Enabled = _isReflecting;
+		_rayEmitter.Emit(_reflectionDirection);
 	}
 
 	void UpdateReflection()
@@ -232,16 +171,16 @@ public class Mirror : MonoBehaviour, HitObject {
 	{
 		_hitDirection = hitDirection;
 		_isHit = true;
-		_rayColor = rayColor;
+		_rayEmitter.rayColor = rayColor;
 	}
 	
 	public void HitExit()
 	{
 		_isHit = false;
-		if (_hitGameObject != null)
+		if (_rayEmitter.hitGameObject != null)
 		{
-			_hitGameObject.GetComponent<HitObject>().HitExit();
-			_hitGameObject = null;
+			_rayEmitter.hitGameObject.GetComponent<HitObject>().HitExit();
+			_rayEmitter.hitGameObject = null;
 		}
 	}
 

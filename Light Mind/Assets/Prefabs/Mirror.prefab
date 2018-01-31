@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Orientation: 270
-  CatchTime: 0.25
+  DoubleClickTime: 0.25
 --- !u!114 &114569183511012842
 MonoBehaviour:
   m_ObjectHideFlags: 1

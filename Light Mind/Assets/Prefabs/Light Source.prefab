@@ -169,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3707d96c106406893b10d035396f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  On: 1
   Red: 1
   Green: 1
   Blue: 1
@@ -189,7 +188,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
