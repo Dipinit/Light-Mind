@@ -24,8 +24,8 @@ GameObject:
   - component: {fileID: 23313044802984880}
   - component: {fileID: 114569183511012842}
   - component: {fileID: 120138059260272146}
-  - component: {fileID: 114258487973530602}
   - component: {fileID: 114939548640031802}
+  - component: {fileID: 114208507386525074}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -54,13 +54,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1621397155195962}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -7.88, y: 1.26, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
+  m_LocalPosition: {x: -8.11, y: 1.375, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4568708771409750}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!4 &4568708771409750
 Transform:
   m_ObjectHideFlags: 1
@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1689115679611386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.13, y: -3.36, z: 0}
+  m_LocalPosition: {x: 4.69, y: -0.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4488750587746526}
@@ -130,7 +130,7 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114258487973530602
+--- !u!114 &114208507386525074
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -138,11 +138,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1621397155195962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f3707d96c106406893b10d035396f41, type: 3}
+  m_Script: {fileID: 11500000, guid: 135ff0ef88c671a4eae0d72df2098303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  On: 0
-  EmitDirection: 0
+  Orientation: 270
+  CatchTime: 0.25
 --- !u!114 &114569183511012842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d45d1e3d53c70e4a8fd68da9a2be3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Direction: 0
 --- !u!120 &120138059260272146
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -184,7 +183,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -209,7 +208,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 1
+    widthMultiplier: 0.3
     widthCurve:
       serializedVersion: 2
       m_Curve:
