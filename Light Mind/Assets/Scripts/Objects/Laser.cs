@@ -44,7 +44,7 @@ namespace Objects
             Red = UnityEngine.Random.value > 0.5f;
             Blue = UnityEngine.Random.value > 0.5f;
             Green = UnityEngine.Random.value > 0.5f;
-            _rayEmitter.rayColor = new RayColor(Red, Green, Blue, Alpha);
+            _rayEmitter.SetRayColor(new RayColor(Red, Green, Blue, Alpha));
         }
     }
 }

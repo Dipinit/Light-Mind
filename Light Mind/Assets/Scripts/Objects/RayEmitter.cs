@@ -7,7 +7,7 @@ public class RayEmitter {
 
 	private LineRenderer lineRenderer;
 	private GameObject hitGameObject;
-	public RayColor rayColor;
+	private RayColor rayColor;
 	private bool Enabled;
 
 	public RayEmitter(LineRenderer lineRenderer)
@@ -115,5 +115,19 @@ public class RayEmitter {
 			new GradientAlphaKey[] { new GradientAlphaKey(rayColor.alpha, 0.0f), new GradientAlphaKey(rayColor.alpha, 1.0f) }
 		);
 		lineRenderer.colorGradient = gradient;
+	}
+
+	public void SetRayColor(RayColor rayColor)
+	{
+		if (rayColor != this.rayColor)
+		{
+			this.rayColor = rayColor;
+			if (hitGameObject != null)
+			{
+				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with color " + rayColor.GetColor());
+				hitGameObject.GetComponent<HitObject>().HitExit();
+				hitGameObject = null;
+			}
+		}
 	}
 }

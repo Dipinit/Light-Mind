@@ -171,7 +171,7 @@ public class Mirror : MonoBehaviour, HitObject {
 	{
 		_hitDirection = hitDirection;
 		_isHit = true;
-		_rayEmitter.rayColor = rayColor;
+		_rayEmitter.SetRayColor(rayColor);
 	}
 	
 	public void HitExit()
