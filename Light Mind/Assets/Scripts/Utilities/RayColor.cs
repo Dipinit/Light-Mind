@@ -1,24 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class RayColor {
-	
-	public bool r;
-	public bool g;
-	public bool b;
-	public float alpha;
-	
-	public RayColor(bool r, bool g, bool b, float alpha)
-	{
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.alpha = alpha;
-	}
+namespace Assets.Scripts.Utilities
+{
+    public class RayColor
+    {
+        public readonly bool R;
+        public readonly bool G;
+        public readonly bool B;
+        public readonly float Alpha;
 
-	public Color GetColor()
-	{
-		return new Color(r ? 1F : 0F, g ? 1F : 0F, b ? 1F : 0F);
-	}
+        public RayColor(bool r, bool g, bool b, float alpha)
+        {
+            R = r;
+            G = g;
+            B = b;
+            Alpha = alpha;
+        }
+
+        public Color GetColor()
+        {
+            return new Color(R ? 1F : 0F, G ? 1F : 0F, B ? 1F : 0F);
+        }
+    }
 }

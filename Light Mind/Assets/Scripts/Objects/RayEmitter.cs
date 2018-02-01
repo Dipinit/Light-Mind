@@ -1,133 +1,134 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Utilities;
 using UnityEngine;
-using Utilities;
 
-public class RayEmitter {
+namespace Assets.Scripts.Objects
+{
+    public class RayEmitter
+    {
+        private readonly LineRenderer _lineRenderer;
+        private GameObject _hitGameObject;
+        private RayColor _rayColor;
+        private bool _enabled;
 
-	private LineRenderer lineRenderer;
-	private GameObject hitGameObject;
-	private RayColor rayColor;
-	private bool Enabled;
+        public RayEmitter(LineRenderer lineRenderer)
+        {
+            _lineRenderer = lineRenderer;
+            _rayColor = new RayColor(true, true, true, 1.0f);
+            _enabled = true;
+        }
 
-	public RayEmitter(LineRenderer lineRenderer)
-	{
-		this.lineRenderer = lineRenderer;
-		this.rayColor = new RayColor(true, true, true, 1.0f);
-		this.Enabled = true;
-	}
-	
-	public RayEmitter(LineRenderer lineRenderer, RayColor rayColor)
-	{
-		this.lineRenderer = lineRenderer;
-		this.rayColor = rayColor;
-		this.Enabled = true;
-	}
+        public RayEmitter(LineRenderer lineRenderer, RayColor rayColor)
+        {
+            _lineRenderer = lineRenderer;
+            _rayColor = rayColor;
+            _enabled = true;
+        }
 
-	public void Emit(Direction direction)
-	{
-	  	if (Enabled && (rayColor.r || rayColor.b || rayColor.g))
-		{
-			SetRayColor();
-			
-			if (!lineRenderer.enabled)
-			{
-				lineRenderer.enabled = true;
-			}
-			
-			// Set initial position
-			lineRenderer.SetPosition(0, lineRenderer.transform.position);
-			lineRenderer.positionCount = 2;
-	
-			// Check if laser hit an object
-			RaycastHit hit;
-		   
-			if (Physics.Raycast(lineRenderer.transform.position,  Orientable.DirectionToVector3(direction), out hit))
-			{
-				if (hit.collider)
-				{
-					lineRenderer.SetPosition(1, hit.point + 0.5F * Orientable.DirectionToVector3(direction));
-					GameObject obj = hit.transform.gameObject;
-					HitObject hitObject = obj.GetComponent<HitObject>();
-					if (hitObject != null)
-					{                        
-						if (hitGameObject == null || (hitGameObject != null && obj != hitGameObject))
-						{
-							if (hitGameObject != null)
-								hitGameObject.GetComponent<HitObject>().HitExit();
-	
-							hitGameObject = obj;
-							Debug.Log("Ray hit " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString() + " and color " + rayColor.GetColor());
-							hitObject.HitEnter(direction, rayColor);
-						}
-					}
-				}
-				else if (hitGameObject != null)
-				{
-					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString());
-					hitGameObject.GetComponent<HitObject>().HitExit();
-					hitGameObject = null;
-				}
-			}
-			else
-			{
-				lineRenderer.SetPosition(1, Orientable.DirectionToVector3(direction) * 5000);
-				if (hitGameObject != null)
-				{
-					Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID() + " with direction " + direction.ToString());
-					hitGameObject.GetComponent<HitObject>().HitExit();
-					hitGameObject = null;
-				}
-			}
-		}
-		else
-		{
-			if (lineRenderer.enabled)
-			{
-				lineRenderer.enabled = false;
-			}
-		}
-	}
+        public void Emit(Direction direction)
+        {
+            if (_enabled && (_rayColor.R || _rayColor.B || _rayColor.G))
+            {
+                SetRayColor();
 
-	public void Enable(bool boolean)
-	{
-		if (boolean)
-		{
-			Enabled = true;
-		}
-		else
-		{
-			Enabled = false;
-			if (hitGameObject != null)
-			{
-				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID());
-				hitGameObject.GetComponent<HitObject>().HitExit();
-				hitGameObject = null;
-			}
-		}
-	}
-	
-	void SetRayColor()
-	{    
-		Gradient gradient = new Gradient();
-		gradient.SetKeys(
-			new GradientColorKey[] { new GradientColorKey(rayColor.GetColor(), 0.0f), new GradientColorKey(rayColor.GetColor(), 1.0f) },
-			new GradientAlphaKey[] { new GradientAlphaKey(rayColor.alpha, 0.0f), new GradientAlphaKey(rayColor.alpha, 1.0f) }
-		);
-		lineRenderer.colorGradient = gradient;
-	}
+                if (!_lineRenderer.enabled)
+                {
+                    _lineRenderer.enabled = true;
+                }
 
-	public void SetRayColor(RayColor rayColor)
-	{
-		if (rayColor != this.rayColor)
-		{
-			this.rayColor = rayColor;
-			if (hitGameObject != null)
-			{
-				Debug.Log("Ray stopped hitting " + hitGameObject.transform.parent.gameObject.ToString() + " " + hitGameObject.GetInstanceID());
-				hitGameObject.GetComponent<HitObject>().HitExit();
-				hitGameObject = null;
-			}
-		}
-	}
+                // Set initial position
+                _lineRenderer.SetPosition(0, _lineRenderer.transform.position);
+                _lineRenderer.positionCount = 2;
+
+                // Check if laser hit an object
+                RaycastHit hit;
+
+                if (Physics.Raycast(_lineRenderer.transform.position, DirectionUtility.GetDirectionAsVector3(direction),
+                    out hit))
+                {
+                    if (hit.collider)
+                    {
+                        _lineRenderer.SetPosition(1,
+                            hit.point + 0.5F * DirectionUtility.GetDirectionAsVector3(direction));
+                        var obj = hit.transform.gameObject;
+                        var hitObject = obj.GetComponent<IHitObject>();
+                        if (hitObject == null) return;
+                        if (_hitGameObject != null && (_hitGameObject == null || obj == _hitGameObject)) return;
+                        if (_hitGameObject != null)
+                            _hitGameObject.GetComponent<IHitObject>().HitExit();
+
+                        _hitGameObject = obj;
+                        Debug.Log(string.Format("Ray hit {0} {1} with direction {2} and color {3}",
+                            _hitGameObject.transform.parent.gameObject, _hitGameObject.GetInstanceID(), direction,
+                            _rayColor.GetColor()));
+                        hitObject.HitEnter(direction, _rayColor);
+                    }
+                    else if (_hitGameObject != null)
+                    {
+                        Debug.Log(string.Format("Ray stopped hitting {0} {1} with direction {2}",
+                            _hitGameObject.transform.parent.gameObject, _hitGameObject.GetInstanceID(), direction));
+                        _hitGameObject.GetComponent<IHitObject>().HitExit();
+                        _hitGameObject = null;
+                    }
+                }
+                else
+                {
+                    _lineRenderer.SetPosition(1, DirectionUtility.GetDirectionAsVector3(direction) * 5000);
+                    if (_hitGameObject == null) return;
+                    Debug.Log(string.Format("Ray stopped hitting {0} {1} with direction {2}",
+                        _hitGameObject.transform.parent.gameObject, _hitGameObject.GetInstanceID(), direction));
+                    _hitGameObject.GetComponent<IHitObject>().HitExit();
+                    _hitGameObject = null;
+                }
+            }
+            else
+            {
+                if (_lineRenderer.enabled)
+                {
+                    _lineRenderer.enabled = false;
+                }
+            }
+        }
+
+        public void Enable(bool boolean)
+        {
+            if (boolean)
+            {
+                _enabled = true;
+            }
+            else
+            {
+                _enabled = false;
+                if (_hitGameObject == null) return;
+                Debug.Log(string.Format("Ray stopped hitting {0} {1}", _hitGameObject.transform.parent.gameObject,
+                    _hitGameObject.GetInstanceID()));
+                _hitGameObject.GetComponent<IHitObject>().HitExit();
+                _hitGameObject = null;
+            }
+        }
+
+        private void SetRayColor()
+        {
+            var gradient = new Gradient();
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(_rayColor.GetColor(), 0.0f), new GradientColorKey(_rayColor.GetColor(), 1.0f)
+                },
+                new[]
+                    {new GradientAlphaKey(_rayColor.Alpha, 0.0f), new GradientAlphaKey(_rayColor.Alpha, 1.0f)}
+            );
+            _lineRenderer.colorGradient = gradient;
+        }
+
+        public void SetRayColor(RayColor rayColor)
+        {
+            if (rayColor == _rayColor) return;
+            _rayColor = rayColor;
+            if (_hitGameObject == null) return;
+            Debug.Log(string.Format("Ray stopped hitting {0} {1}", _hitGameObject.transform.parent.gameObject,
+                _hitGameObject.GetInstanceID()));
+            _hitGameObject.GetComponent<IHitObject>().HitExit();
+            _hitGameObject = null;
+        }
+    }
 }

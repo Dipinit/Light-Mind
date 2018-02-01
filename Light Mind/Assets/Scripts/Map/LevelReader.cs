@@ -1,68 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Utilities;
 using UnityEngine;
-using System.Xml;
-using System.Text;
-using System;
-using System.IO;
 
-public class LevelReader : MonoBehaviour
+namespace Assets.Scripts.Map
 {
-	public GridManager grid = new GridManager ();
+    public class LevelReader : MonoBehaviour
+    {
+        public GridManager Grid = new GridManager();
 
 
-	void Start ()
-	{
-		// Create a cell
-		Cell cell = new Cell (SpriteUtility.LoadSprite ("../Light Mind/Assets/Textures/Tiles/blue.png", 64, 64), new Vector2 (0, 0));
+        private void Start()
+        {
+            // Create a cell
+            var cell = new Cell(SpriteUtility.LoadSprite("../Light Mind/Assets/Textures/Tiles/blue.png", 64, 64),
+                new Vector2(0, 0));
 
-		// Object to Json
-		string json = JsonUtility.ToJson (cell);
-		Debug.Log (json);
+            // Object to Json
+            var json = JsonUtility.ToJson(cell);
+            Debug.Log(json);
 
-		// Json to object
-		Cell cellCopy = JsonUtility.FromJson<Cell> (json);
+            // Json to object
+            var cellCopy = JsonUtility.FromJson<Cell>(json);
+            Debug.Log(cellCopy);
 
 
-		// Create array of cells
-		Cell cell2 = new Cell (SpriteUtility.LoadSprite ("../Light Mind/Assets/Textures/Tiles/blue.png", 64, 64), new Vector2 (0, 2));
-		Cell[] cells = new Cell [2];
-		cells [0] = cell;
-		cells [1] = cell2;
+            // Create array of cells
+            var cell2 = new Cell(SpriteUtility.LoadSprite("../Light Mind/Assets/Textures/Tiles/blue.png", 64, 64),
+                new Vector2(0, 2));
+            var cells = new Cell [2];
+            cells[0] = cell;
+            cells[1] = cell2;
 
-		// Object[] to Json
-		string jsonArray = JsonArrayUtility.arrayToJson<Cell> (cells);
-		Debug.Log (jsonArray);
+            // Object[] to Json
+            var jsonArray = JsonArrayUtility.ArrayToJson(cells);
+            Debug.Log(jsonArray);
 
-		// Json to object
-		Cell[] cellsCopy = JsonArrayUtility.getJsonArray<Cell> (jsonArray);
-		Debug.Log (cellsCopy.Length);
+            // Json to object
+            var cellsCopy = JsonArrayUtility.GetJsonArray<Cell>(jsonArray);
+            Debug.Log(cellsCopy.Length);
 
-		// Create a Grid Exemple
-		List<Cell> cellList = new List<Cell> ();
-		for (int i = 0; i < 6; i++) {
-			for (int j = 0; j < 6; j++) {
-				Cell tmpCell = new Cell (SpriteUtility.LoadSprite ("../Light Mind/Assets/Textures/Tiles/blue.png", 64, 64), new Vector2 (i, j));
-				cellList.Add (tmpCell);
-			}
-		}
+            // Create a Grid Exemple
+            var cellList = new List<Cell>();
+            for (var i = 0; i < 6; i++)
+            {
+                for (var j = 0; j < 6; j++)
+                {
+                    var tmpCell =
+                        new Cell(SpriteUtility.LoadSprite("../Light Mind/Assets/Textures/Tiles/blue.png", 64, 64),
+                            new Vector2(i, j));
+                    cellList.Add(tmpCell);
+                }
+            }
 
-		// Jsonify test
-		string jsonList = JsonArrayUtility.arrayToJson<Cell> (cellList.ToArray ());
-		Debug.Log (jsonList);
+            // Jsonify test
+            var jsonList = JsonArrayUtility.ArrayToJson(cellList.ToArray());
+            Debug.Log(jsonList);
 
-		// Unjsonify test
-		cellsCopy = JsonArrayUtility.getJsonArray<Cell> (jsonList);
-		Debug.Log (cellsCopy.Length);
+            // Unjsonify test
+            cellsCopy = JsonArrayUtility.GetJsonArray<Cell>(jsonList);
+            Debug.Log(cellsCopy.Length);
 
-		// Initialise real grid with unjsonified grid
-		grid.setGridSize (new Vector2 (6, 6)).setCellsOffSet (new Vector2 (1, 1)).setCells (cellsCopy);
-		grid.initCells ();
-	}
-
-	void Update ()
-	{
-		
-	}
-
+            // Initialise real grid with unjsonified grid
+            Grid.SetGridSize(new Vector2(6, 6)).SetCellsOffSet(new Vector2(1, 1)).SetCells(cellsCopy);
+            Grid.InitCells();
+        }
+    }
 }

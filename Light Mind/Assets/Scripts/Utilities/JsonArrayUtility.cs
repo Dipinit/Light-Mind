@@ -1,29 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using System;
 
-public class JsonArrayUtility
+namespace Assets.Scripts.Utilities
 {
-	//Usage:
-	//YouObject[] objects = JsonArrayUtility.getJsonArray<YouObject> (jsonString);
-	public static T[] getJsonArray<T> (string json)
-	{
-		Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>> (json);
-		return wrapper.array;
-	}
-	//Usage:
-	//string jsonString = JsonArrayUtility.arrayToJson<YouObject>(objects);
-	public static string arrayToJson<T> (T[] array)
-	{
-		Wrapper<T> wrapper = new Wrapper<T> ();
-		wrapper.array = array;
-		return JsonUtility.ToJson (wrapper);
-	}
+    public class JsonArrayUtility
+    {
+        //Usage:
+        //YouObject[] objects = JsonArrayUtility.getJsonArray<YouObject> (jsonString);
+        public static T[] GetJsonArray<T>(string json)
+        {
+            var wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+            return wrapper.Array;
+        }
 
-	[Serializable]
-	private class Wrapper<T>
-	{
-		public T[] array;
-	}
+        //Usage:
+        //string jsonString = JsonArrayUtility.arrayToJson<YouObject>(objects);
+        public static string ArrayToJson<T>(T[] array)
+        {
+            var wrapper = new Wrapper<T> {Array = array};
+            return JsonUtility.ToJson(wrapper);
+        }
+
+        [Serializable]
+        private class Wrapper<T>
+        {
+            public T[] Array;
+        }
+    }
 }

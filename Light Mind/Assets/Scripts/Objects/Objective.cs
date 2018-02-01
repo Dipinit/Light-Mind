@@ -1,67 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Utilities;
 using UnityEngine;
-using Utilities;
 
-public class Objective : MonoBehaviour, HitObject {
-	public bool red;
-	public bool green;
-	public bool blue;
-	public bool completed;
+namespace Assets.Scripts.Objects
+{
+    public class Objective : MonoBehaviour, IHitObject
+    {
+        public bool Red;
+        public bool Green;
+        public bool Blue;
+        public bool Completed;
 
-	private RayColor _color;
-	private RayColor _hitColor;
-	private MeshRenderer _meshRenderer;
-	
-	// Use this for initialization
-	void Start () {
-		_meshRenderer = GetComponent<MeshRenderer>();
-		SetColor();
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		if (_color.r != red || _color.g != green || _color.b != blue)
-		{
-			SetColor();
-		}
-		CheckCompletion();
-	}
+        private RayColor _color;
+        private RayColor _hitColor;
+        private MeshRenderer _meshRenderer;
 
-	public void HitEnter(Direction hitDirection, RayColor rayColor)
-	{
-		_hitColor = rayColor;
-	}
+        // Use this for initialization
+        private void Start()
+        {
+            _meshRenderer = GetComponent<MeshRenderer>();
+            SetColor();
+        }
 
-	public void HitExit()
-	{
-		_hitColor = null;
-	}
+        // Update is called once per frame
+        private void Update()
+        {
+            if (_color.R != Red || _color.G != Green || _color.B != Blue)
+            {
+                SetColor();
+            }
 
-	void SetColor()
-	{
-		_color = new RayColor(red, green, blue, 0.9f);
-		_meshRenderer.material.color = _color.GetColor();
-	}
-	
-	void CheckCompletion()
-	{
-		if (_hitColor != null && _hitColor.r == _color.r && _hitColor.g == _color.g && _hitColor.b == _color.b)
-		{
-			if (completed != true)
-			{
-				Debug.Log("Objective " + transform.gameObject.GetInstanceID() + " is completed");
-				completed = true;
-			}
-		}
-		else
-		{
-			if (completed != false)
-			{
-				Debug.Log("Objective " + transform.gameObject.GetInstanceID() + " is not completed anymore");
-				completed = false;
-			}
-		}
-	}
+            CheckCompletion();
+        }
+
+        public void HitEnter(Direction hitDirection, RayColor rayColor)
+        {
+            _hitColor = rayColor;
+        }
+
+        public void HitExit()
+        {
+            _hitColor = null;
+        }
+
+        private void SetColor()
+        {
+            _color = new RayColor(Red, Green, Blue, 0.9f);
+            _meshRenderer.material.color = _color.GetColor();
+        }
+
+        private void CheckCompletion()
+        {
+            if (_hitColor != null && _hitColor.R == _color.R && _hitColor.G == _color.G && _hitColor.B == _color.B)
+            {
+                if (Completed) return;
+                Debug.Log(string.Format("Objective {0} is completed", transform.gameObject.GetInstanceID()));
+                Completed = true;
+            }
+            else
+            {
+                if (!Completed) return;
+                Debug.Log(string.Format("Objective {0} is not completed anymore",
+                    transform.gameObject.GetInstanceID()));
+                Completed = false;
+            }
+        }
+    }
 }

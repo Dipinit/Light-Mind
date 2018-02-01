@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using Random = System.Random;
+﻿using Assets.Scripts.Utilities;
+using UnityEngine;
 
-namespace Objects
+namespace Assets.Scripts.Objects
 {
     public class Laser : MonoBehaviour
     {
-        public bool red;
-        public bool green;
-        public bool blue;
-        public float alpha;
+        public bool Red;
+        public bool Green;
+        public bool Blue;
+        public float Alpha;
         public float LongClickTime = 3f;
 
         private RayEmitter _rayEmitter;
@@ -18,7 +18,7 @@ namespace Objects
 
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             _rayEmitter = new RayEmitter(GetComponent<LineRenderer>());
             SetColor();
@@ -27,36 +27,38 @@ namespace Objects
         }
 
         // Update is called once per frame
-        void Update()
-        {            
-            if (_color.r != red || _color.g != green || _color.b != blue)
+        private void Update()
+        {
+            if (_color.R != Red || _color.G != Green || _color.B != Blue)
             {
                 SetColor();
             }
+
             _rayEmitter.Emit(_orientable.Orientation);
         }
-        
+
         private void OnMouseUpAsButton()
         {
             // Detect double click
-            if(Time.time - _lastClickTime > LongClickTime)
+            if (Time.time - _lastClickTime > LongClickTime)
             {
                 RandomColor();
             }
+
             _lastClickTime = Time.time;
         }
-        
+
         void SetColor()
         {
-            _color = new RayColor(red, green, blue, 0.9f);
+            _color = new RayColor(Red, Green, Blue, 0.9f);
             _rayEmitter.SetRayColor(_color);
         }
 
         void RandomColor()
         {
-            red = UnityEngine.Random.value > 0.5f;
-            blue = UnityEngine.Random.value > 0.5f;
-            green = UnityEngine.Random.value > 0.5f;
+            Red = Random.value > 0.5f;
+            Blue = Random.value > 0.5f;
+            Green = Random.value > 0.5f;
             SetColor();
         }
     }

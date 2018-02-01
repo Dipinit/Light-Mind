@@ -1,57 +1,58 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using System;
 
-[Serializable]
-public class GridManager
+namespace Assets.Scripts.Map
 {
+    [Serializable]
+    public class GridManager
+    {
+        private Vector2 _gridSize;
+        private Vector2 _cellsOffSet;
+        private Cell[] _cells;
 
-	public GridManager ()
-	{
-	}
+        public GridManager SetGridSize(Vector2 size)
+        {
+            _gridSize = size;
+            return this;
+        }
 
-	public GridManager setGridSize (Vector2 gridSize)
-	{
-		this.gridSize = gridSize;
-		return this;
-	}
+        public GridManager SetCellsOffSet(Vector2 cellsOffSet)
+        {
+            _cellsOffSet = cellsOffSet;
+            return this;
+        }
 
-	public GridManager setCellsOffSet (Vector2 cellsOffSet)
-	{
-		this.cellsOffSet = cellsOffSet;
-		return this;
-	}
+        public void AddCell(Cell cell)
+        {
+            if (_cells == null)
+            {
+                _cells = new Cell [Mathf.RoundToInt(_gridSize.x * _gridSize.y)];
+            }
+            else
+            {
+                _cells.SetValue(cell, _cells.Length);
+            }
+        }
 
-	public void addCell (Cell cell)
-	{
-		if (this.cells == null) {
-			this.cells = new Cell [Mathf.RoundToInt (gridSize.x * gridSize.y)];
-		} else {
-			cells.SetValue (cell, cells.Length);
-		}
-	}
+        public void SetCells(Cell[] cells)
+        {
+            _cells = cells;
+        }
 
-	public void setCells (Cell[] cells)
-	{
-		this.cells = cells;
-	}
+        public void InitCells()
+        {
+            if (_gridSize.x * _gridSize.y != _cells.Length)
+            {
+                throw new Exception("Grid Size != Cells");
+            }
 
-	private Vector2 gridSize;
-	private Vector2 cellsOffSet;
-	private Cell[] cells;
-
-	public void initCells ()
-	{
-		if (gridSize.x * gridSize.y != cells.Length) {
-			//throw new Exception ("Grid Size != Cells");
-		}
-		// Creates a new object for every Cell and adds a sprite renderer
-		for (int i = 0; i < cells.Length; i++) {
-			Cell currCell = cells [i];
-			GameObject cellObject = new GameObject ();
-			cellObject.AddComponent<SpriteRenderer> ().sprite = currCell.sprite;
-			cellObject.transform.position = new Vector3 (currCell.coords.x, currCell.coords.y, 0);
-		}
-	}
+            // Creates a new object for every Cell and adds a sprite renderer
+            foreach (var currCell in _cells)
+            {
+                var cellObject = new GameObject();
+                cellObject.AddComponent<SpriteRenderer>().sprite = currCell.Sprite;
+                cellObject.transform.position = new Vector3(currCell.Coords.x, currCell.Coords.y, 0);
+            }
+        }
+    }
 }

@@ -1,62 +1,66 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Utilities;
 using UnityEngine;
-using Utilities;
 
-public class Filter : MonoBehaviour, HitObject {
-	
-	private RayEmitter _rayEmitter;
-	private Direction _hitDirection;
-	private MeshRenderer _meshRenderer;
-	private RayColor _color;
-	private RayColor _hitColor;
-	
-	public bool red;
-	public bool green;
-	public bool blue;
+namespace Assets.Scripts.Objects
+{
+    public class Filter : MonoBehaviour, IHitObject
+    {
+        private RayEmitter _rayEmitter;
+        private Direction _hitDirection;
+        private MeshRenderer _meshRenderer;
+        private RayColor _color;
+        private RayColor _hitColor;
 
-	// Use this for initialization
-	void Start () {
-		_rayEmitter = new RayEmitter(GetComponent<LineRenderer>());
-		_rayEmitter.Enable(false);
-		_hitDirection = Direction.East;
-		_meshRenderer = GetComponent<MeshRenderer>();
-		_hitColor = new RayColor(true, true, true, 0.9f);
-		SetColor();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (_color.r != red || _color.g != green || _color.b != blue)
-		{
-			SetColor();
-		}
-		_rayEmitter.Emit(_hitDirection);
-	}
+        public bool Red;
+        public bool Green;
+        public bool Blue;
 
-	void SetColor()
-	{
-		_color = new RayColor(red, green, blue, 0.9f);
-		_meshRenderer.material.color = _color.GetColor();
-		FilterColor();
-	}
+        // Use this for initialization
+        void Start()
+        {
+            _rayEmitter = new RayEmitter(GetComponent<LineRenderer>());
+            _rayEmitter.Enable(false);
+            _hitDirection = Direction.East;
+            _meshRenderer = GetComponent<MeshRenderer>();
+            _hitColor = new RayColor(true, true, true, 0.9f);
+            SetColor();
+        }
 
-	void FilterColor()
-	{
-		RayColor _filteredColor = new RayColor(red && _hitColor.r, green && _hitColor.g, blue && _hitColor.b, 0.9f);
-		_rayEmitter.SetRayColor(_filteredColor);
-	}
+        // Update is called once per frame
+        void Update()
+        {
+            if (_color.R != Red || _color.G != Green || _color.B != Blue)
+            {
+                SetColor();
+            }
 
-	public void HitEnter(Direction hitDirection, RayColor rayColor)
-	{
-		_rayEmitter.Enable(true);
-		_hitColor = rayColor;
-		FilterColor();
-		_hitDirection = hitDirection;
-	}
+            _rayEmitter.Emit(_hitDirection);
+        }
 
-	public void HitExit()
-	{
-		_rayEmitter.Enable(false);
-	}
+        private void SetColor()
+        {
+            _color = new RayColor(Red, Green, Blue, 0.9f);
+            _meshRenderer.material.color = _color.GetColor();
+            FilterColor();
+        }
+
+        private void FilterColor()
+        {
+            var filteredColor = new RayColor(Red && _hitColor.R, Green && _hitColor.G, Blue && _hitColor.B, 0.9f);
+            _rayEmitter.SetRayColor(filteredColor);
+        }
+
+        public void HitEnter(Direction hitDirection, RayColor rayColor)
+        {
+            _rayEmitter.Enable(true);
+            _hitColor = rayColor;
+            FilterColor();
+            _hitDirection = hitDirection;
+        }
+
+        public void HitExit()
+        {
+            _rayEmitter.Enable(false);
+        }
+    }
 }

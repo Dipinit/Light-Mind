@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using System;
 
-[Serializable]
-public class Cell
+namespace Assets.Scripts.Map
 {
-	public Sprite sprite;
-	public Vector2 coords;
+    [Serializable]
+    public class Cell
+    {
+        public Sprite Sprite;
+        public Vector2 Coords;
 
-	public Cell (Sprite sprite, Vector2 coords)
-	{
-		this.sprite = sprite;
-		this.coords = coords;
-	}
+        public Cell(Sprite sprite, Vector2 coords)
+        {
+            Sprite = sprite;
+            Coords = coords;
+        }
+    }
 }
-

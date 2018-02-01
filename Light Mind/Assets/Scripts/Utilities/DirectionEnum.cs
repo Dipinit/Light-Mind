@@ -1,13 +1,13 @@
-﻿namespace Utilities
+﻿namespace Assets.Scripts.Utilities
 {
     public enum Direction {
-        North = 0,
+        North = 90,
         NorthEast = 45,
-        East = 90,
-        SouthEast = 135,
-        South = 180,
+        East = 0,
+        SouthEast = 315,
+        South = 270,
         SouthWest = 225,
-        West = 270,
-        NorthWest = 315
+        West = 180,
+        NorthWest = 135
     }
 }
