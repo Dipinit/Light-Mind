@@ -95,4 +95,7 @@ Library/
 
 .idea/
 Ligth Mind/.idea/
+
+Light Mind/ProjectSettings/ProjectVersion.txt
+
 # End of https://www.gitignore.io/api/unity,osx,windows
