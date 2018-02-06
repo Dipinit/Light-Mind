@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Objects
 {
-    public class Objective : MonoBehaviour, IHitObject
+    public class Objective : RaySensitive
     {
         // Public ray color settings
         public bool Red;
@@ -13,45 +13,27 @@ namespace Assets.Scripts.Objects
 
         // The current objective color
         private RayColor _color;
-        
-        // The current hitting color
-        private RayColor _hitColor;
-        
+
         // The Mesh Renderer of the GameObject. Used to change its color based on the filter colors.
         private MeshRenderer _meshRenderer;
 
         // Use this for initialization
-        private void Start()
+        public override void Start()
         {
+            base.Start();
             _meshRenderer = GetComponent<MeshRenderer>();
             SetColor();
         }
 
         // Update is called once per frame
-        private void Update()
+        public override void Update()
         {
+            base.Update();
             // Update the RayColor if a color filter setting was changed
             if (_color.R != Red || _color.G != Green || _color.B != Blue)
             {
                 SetColor();
             }
-
-            // Check if the objective is completed
-            CheckCompletion();
-        }
-
-        // Launched when a ray hits the objective
-        public void HitEnter(Direction hitDirection, RayColor rayColor)
-        {
-            // Update the hitting ray color
-            _hitColor = rayColor;
-        }
-
-        // Launched when a ray stops hitting the objective
-        public void HitExit()
-        {
-            // Update the hitting ray color to null
-            _hitColor = null;
         }
 
         // Update the current objective color
@@ -62,13 +44,25 @@ namespace Assets.Scripts.Objects
             
             // Changed the color of the object
             _meshRenderer.material.color = _color.GetColor();
+
+            CheckCompletion();
         }
 
         // Check if the objective is completed
         private void CheckCompletion()
         {
-            // If the hitting ray colors is equal to the objective color...
-            if (_hitColor != null && _hitColor.R == _color.R && _hitColor.G == _color.G && _hitColor.B == _color.B)
+            bool redCompletion = false;
+            bool greenCompletion = false;
+            bool blueCompletion = false;
+            
+            foreach (var ray in ReceveidRays)
+            {
+                redCompletion = redCompletion || ray.Color.R;
+                greenCompletion = greenCompletion || ray.Color.G;
+                blueCompletion = blueCompletion || ray.Color.B;
+            }
+            
+            if (redCompletion && greenCompletion && blueCompletion)
             {
                 // ... if already completed, return
                 if (Completed) return;
@@ -87,6 +81,19 @@ namespace Assets.Scripts.Objects
                     transform.gameObject.GetInstanceID()));
                 Completed = false;
             }
+        }
+        
+        public override void HandleReceivedRay(Ray ray)
+        {
+            CheckCompletion();
+        }
+        
+        // Launched when a ray hits the filter
+        public override void HitEnter(Ray ray)
+        {
+            base.HitEnter(ray);
+            Debug.Log("Hit enter in Objective");
+            HandleReceivedRay(ray);
         }
     }
 }

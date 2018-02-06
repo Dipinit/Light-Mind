@@ -1,224 +1,172 @@
 ﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Utilities;
 using UnityEngine;
 
 namespace Assets.Scripts.Objects
 {
-    public class Mirror : MonoBehaviour, IHitObject
+    public class Mirror : Orientable
     {
-        // The Orientable component. Used to change the mirror direction 
-        private Orientable _orientable;
-        
-        // The direction of the reflected ray
-        private Direction _reflectionDirection;
-        
-        // The direction of the hitting ray
-        private Direction _hitDirection;
-        
-        // Is the mirror reflecting a light (= is a ray hitting the mirror on a valid face) ?
-        private bool _isReflecting;
-        
-        // Is the mirror currently hit by a ray (on any face) ?
-        private bool _isHit;
-        
-        // The emitter of the reflected ray
-        private RayEmitter _rayEmitter;
 
         // Use this for initialization
-        private void Start()
+        public override void Start()
         {
-            _rayEmitter = new RayEmitter(GetComponent<LineRenderer>());
-            _rayEmitter.Enable(false);
-
-            _isReflecting = false;
-            _isHit = false;
-            _hitDirection = Direction.East;
-            _reflectionDirection = Direction.East;
-
-            _orientable = GetComponent<Orientable>();
+            base.Start();
         }
-
+        
         // Update is called once per frame
-        private void Update()
+        public override void Update()
         {
-            // Update the reflection state
-            UpdateReflection();
-            
-            // Enabled the emitter based on the reflection state
-            _rayEmitter.Enable(_isReflecting);
-            
-            // Draw the ray based on the reflection state
-            _rayEmitter.Emit(_reflectionDirection);
+            base.Update();
         }
 
-        private void UpdateReflection()
+        public override void OnOrientationChange()
         {
-            // If the mirror is not currently hit...
-            if (!_isHit)
+            UpdateEmittedRays();
+        }
+        
+        public override void HandleReceivedRay(Ray ray)
+        {
+            Direction reflectionDirection = GetReflectionDirection(ray);
+            if (reflectionDirection != Direction.None)
             {
-                // ... it is also not reflecting
-                _isReflecting = false;
-            }
-            // If the mirror is currently hit ...
-            else
-            {
-                // ... Update of the reflection state
-                switch (_orientable.Orientation)
-                {
-                    case Direction.East:
-                        // If the hitting ray is on a valid face...
-                        if (_hitDirection == Direction.SouthWest || _hitDirection == Direction.NorthWest)
-                        {
-                            // ... setting the reflected ray direction based on the hitting ray direction
-                            if (_hitDirection == Direction.SouthWest)
-                                _reflectionDirection = Direction.SouthEast;
-                            if (_hitDirection == Direction.NorthWest)
-                                _reflectionDirection = Direction.NorthEast;
-                            _isReflecting = true;
-                        }
-                        // If the hitting ray is not on a valid face...
-                        else
-                        {
-                            // ... the mirror is not reflecting
-                            _isReflecting = false;
-                        }
-
-                        break;
-                        
-                    // etc for each direction (somewhat long but working and fast)
-                    case Direction.NorthEast:
-                        if (_hitDirection == Direction.West || _hitDirection == Direction.South)
-                        {
-                            if (_hitDirection == Direction.West)
-                                _reflectionDirection = Direction.North;
-                            if (_hitDirection == Direction.South)
-                                _reflectionDirection = Direction.East;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.North:
-                        if (_hitDirection == Direction.SouthEast || _hitDirection == Direction.SouthWest)
-                        {
-                            if (_hitDirection == Direction.SouthEast)
-                                _reflectionDirection = Direction.NorthEast;
-                            if (_hitDirection == Direction.SouthWest)
-                                _reflectionDirection = Direction.NorthWest;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.NorthWest:
-                        if (_hitDirection == Direction.East || _hitDirection == Direction.South)
-                        {
-                            if (_hitDirection == Direction.East)
-                                _reflectionDirection = Direction.North;
-                            if (_hitDirection == Direction.South)
-                                _reflectionDirection = Direction.West;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.West:
-                        if (_hitDirection == Direction.NorthEast || _hitDirection == Direction.SouthEast)
-                        {
-                            if (_hitDirection == Direction.NorthEast)
-                                _reflectionDirection = Direction.SouthEast;
-                            if (_hitDirection == Direction.SouthEast)
-                                _reflectionDirection = Direction.NorthEast;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.SouthWest:
-                        if (_hitDirection == Direction.East || _hitDirection == Direction.North)
-                        {
-                            if (_hitDirection == Direction.East)
-                                _reflectionDirection = Direction.South;
-                            if (_hitDirection == Direction.North)
-                                _reflectionDirection = Direction.West;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.South:
-                        if (_hitDirection == Direction.NorthWest || _hitDirection == Direction.NorthEast)
-                        {
-                            if (_hitDirection == Direction.NorthWest)
-                                _reflectionDirection = Direction.SouthWest;
-                            if (_hitDirection == Direction.NorthEast)
-                                _reflectionDirection = Direction.SouthEast;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.SouthEast:
-                        if (_hitDirection == Direction.West || _hitDirection == Direction.North)
-                        {
-                            if (_hitDirection == Direction.West)
-                                _reflectionDirection = Direction.South;
-                            if (_hitDirection == Direction.North)
-                                _reflectionDirection = Direction.East;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    default:
-                        // Throw an exception if the input direction is wrong
-                        throw new ArgumentOutOfRangeException();
-                }
+                EmitNewRay(reflectionDirection, ray.Color, ray);
             }
         }
-
+        
         // Launched when a ray hits the mirror
-        public void HitEnter(Direction hitDirection, RayColor rayColor)
+        public override void HitEnter(Ray ray)
         {
-            // Storing the hitting ray direction
-            _hitDirection = hitDirection;
-            
-            // Enable the hitting state
-            _isHit = true;
-            
-            // Apply the ray color to the emitter
-            _rayEmitter.SetRayColor(rayColor);
+            base.HitEnter(ray);
+            Debug.Log("Hit enter in Mirror");
+            HandleReceivedRay(ray);
+        }
+        
+        private Direction GetReflectionDirection(Ray ray)
+        {
+            switch (_orientation)
+            {
+                case Direction.East:
+                    // If the hitting ray is on a valid face...
+                    if (ray.Direction == Direction.SouthWest || ray.Direction == Direction.NorthWest)
+                    {
+                        // ... setting the reflected ray direction based on the hitting ray direction
+                        if (ray.Direction == Direction.SouthWest)
+                            return Direction.SouthEast;
+                        if (ray.Direction == Direction.NorthWest)
+                            return Direction.NorthEast;
+                    }
+                    // If the hitting ray is not on a valid face...
+                    else
+                    {
+                        // ... the mirror is not reflecting
+                        return Direction.None;
+                    }
+
+                    break;
+
+                // etc for each direction (somewhat long but working and fast)
+                case Direction.NorthEast:
+                    if (ray.Direction == Direction.West || ray.Direction == Direction.South)
+                    {
+                        if (ray.Direction == Direction.West)
+                            return Direction.North;
+                        if (ray.Direction == Direction.South)
+                            return Direction.East;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.North:
+                    if (ray.Direction == Direction.SouthEast || ray.Direction == Direction.SouthWest)
+                    {
+                        if (ray.Direction == Direction.SouthEast)
+                            return Direction.NorthEast;
+                        if (ray.Direction == Direction.SouthWest)
+                            return Direction.NorthWest;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.NorthWest:
+                    if (ray.Direction == Direction.East || ray.Direction == Direction.South)
+                    {
+                        if (ray.Direction == Direction.East)
+                            return Direction.North;
+                        if (ray.Direction == Direction.South)
+                            return Direction.West;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.West:
+                    if (ray.Direction == Direction.NorthEast || ray.Direction == Direction.SouthEast)
+                    {
+                        if (ray.Direction == Direction.NorthEast)
+                            return Direction.SouthEast;
+                        if (ray.Direction == Direction.SouthEast)
+                            return Direction.NorthEast;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.SouthWest:
+                    if (ray.Direction == Direction.East || ray.Direction == Direction.North)
+                    {
+                        if (ray.Direction == Direction.East)
+                            return Direction.South;
+                        if (ray.Direction == Direction.North)
+                            return Direction.West;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.South:
+                    if (ray.Direction == Direction.NorthWest || ray.Direction == Direction.NorthEast)
+                    {
+                        if (ray.Direction == Direction.NorthWest)
+                            return Direction.SouthWest;
+                        if (ray.Direction == Direction.NorthEast)
+                            return Direction.SouthEast;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.SouthEast:
+                    if (ray.Direction == Direction.West || ray.Direction == Direction.North)
+                    {
+                        if (ray.Direction == Direction.West)
+                            return Direction.South;
+                        if (ray.Direction == Direction.North)
+                            return Direction.East;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+            }
+            return Direction.None;
         }
 
-        // Launched when a ray stops hitting the filter
-        public void HitExit()
-        {
-            // Disable the hitting state
-            _isHit = false;
-            
-            // Disable the emitter
-            _rayEmitter.Enable(false);
-        }
     }
 }

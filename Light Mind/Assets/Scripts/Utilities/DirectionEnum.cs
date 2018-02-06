@@ -8,6 +8,7 @@
         South = 270,
         SouthWest = 225,
         West = 180,
-        NorthWest = 135
+        NorthWest = 135,
+        None = 999
     }
 }

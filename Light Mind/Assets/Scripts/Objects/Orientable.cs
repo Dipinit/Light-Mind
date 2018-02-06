@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.Scripts.Objects
 {
     // Used to change the GameObjects direction
-    public class Orientable : MonoBehaviour
+    public class Orientable : RaySensitive
     {
         // The direction setting
         public Direction Orientation;
@@ -14,22 +14,24 @@ namespace Assets.Scripts.Objects
         public float DoubleClickTime = 0.25f;
 
         // The current direction
-        private Direction _orientation;
+        protected Direction _orientation;
         
         // Last time the laser was clicked. Used to change the direction when double clicked 
-        private float _lastClickTime;
+        protected float _lastClickTime;
 
 
         // Use this for initialization
-        private void Start()
+        public override void Start()
         {
+            base.Start();
             SetOrientation();
         }
 
         // Update is called once per frame
-        private void Update()
+        public override void Update()
         {
-                SetOrientation();
+            base.Update();
+            SetOrientation();
         }
 
         // Mouse up event
@@ -119,7 +121,11 @@ namespace Assets.Scripts.Objects
                 
                 // Storing the value
                 _orientation = Orientation;
+                OnOrientationChange();
             }
         }
+
+        public virtual void OnOrientationChange()
+        {}
     }
 }
