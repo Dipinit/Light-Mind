@@ -109,7 +109,7 @@ namespace Assets.Scripts.Objects
         {
         }
 
-        public void UpdateEmittedRays()
+        public virtual void UpdateEmittedRays()
         {
             DestroyEmittedRays();
             foreach (var ray in ReceveidRays)

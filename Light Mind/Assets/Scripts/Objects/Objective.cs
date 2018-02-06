@@ -34,6 +34,8 @@ namespace Assets.Scripts.Objects
             {
                 SetColor();
             }
+
+            CheckCompletion();
         }
 
         // Update the current objective color
@@ -85,7 +87,6 @@ namespace Assets.Scripts.Objects
         
         public override void HandleReceivedRay(Ray ray)
         {
-            CheckCompletion();
         }
         
         // Launched when a ray hits the filter
