@@ -106,7 +106,7 @@ public class DragAndDrop : MonoBehaviour {
 	}
 
 	// Al soltar el clic sobre este objeto
-	void OnMouseUp()
+	public void OnMouseUp()
 	{
 		UpdateGridData ();
 
