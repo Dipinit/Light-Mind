@@ -60,7 +60,6 @@ namespace Assets.Scripts.Objects
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
-            Debug.Log("Hit enter in Prism");
             HandleReceivedRay(ray);
         }
     }

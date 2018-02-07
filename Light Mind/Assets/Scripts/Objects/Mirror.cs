@@ -38,13 +38,12 @@ namespace Assets.Scripts.Objects
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
-            Debug.Log("Hit enter in Mirror");
             HandleReceivedRay(ray);
         }
         
         private Direction GetReflectionDirection(Ray ray)
         {
-            switch (_orientation)
+            switch (Orientation)
             {
                 case Direction.East:
                     // If the hitting ray is on a valid face...
@@ -112,9 +111,9 @@ namespace Assets.Scripts.Objects
                     if (ray.Direction == Direction.NorthEast || ray.Direction == Direction.SouthEast)
                     {
                         if (ray.Direction == Direction.NorthEast)
-                            return Direction.SouthEast;
+                            return Direction.NorthWest;
                         if (ray.Direction == Direction.SouthEast)
-                            return Direction.NorthEast;
+                            return Direction.SouthWest;
                     }
                     else
                     {

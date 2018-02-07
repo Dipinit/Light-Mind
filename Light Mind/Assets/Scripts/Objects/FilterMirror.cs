@@ -9,7 +9,6 @@ namespace Assets.Scripts.Objects
         //Global 
         private RayColor _color;
 
-        private Orientable _orientable;
         private MeshRenderer _meshRenderer;
 
         public bool Red;
@@ -20,7 +19,6 @@ namespace Assets.Scripts.Objects
         public override void Start()
         {
             base.Start();
-            _orientable = GetComponent<Orientable>();
             _meshRenderer = GetComponent<MeshRenderer>();
             SetColor();
         }
@@ -42,7 +40,7 @@ namespace Assets.Scripts.Objects
         
         private Direction GetReflectionDirection(Ray ray)
         {
-            switch (_orientable.Orientation)
+            switch (Orientation)
             {
                 case Direction.East:
                     // If the hitting ray is on a valid face...
@@ -218,7 +216,6 @@ namespace Assets.Scripts.Objects
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
-            Debug.Log("Hit enter in Filter mirror");
             HandleReceivedRay(ray);
         }
     }

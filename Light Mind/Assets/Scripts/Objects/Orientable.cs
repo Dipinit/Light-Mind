@@ -8,13 +8,13 @@ namespace Assets.Scripts.Objects
     public class Orientable : RaySensitive
     {
         // The direction setting
-        public Direction Orientation;
+        public Direction Orientation = Direction.East;
         
         // The double click setting. Used to change the direction when double clicked 
         public float DoubleClickTime = 0.25f;
 
         // The current direction
-        protected Direction _orientation;
+        private Direction _orientation = Direction.None;
         
         // Last time the laser was clicked. Used to change the direction when double clicked 
         protected float _lastClickTime;

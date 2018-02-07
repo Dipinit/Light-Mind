@@ -61,14 +61,12 @@ namespace Assets.Scripts.Objects
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
-            Debug.Log("Hit enter in Filter");
             HandleReceivedRay(ray);
         }
 
         public override void HandleReceivedRay(Ray ray)
         {
             RayColor filteredColor = FilterColor(ray.Color);
-            Debug.Log(string.Format("Filered color {0}", filteredColor));
             if (filteredColor.R || filteredColor.G || filteredColor.B)
             {
                 EmitNewRay(ray.Direction, filteredColor, ray);  

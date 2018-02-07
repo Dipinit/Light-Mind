@@ -9,6 +9,8 @@ using UnityEngine.Video;
 
 public class Ray {
 	
+	private static int _idIcr = 0;
+	
 	// The line renderer used to draw rays
 	public LineRenderer LineRenderer;
 
@@ -28,10 +30,15 @@ public class Ray {
 
 	public Ray Parent;
 
+	public int Id;
+
 	public Ray(RaySensitive rayEmitter, RayColor color, Direction direction, Ray parent)
 	{
 		RayEmitter = rayEmitter;
-		LineRendererParent = new GameObject("Line renderer holder");
+		LineRendererParent = new GameObject(string.Format("Ray {0} {1}",
+			color,
+			direction
+		));
 		LineRendererParent.transform.position = rayEmitter.transform.position;
 		LineRendererParent.transform.rotation = rayEmitter.transform.rotation;
 		LineRendererParent.transform.parent = rayEmitter.transform;
@@ -45,6 +52,13 @@ public class Ray {
 		Direction = direction;
 		RayReceiver = null;
 		Parent = parent;
+		Id = CreateId();
+	}
+
+	private static int CreateId()
+	{
+		_idIcr += 1;
+		return _idIcr;
 	}
 
 	// Draw a line in a direction
@@ -99,7 +113,7 @@ public class Ray {
 		}
 	}
 
-	private void DeleteRayReceiver()
+	public void DeleteRayReceiver()
 	{
 		if (RayReceiver != null)
 		{
@@ -124,5 +138,11 @@ public class Ray {
 
 		// Apply the gradient
 		LineRenderer.colorGradient = gradient;
+	}
+
+	public static void Delete(Ray ray)
+	{
+		ray.DeleteRayReceiver();
+		UnityEngine.Object.Destroy(ray.LineRendererParent);
 	}
 }

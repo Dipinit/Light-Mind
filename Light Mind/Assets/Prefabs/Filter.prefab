@@ -39,7 +39,6 @@ GameObject:
   - component: {fileID: 23730168388649916}
   - component: {fileID: 114423367149326262}
   - component: {fileID: 114510982963676776}
-  - component: {fileID: 114572115750576336}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -158,16 +157,3 @@ MonoBehaviour:
   Red: 0
   Green: 0
   Blue: 0
---- !u!114 &114572115750576336
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1688703340040484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 135ff0ef88c671a4eae0d72df2098303, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Orientation: 0
-  DoubleClickTime: 0.25

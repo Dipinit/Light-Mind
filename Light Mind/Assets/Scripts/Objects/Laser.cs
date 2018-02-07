@@ -55,7 +55,7 @@ namespace Assets.Scripts.Objects
                     Ray ray = EmittedRays.Find(r => r.Direction == _sources[i].Direction);
                     if (ray != null)
                     {
-                        Destroy(ray.LineRendererParent);
+                        Ray.Delete(ray);
                         EmittedRays.Remove(ray);
                     }
                     

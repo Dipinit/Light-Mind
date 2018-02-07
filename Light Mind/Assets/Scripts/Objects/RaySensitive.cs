@@ -22,7 +22,8 @@ namespace Assets.Scripts.Objects
         {
             for (int i = 0; i < EmittedRays.Count; i++)
             {
-                if (EmittedRays[i].Enabled && (EmittedRays[i].Color.R || EmittedRays[i].Color.B || EmittedRays[i].Color.G))
+                if (EmittedRays[i].Enabled
+                    && (EmittedRays[i].Color.R || EmittedRays[i].Color.B || EmittedRays[i].Color.G))
                     EmittedRays[i].Emit();
             }
         }
@@ -32,7 +33,7 @@ namespace Assets.Scripts.Objects
         {
             for (int i = 0; i < ReceveidRays.Count; i++)
             {
-                if (ReceveidRays[i] == ray)
+                if (ReceveidRays[i].Id == ray.Id)
                 {   
                     return;
                 }
@@ -42,8 +43,8 @@ namespace Assets.Scripts.Objects
             
             // Log a new Hit evenement
             Debug.Log(string.Format("{0} {1} hit {2} {3} with color {4} and direction {5}",
-                ray.RayEmitter.transform.gameObject,
-                ray.RayEmitter.transform.gameObject.GetInstanceID(),
+                ray.RayEmitter.transform.parent.gameObject,
+                ray.RayEmitter.transform.parent.gameObject.GetInstanceID(),
                 transform.parent.gameObject,
                 transform.parent.gameObject.GetInstanceID(),
                 ray.Color,
@@ -56,23 +57,23 @@ namespace Assets.Scripts.Objects
         {
             foreach (var emittedRay in EmittedRays)
             {
-                if (emittedRay.Parent == ray)
+                if (emittedRay.Parent != null && emittedRay.Parent.Id == ray.Id)
                 {
-                    Destroy(emittedRay.LineRendererParent);
+                    Ray.Delete(emittedRay);
                 }
             }
               
-            EmittedRays.RemoveAll(r => r.Parent == ray);
+            EmittedRays.RemoveAll(r => r.Parent != null && r.Parent.Id == ray.Id);
             
             for (int i = 0; i < ReceveidRays.Count; i++)
             {
-                if (ReceveidRays[i] == ray)
+                if (ReceveidRays[i].Id == ray.Id)
                 {
                     ReceveidRays.RemoveAt(i);
 
                     Debug.Log(string.Format("{0} {1} stopped hitting {2} {3} with color {4} and direction {5}",
-                        ray.RayEmitter.transform.gameObject,
-                        ray.RayEmitter.transform.gameObject.GetInstanceID(),
+                        ray.RayEmitter.transform.parent.gameObject,
+                        ray.RayEmitter.transform.parent.gameObject.GetInstanceID(),
                         transform.parent.gameObject,
                         transform.parent.gameObject.GetInstanceID(),
                         ray.Color,
@@ -99,7 +100,7 @@ namespace Assets.Scripts.Objects
         {
             foreach (var emittedRay in EmittedRays)
             {
-                Destroy(emittedRay.LineRendererParent);
+                Ray.Delete(emittedRay);
             }
             
             EmittedRays.Clear();

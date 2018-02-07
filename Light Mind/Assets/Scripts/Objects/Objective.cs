@@ -6,10 +6,10 @@ namespace Assets.Scripts.Objects
     public class Objective : RaySensitive
     {
         // Public ray color settings
-        public bool Red;
-        public bool Green;
-        public bool Blue;
-        public bool Completed;
+        public bool Red = true;
+        public bool Green = true;
+        public bool Blue = true;
+        public bool Completed = false;
 
         // The current objective color
         private RayColor _color;
@@ -46,16 +46,14 @@ namespace Assets.Scripts.Objects
             
             // Changed the color of the object
             _meshRenderer.material.color = _color.GetColor();
-
-            CheckCompletion();
         }
 
         // Check if the objective is completed
         private void CheckCompletion()
         {
-            bool redCompletion = false;
-            bool greenCompletion = false;
-            bool blueCompletion = false;
+            bool redCompletion = !Red;
+            bool greenCompletion = !Green;
+            bool blueCompletion = !Blue;
             
             foreach (var ray in ReceveidRays)
             {
@@ -63,25 +61,26 @@ namespace Assets.Scripts.Objects
                 greenCompletion = greenCompletion || ray.Color.G;
                 blueCompletion = blueCompletion || ray.Color.B;
             }
+
+            bool completion = redCompletion && greenCompletion && blueCompletion;
             
-            if (redCompletion && greenCompletion && blueCompletion)
+            if (completion)
             {
-                // ... if already completed, return
-                if (Completed) return;
-                
-                // ... if not already completed, log the completion and update the completion
-                Debug.Log(string.Format("Objective {0} is completed", transform.gameObject.GetInstanceID()));
-                Completed = true;
+                if (!Completed)
+                {
+                    Debug.Log(string.Format("Objective {0} is completed", transform.gameObject.GetInstanceID()));
+                    Completed = true;
+                }
+
             }
             else
             {
-                // ... if already uncompleted, return
-                if (!Completed) return;
-                
-                // ... if not already uncompleted, log the uncompletion and update the completion
-                Debug.Log(string.Format("Objective {0} is not completed anymore",
-                    transform.gameObject.GetInstanceID()));
-                Completed = false;
+                if (Completed)
+                {
+                    Debug.Log(string.Format("Objective {0} is not completed anymore",
+                        transform.gameObject.GetInstanceID()));
+                    Completed = false;
+                }
             }
         }
         
@@ -93,7 +92,6 @@ namespace Assets.Scripts.Objects
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
-            Debug.Log("Hit enter in Objective");
             HandleReceivedRay(ray);
         }
     }
