@@ -1,8 +1,4 @@
-﻿using System.Reflection.Emit;
-using UnityEditor;
-using UnityEngine;
-
-namespace Assets.Scripts.Utilities.Json
+﻿namespace Assets.Scripts.Utilities.Json
 {
     [System.Serializable]
     public class Entity
