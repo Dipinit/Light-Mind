@@ -901,7 +901,7 @@ Prefab:
     - target: {fileID: 114513548228550276, guid: e42291a64a0ac4ba98ff39e72abcf9c0,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Game 1
+      value: level0
       objectReference: {fileID: 0}
     - target: {fileID: 1873365188209752, guid: e42291a64a0ac4ba98ff39e72abcf9c0, type: 2}
       propertyPath: m_Name
@@ -910,7 +910,7 @@ Prefab:
     - target: {fileID: 114889190013655582, guid: e42291a64a0ac4ba98ff39e72abcf9c0,
         type: 2}
       propertyPath: m_Text
-      value: 2
+      value: Z
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e42291a64a0ac4ba98ff39e72abcf9c0, type: 2}
