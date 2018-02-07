@@ -1,26 +1,38 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Utilities;
 using Assets.Scripts.Utilities.Json;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngineInternal;
 
 namespace Assets.Scripts.Map
 {
-    public class LevelLoader : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
+        public GameObject GridPrefab;
         public GameObject MirrorPrefab;
         public GameObject FilterPrefab;
         public GameObject ObjectivePrefab;
         public GameObject FilterMirrorPrefab;
         public GameObject LightSourcePrefab;
         public GameObject PrismPrefab;
-        public string Level;
 
         private void Start()
         {
-           
-            string filePath = Path.Combine(Application.streamingAssetsPath, Level + ".json");
+            string currentLevel = PlayerPrefs.GetString("currentLevel");
+            if (!String.IsNullOrEmpty(currentLevel))
+            {
+                LoadLevel(PlayerPrefs.GetString("currentLevel"));
+            }
+        }
+        
+        public void LoadLevel(string level)
+        {
+            Instantiate(GridPrefab);
+            string filePath = Path.Combine(Application.streamingAssetsPath, level + ".json");
             if(File.Exists(filePath))
             {
                 // Read the json from the file into a string
@@ -35,14 +47,16 @@ namespace Assets.Scripts.Map
                     switch (entity.Type)
                     {
                         case "Mirror":
-                            gameObject = Instantiate(MirrorPrefab);
+                            Debug.Log("Instanciating a mirror...");
+                            gameObject = Instantiate(MirrorPrefab, this.transform);
                             Mirror mirror = gameObject.GetComponentInChildren<Mirror>();
                             JsonMirror jsonMirror = JsonUtility.FromJson<JsonMirror>(entity.Data);
                             mirror.Orientation = jsonMirror.Orientation;
                             break;
                             
                         case "Filter":
-                            gameObject = Instantiate(FilterPrefab);
+                            Debug.Log("Instanciating a filter...");
+                            gameObject = Instantiate(FilterPrefab, transform);
                             Filter filter = gameObject.GetComponentInChildren<Filter>();
                             JsonFilter jsonFilter = JsonUtility.FromJson<JsonFilter>(entity.Data);
                             filter.Red = jsonFilter.Red;
@@ -51,7 +65,8 @@ namespace Assets.Scripts.Map
                             break;
                             
                         case "Objective":
-                            gameObject = Instantiate(ObjectivePrefab);
+                            Debug.Log("Instanciating an objective...");
+                            gameObject = Instantiate(ObjectivePrefab, transform);
                             Objective objective = gameObject.GetComponentInChildren<Objective>();
                             JsonObjective jsonObjective = JsonUtility.FromJson<JsonObjective>(entity.Data);
                             objective.Red = jsonObjective.Red;
@@ -60,12 +75,14 @@ namespace Assets.Scripts.Map
                             break;
                             
                         case "Prism":
-                            gameObject = Instantiate(PrismPrefab);
+                            Debug.Log("Instanciating a prism...");
+                            gameObject = Instantiate(PrismPrefab, transform);
                             Prism prism = gameObject.GetComponentInChildren<Prism>();
                             break;
                         
                         case "Filter Mirror":
-                            gameObject = Instantiate(FilterMirrorPrefab);
+                            Debug.Log("Instanciating a filter mirror...");
+                            gameObject = Instantiate(FilterMirrorPrefab, transform);
                             FilterMirror filterMirror = gameObject.GetComponentInChildren<FilterMirror>();
                             JsonFilterMirror jsonFilterMirror = JsonUtility.FromJson<JsonFilterMirror>(entity.Data);
                             filterMirror.Orientation = jsonFilterMirror.Orientation;
@@ -76,22 +93,20 @@ namespace Assets.Scripts.Map
                         
                         
                         case "Light Source":
-                            gameObject = Instantiate(LightSourcePrefab);
+                            Debug.Log("Instanciating a light source...");
+                            gameObject = Instantiate(LightSourcePrefab, transform);
                             Laser laser = gameObject.GetComponentInChildren<Laser>();
-                            Debug.Log(entity.Data);
                             JsonRaySource[] jsonRaySources = JsonHelper.FromJson<JsonRaySource>(entity.Data);
                             if (jsonRaySources == null || jsonRaySources.Length != 8)
-                                throw new Exception("mdr le caca");
+                                throw new Exception("Wrong light source");
                             foreach (var jsonRaySource in jsonRaySources)
                             {
-                                laser.AddSource(new RaySource(
-                                    jsonRaySource.Direction, 
-                                    jsonRaySource.Enabled, 
-                                    new RayColor(
-                                        jsonRaySource.Red, 
-                                        jsonRaySource.Green, 
-                                        jsonRaySource.Blue, 
-                                        0.9f)));
+                                Debug.Log(jsonRaySource);
+                                RayColor rayColor = 
+                                    new RayColor(jsonRaySource.Red, jsonRaySource.Green,jsonRaySource.Blue, 0.9f);
+                                RaySource raySource =
+                                    new RaySource(jsonRaySource.Direction, jsonRaySource.Enabled, rayColor);
+                                laser.AddSource(raySource);
                             }
                             break;
                     }
