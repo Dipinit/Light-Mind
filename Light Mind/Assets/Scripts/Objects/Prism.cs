@@ -3,102 +3,64 @@ using UnityEngine;
 
 namespace Assets.Scripts.Objects
 {
-    public class Prism : MonoBehaviour, IHitObject
+    public class Prism : RaySensitive
     {
-        // The emitter of the left blue ray
-        private RayEmitter _blueRayEmitter;
-        
-        // The emitter of the front red ray
-        private RayEmitter _redRayEmitter;
-        
-        // The emitter of the green right ray
-        private RayEmitter _greenRayEmitter;
-
-        // The direction of the 
-        private Direction _hitDirection;
-        private RayColor _rayColor;
-
         // Use this for initialization
-        private void Start()
+        public override void Start()
         {
-            // Initiate emitters and disable them
-            _blueRayEmitter = new RayEmitter(transform.Find("Blue").GetComponent<LineRenderer>(),
-                new RayColor(false, false, true, 0.9f));
-            _blueRayEmitter.Enable(false);
-
-            _greenRayEmitter = new RayEmitter(transform.Find("Green").GetComponent<LineRenderer>(),
-                new RayColor(false, true, false, 0.9f));
-            _greenRayEmitter.Enable(false);
-
-            _redRayEmitter = new RayEmitter(transform.Find("Red").GetComponent<LineRenderer>(),
-                new RayColor(true, false, false, 0.9f));
-            _redRayEmitter.Enable(false);
+            base.Start();
         }
 
         // Update is called once per frame
-        private void Update()
+        public override void Update()
         {
-            RenderLasers();
+            base.Update();
         }
 
-        // Draw blue, green and red lasers
-        private void RenderLasers()
+        private Direction GetBlueRayDirection(Direction direction)
         {
-            RenderBlueLaser();
-            RenderGreenLaser();
-            RenderRedLaser();
+            var blueRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
+            blueRayDirection = Quaternion.AngleAxis(90, Vector3.forward) * blueRayDirection;
+            return DirectionUtility.ToDirection(blueRayDirection);
         }
-
-        // Draw blue laser
-        private void RenderBlueLaser()
+        
+        private Direction GetGreenRayDirection(Direction direction)
         {
-            var direction = DirectionUtility.GetDirectionAsVector3(_hitDirection);
-            direction = Quaternion.AngleAxis(90, Vector3.forward) * direction;
-
-            _blueRayEmitter.Emit(DirectionUtility.ToDirection(direction));
+            var greenRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
+            greenRayDirection = Quaternion.AngleAxis(-90, Vector3.forward) * greenRayDirection;
+            return DirectionUtility.ToDirection(greenRayDirection);
         }
-
-        // Draw red laser
-        private void RenderRedLaser()
+        
+        private Direction GetRedRayDirection(Direction direction)
         {
-            var direction = DirectionUtility.GetDirectionAsVector3(_hitDirection);
-            direction = Quaternion.AngleAxis(0, Vector3.forward) * direction;
-
-            _redRayEmitter.Emit(DirectionUtility.ToDirection(direction));
+            var redRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
+            redRayDirection = Quaternion.AngleAxis(0, Vector3.forward) * redRayDirection;
+            return DirectionUtility.ToDirection(redRayDirection);
         }
-
-        // Draw green laser
-        private void RenderGreenLaser()
+        
+        public override void HandleReceivedRay(Ray ray)
         {
-            var direction = DirectionUtility.GetDirectionAsVector3(_hitDirection);
-            direction = Quaternion.AngleAxis(-90, Vector3.forward) * direction;
-
-            _greenRayEmitter.Emit(DirectionUtility.ToDirection(direction));
-        }
-
-        // Launched when a ray hits the prism
-        public void HitEnter(Direction hitDirection, RayColor rayColor)
-        {
-            // Store the hit direction
-            _hitDirection = hitDirection;
+            if (ray.Color.R)
+            {
+                EmitNewRay(GetRedRayDirection(ray.Direction), new RayColor(true, false, false, 0.9f), ray);
+            }
             
-            // Enable the blue emitter if the hitting ray contains blue color
-            _blueRayEmitter.Enable(rayColor.B);
+            if (ray.Color.G)
+            {
+                EmitNewRay(GetGreenRayDirection(ray.Direction), new RayColor(false, true, false, 0.9f), ray);
+            }
             
-            // Enable the green emitter if the hitting ray contains green color
-            _greenRayEmitter.Enable(rayColor.G);
-            
-            // Enable the red emitter if the hitting ray contains red color
-            _redRayEmitter.Enable(rayColor.R);
+            if (ray.Color.B)
+            {
+                EmitNewRay(GetBlueRayDirection(ray.Direction), new RayColor(false, false, true, 0.9f), ray);
+            }
         }
-
-        // Launched when a ray stops hitting the prism
-        public void HitExit()
+        
+        // Launched when a ray hits the filter
+        public override void HitEnter(Ray ray)
         {
-            // Disable emitters
-            _blueRayEmitter.Enable(false);
-            _greenRayEmitter.Enable(false);
-            _redRayEmitter.Enable(false);
+            base.HitEnter(ray);
+            HandleReceivedRay(ray);
         }
     }
 }

@@ -4,22 +4,11 @@ using UnityEngine;
 
 namespace Assets.Scripts.Objects
 {
-    public class FilterMirror : MonoBehaviour, IHitObject
+    public class FilterMirror : Orientable
     {
         //Global 
-        private RayColor _hitColor;
         private RayColor _color;
 
-        // Mirror
-        private RayEmitter _mirrorRayEmitter;
-        private Orientable _orientable;
-        private Direction _reflectionDirection;
-        private bool _isReflecting;
-        private bool _isHit;
-
-        // Filter
-        private RayEmitter _filterRayEmitter;
-        private Direction _hitDirection;
         private MeshRenderer _meshRenderer;
 
         public bool Red;
@@ -27,216 +16,207 @@ namespace Assets.Scripts.Objects
         public bool Blue;
 
         // Use this for initialization
-        private void Start()
+        public override void Start()
         {
-            // Mirror
-            _mirrorRayEmitter = new RayEmitter(transform.Find("Mirror").GetComponent<LineRenderer>());
-            _mirrorRayEmitter.Enable(false);
-            _isReflecting = false;
-            _isHit = false;
-            _hitDirection = Direction.East;
-            _reflectionDirection = Direction.East;
-            _orientable = GetComponent<Orientable>();
-
-            // Filter
-            _filterRayEmitter = new RayEmitter(transform.Find("Filter").GetComponent<LineRenderer>());
-            _filterRayEmitter.Enable(false);
+            base.Start();
             _meshRenderer = GetComponent<MeshRenderer>();
-            _hitColor = new RayColor(true, true, true, 0.9f);
             SetColor();
         }
 
-        private void Update()
+        public override void Update()
         {
-            // Mirror
-            UpdateReflection();
-            _mirrorRayEmitter.Enable(_isReflecting);
-            _mirrorRayEmitter.Emit(_reflectionDirection);
-
-            // Filter
+            base.Update();
+            // Update the RayColor if a color filter setting was changed
             if (_color.R != Red || _color.G != Green || _color.B != Blue)
             {
                 SetColor();
             }
-
-            _filterRayEmitter.Emit(_hitDirection);
         }
-
-        // Mirror
-        private void UpdateReflection()
+        
+        public override void OnOrientationChange()
         {
-            if (!_isHit)
+            UpdateEmittedRays();
+        }
+        
+        private Direction GetReflectionDirection(Ray ray)
+        {
+            switch (Orientation)
             {
-                _isReflecting = false;
+                case Direction.East:
+                    // If the hitting ray is on a valid face...
+                    if (ray.Direction == Direction.SouthWest || ray.Direction == Direction.NorthWest)
+                    {
+                        // ... setting the reflected ray direction based on the hitting ray direction
+                        if (ray.Direction == Direction.SouthWest)
+                            return Direction.SouthEast;
+                        if (ray.Direction == Direction.NorthWest)
+                            return Direction.NorthEast;
+                    }
+                    // If the hitting ray is not on a valid face...
+                    else
+                    {
+                        // ... the mirror is not reflecting
+                        return Direction.None;
+                    }
+
+                    break;
+
+                // etc for each direction (somewhat long but working and fast)
+                case Direction.NorthEast:
+                    if (ray.Direction == Direction.West || ray.Direction == Direction.South)
+                    {
+                        if (ray.Direction == Direction.West)
+                            return Direction.North;
+                        if (ray.Direction == Direction.South)
+                            return Direction.East;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.North:
+                    if (ray.Direction == Direction.SouthEast || ray.Direction == Direction.SouthWest)
+                    {
+                        if (ray.Direction == Direction.SouthEast)
+                            return Direction.NorthEast;
+                        if (ray.Direction == Direction.SouthWest)
+                            return Direction.NorthWest;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.NorthWest:
+                    if (ray.Direction == Direction.East || ray.Direction == Direction.South)
+                    {
+                        if (ray.Direction == Direction.East)
+                            return Direction.North;
+                        if (ray.Direction == Direction.South)
+                            return Direction.West;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.West:
+                    if (ray.Direction == Direction.NorthEast || ray.Direction == Direction.SouthEast)
+                    {
+                        if (ray.Direction == Direction.NorthEast)
+                            return Direction.SouthEast;
+                        if (ray.Direction == Direction.SouthEast)
+                            return Direction.NorthEast;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.SouthWest:
+                    if (ray.Direction == Direction.East || ray.Direction == Direction.North)
+                    {
+                        if (ray.Direction == Direction.East)
+                            return Direction.South;
+                        if (ray.Direction == Direction.North)
+                            return Direction.West;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.South:
+                    if (ray.Direction == Direction.NorthWest || ray.Direction == Direction.NorthEast)
+                    {
+                        if (ray.Direction == Direction.NorthWest)
+                            return Direction.SouthWest;
+                        if (ray.Direction == Direction.NorthEast)
+                            return Direction.SouthEast;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
+                case Direction.SouthEast:
+                    if (ray.Direction == Direction.West || ray.Direction == Direction.North)
+                    {
+                        if (ray.Direction == Direction.West)
+                            return Direction.South;
+                        if (ray.Direction == Direction.North)
+                            return Direction.East;
+                    }
+                    else
+                    {
+                        return Direction.None;
+                    }
+
+                    break;
             }
-            else
-            {
-                switch (_orientable.Orientation)
-                {
-                    case Direction.East:
-                        if (_hitDirection == Direction.SouthWest || _hitDirection == Direction.NorthWest)
-                        {
-                            if (_hitDirection == Direction.SouthWest)
-                                _reflectionDirection = Direction.SouthEast;
-                            if (_hitDirection == Direction.NorthWest)
-                                _reflectionDirection = Direction.NorthEast;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.NorthEast:
-                        if (_hitDirection == Direction.West || _hitDirection == Direction.South)
-                        {
-                            if (_hitDirection == Direction.West)
-                                _reflectionDirection = Direction.North;
-                            if (_hitDirection == Direction.South)
-                                _reflectionDirection = Direction.East;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.North:
-                        if (_hitDirection == Direction.SouthEast || _hitDirection == Direction.SouthWest)
-                        {
-                            if (_hitDirection == Direction.SouthEast)
-                                _reflectionDirection = Direction.NorthEast;
-                            if (_hitDirection == Direction.SouthWest)
-                                _reflectionDirection = Direction.NorthWest;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.NorthWest:
-                        if (_hitDirection == Direction.East || _hitDirection == Direction.South)
-                        {
-                            if (_hitDirection == Direction.East)
-                                _reflectionDirection = Direction.North;
-                            if (_hitDirection == Direction.South)
-                                _reflectionDirection = Direction.West;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.West:
-                        if (_hitDirection == Direction.NorthEast || _hitDirection == Direction.SouthEast)
-                        {
-                            if (_hitDirection == Direction.NorthEast)
-                                _reflectionDirection = Direction.SouthEast;
-                            if (_hitDirection == Direction.SouthEast)
-                                _reflectionDirection = Direction.NorthEast;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.SouthWest:
-                        if (_hitDirection == Direction.East || _hitDirection == Direction.North)
-                        {
-                            if (_hitDirection == Direction.East)
-                                _reflectionDirection = Direction.South;
-                            if (_hitDirection == Direction.North)
-                                _reflectionDirection = Direction.West;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.South:
-                        if (_hitDirection == Direction.NorthWest || _hitDirection == Direction.NorthEast)
-                        {
-                            if (_hitDirection == Direction.NorthWest)
-                                _reflectionDirection = Direction.SouthWest;
-                            if (_hitDirection == Direction.NorthEast)
-                                _reflectionDirection = Direction.SouthEast;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    case Direction.SouthEast:
-                        if (_hitDirection == Direction.West || _hitDirection == Direction.North)
-                        {
-                            if (_hitDirection == Direction.West)
-                                _reflectionDirection = Direction.South;
-                            if (_hitDirection == Direction.North)
-                                _reflectionDirection = Direction.East;
-                            _isReflecting = true;
-                        }
-                        else
-                        {
-                            _isReflecting = false;
-                        }
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
+            return Direction.None;
         }
 
+        // Update the current filter color
         private void SetColor()
         {
+            // Calculate the color based on filter color settings
             _color = new RayColor(Red, Green, Blue, 0.9f);
+            
+            // Changed the color of the object
             _meshRenderer.material.color = _color.GetColor();
-            FilterColors();
+
+            UpdateEmittedRays();
         }
 
-        private void FilterColors()
+        // Calculate the filtered color
+        private RayColor GetFilteredColor(RayColor color)
         {
-            var filteredColor = new RayColor(Red && _hitColor.R, Green && _hitColor.G, Blue && _hitColor.B, 0.9f);
-            _filterRayEmitter.SetRayColor(filteredColor);
+            // Calculate the filtered color
+            var filteredColor = new RayColor(Red && color.R, Green && color.G, Blue && color.B, 0.9f);
 
-            var reboundColor = new RayColor(!Red && _hitColor.R, !Green && _hitColor.G, !Blue && _hitColor.B, 0.9f);
-            _mirrorRayEmitter.SetRayColor(reboundColor);
+            return filteredColor;
+        }
+        
+        // Calculate the reflected color
+        private RayColor GetReflectedColor(RayColor color)
+        {
+            // Calculate the filtered color
+            var reflectedColor = new RayColor(!Red && color.R, !Green && color.G, !Blue && color.B, 0.9f);
+
+            return reflectedColor;
         }
 
-        public void HitEnter(Direction hitDirection, RayColor rayColor)
+        public override void HandleReceivedRay(Ray ray)
         {
-            _hitColor = rayColor;
-            FilterColors();
+            RayColor filteredColor = GetFilteredColor(ray.Color);
 
-            // Mirror
-            _hitDirection = hitDirection;
-            _isHit = true;
-
-            // Filter
-            _filterRayEmitter.Enable(true);
-            _hitDirection = hitDirection;
+            if (filteredColor.R || filteredColor.G || filteredColor.B)
+            {
+                EmitNewRay(ray.Direction, filteredColor, ray);  
+            }
+            
+            Direction reflectionDirection = GetReflectionDirection(ray);
+            RayColor reflectedColor = GetReflectedColor(ray.Color);
+            if (reflectionDirection != Direction.None
+                && (reflectedColor.R || reflectedColor.G || reflectedColor.B))
+            {
+                EmitNewRay(reflectionDirection, reflectedColor, ray);
+            }
         }
 
-        public void HitExit()
+        // Launched when a ray hits the filter
+        public override void HitEnter(Ray ray)
         {
-            // Mirror
-            _isHit = false;
-            _mirrorRayEmitter.Enable(false);
-
-            // Filter
-            _filterRayEmitter.Enable(false);
+            base.HitEnter(ray);
+            HandleReceivedRay(ray);
         }
     }
 }
