@@ -211,7 +211,7 @@ public class DragAndDrop : MonoBehaviour {
 
 	// Function that allows you to move an object according to the Grid
 	// Funcion que permite mover un objeto segun la Cuadricula
-	Vector3 SnapToGrid(Vector3 dragPos)
+	public Vector3 SnapToGrid(Vector3 dragPos)
 	{
 		// If X is even, fix the target position
 		// Si es X es par, corregir la posicion de destino

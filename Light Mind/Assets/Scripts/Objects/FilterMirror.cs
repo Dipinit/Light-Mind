@@ -32,7 +32,7 @@ namespace Assets.Scripts.Objects
             }
         }
         
-        public override void OnOrientationChange()
+        protected override void OnOrientationChange()
         {
             UpdateEmittedRays();
         }

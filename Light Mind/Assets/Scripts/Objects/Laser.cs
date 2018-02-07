@@ -15,6 +15,7 @@ namespace Assets.Scripts.Objects
             Sources = new List<RaySource>();
             _sources = new List<RaySource>();
             
+            /*
             Sources.Add(new RaySource(Direction.North, false, new RayColor(true, true, true, 0.9f)));
             Sources.Add(new RaySource(Direction.NorthEast, false, new RayColor(true, true, true, 0.9f)));
             Sources.Add(new RaySource(Direction.East, false, new RayColor(true, true, true, 0.9f)));
@@ -32,6 +33,19 @@ namespace Assets.Scripts.Objects
             _sources.Add(new RaySource(Direction.SouthWest, false, new RayColor(true, true, true, 0.9f)));
             _sources.Add(new RaySource(Direction.West, false, new RayColor(true, true, true, 0.9f)));
             _sources.Add(new RaySource(Direction.NorthWest, false, new RayColor(true, true, true, 0.9f)));
+            */
+        }
+
+        public void AddSource(RaySource source)
+        {
+            Sources.Add(new RaySource(
+                source.Direction,
+                source.Enabled,
+                new RayColor(source.Color.R, source.Color.G, source.Color.B, source.Color.Alpha)));
+            _sources.Add(new RaySource(
+                source.Direction, 
+                source.Enabled, 
+                new RayColor(source.Color.R, source.Color.G, source.Color.B, source.Color.Alpha)));
         }
         
         // Update is called once per frame

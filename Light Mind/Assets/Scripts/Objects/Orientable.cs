@@ -17,7 +17,7 @@ namespace Assets.Scripts.Objects
         private Direction _orientation = Direction.None;
         
         // Last time the laser was clicked. Used to change the direction when double clicked 
-        protected float _lastClickTime;
+        private float _lastClickTime;
 
 
         // Use this for initialization
@@ -125,7 +125,7 @@ namespace Assets.Scripts.Objects
             }
         }
 
-        public virtual void OnOrientationChange()
+        protected virtual void OnOrientationChange()
         {}
     }
 }

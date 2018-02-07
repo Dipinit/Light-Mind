@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33000012103972860}
   - component: {fileID: 23000011184772234}
   - component: {fileID: 114000010902110944}
+  - component: {fileID: 114580282301935894}
   m_Layer: 0
   m_Name: Grid Prefab
   m_TagString: Untagged
@@ -96,3 +97,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: {x: 9, y: 9}
   occupiedPositions: []
+--- !u!114 &114580282301935894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012661804940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 298082dd0c3a4c8599ccfa61eec88042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MirrorPrefab: {fileID: 1689115679611386, guid: 1e78edae8c5b59c488d8efab96239528,
+    type: 2}
+  FilterPrefab: {fileID: 1203345178083834, guid: a1c9b6eb04aa0f04d827c6989ff813a2,
+    type: 2}
+  ObjectivePrefab: {fileID: 1549828412649780, guid: ec96a825c6bb26d44a798f0e16f83b1e,
+    type: 2}
+  FilterMirrorPrefab: {fileID: 1933030221551610, guid: a0501468fe327114cb4454166f45dff0,
+    type: 2}
+  LightSourcePrefab: {fileID: 1041144184609014, guid: 920899aee08671c419f3ca05d73cd4fe,
+    type: 2}
+  PrismPrefab: {fileID: 1107157647083158, guid: 0aac08929fe26d641a8e06635178f0a4,
+    type: 2}
+  Level: level0
