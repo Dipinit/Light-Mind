@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Utilities;
-using UnityEngine;
 
 namespace Assets.Scripts.Objects
 {

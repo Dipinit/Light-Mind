@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Utilities;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Assets.Scripts.Objects

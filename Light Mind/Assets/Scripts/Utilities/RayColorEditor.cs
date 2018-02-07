@@ -1,6 +1,6 @@
-using System;
+#if UNITY_EDITOR
+
 using UnityEditor;
-using UnityEngine;
 
 namespace Assets.Scripts.Utilities
 {
@@ -29,3 +29,5 @@ namespace Assets.Scripts.Utilities
         }
     }
 }
+
+#endif

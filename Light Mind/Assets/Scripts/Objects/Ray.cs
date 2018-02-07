@@ -1,11 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEngine;
+﻿using UnityEngine;
 using Assets.Scripts.Utilities;
 using Assets.Scripts.Objects;
-using UnityEditor.Animations;
-using UnityEngine.Video;
 
 public class Ray {
 	

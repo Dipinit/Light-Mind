@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Utilities;
+﻿using Assets.Scripts.Utilities;
 using UnityEngine;
 
 namespace Assets.Scripts.Objects
