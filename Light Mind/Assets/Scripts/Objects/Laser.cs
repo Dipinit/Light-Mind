@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Utilities;
+using UnityEngine;
 
 namespace Assets.Scripts.Objects
 {
@@ -12,32 +13,39 @@ namespace Assets.Scripts.Objects
         public override void Start()
         {
             base.Start();
-            Sources = new List<RaySource>();
-            _sources = new List<RaySource>();
+            InitSources();
+            ResetRays();
+        }
+
+        private void InitSources()
+        {
+            if (Sources == null)
+                Sources = new List<RaySource>();
+            if (_sources == null)
+                _sources = new List<RaySource>();
+        }
+
+        private void ResetRays()
+        {
+            foreach (var ray in EmittedRays)
+            {
+                Ray.Delete(ray);
+            }
+            EmittedRays.Clear();
             
-            /*
-            Sources.Add(new RaySource(Direction.North, false, new RayColor(true, true, true, 0.9f)));
-            Sources.Add(new RaySource(Direction.NorthEast, false, new RayColor(true, true, true, 0.9f)));
-            Sources.Add(new RaySource(Direction.East, false, new RayColor(true, true, true, 0.9f)));
-            Sources.Add(new RaySource(Direction.SouthEast, false, new RayColor(true, true, true, 0.9f)));
-            Sources.Add(new RaySource(Direction.South, false, new RayColor(true, true, true, 0.9f)));
-            Sources.Add(new RaySource(Direction.SouthWest, false, new RayColor(true, true, true, 0.9f)));
-            Sources.Add(new RaySource(Direction.West, false, new RayColor(true, true, true, 0.9f)));
-            Sources.Add(new RaySource(Direction.NorthWest, false, new RayColor(true, true, true, 0.9f)));
-            
-            _sources.Add(new RaySource(Direction.North, false, new RayColor(true, true, true, 0.9f)));
-            _sources.Add(new RaySource(Direction.NorthEast, false, new RayColor(true, true, true, 0.9f)));
-            _sources.Add(new RaySource(Direction.East, false, new RayColor(true, true, true, 0.9f)));
-            _sources.Add(new RaySource(Direction.SouthEast, false, new RayColor(true, true, true, 0.9f)));
-            _sources.Add(new RaySource(Direction.South, false, new RayColor(true, true, true, 0.9f)));
-            _sources.Add(new RaySource(Direction.SouthWest, false, new RayColor(true, true, true, 0.9f)));
-            _sources.Add(new RaySource(Direction.West, false, new RayColor(true, true, true, 0.9f)));
-            _sources.Add(new RaySource(Direction.NorthWest, false, new RayColor(true, true, true, 0.9f)));
-            */
+            for (int i = 0; i < _sources.Count; i++)
+            {
+                if (_sources[i].Enabled && (_sources[i].Color.R || _sources[i].Color.G || _sources[i].Color.B))
+                {
+                    EmitNewRay(_sources[i].Direction, _sources[i].Color, null);
+                }
+            }
         }
 
         public void AddSource(RaySource source)
         {
+            InitSources();
+
             Sources.Add(new RaySource(
                 source.Direction,
                 source.Enabled,
@@ -52,10 +60,9 @@ namespace Assets.Scripts.Objects
         public override void Update()
         {
             base.Update();
+            
             for (int i = 0; i < _sources.Count; i++)
             {
-                //Debug.Log(i.ToString() + _sources[i]);
-                //Debug.Log(i.ToString() + _sources[i]);
                 if (!(_sources[i].Equals(Sources[i])))
                 {
                     _sources[i].Color.R = Sources[i].Color.R;

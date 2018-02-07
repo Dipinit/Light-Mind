@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Utilities;
 using Assets.Scripts.Utilities.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngineInternal;
 
 namespace Assets.Scripts.Map
 {
@@ -91,24 +93,20 @@ namespace Assets.Scripts.Map
                         
                         
                         case "Light Source":
-                            break;
                             Debug.Log("Instanciating a light source...");
                             gameObject = Instantiate(LightSourcePrefab, transform);
                             Laser laser = gameObject.GetComponentInChildren<Laser>();
-                            Debug.Log(entity.Data);
                             JsonRaySource[] jsonRaySources = JsonHelper.FromJson<JsonRaySource>(entity.Data);
                             if (jsonRaySources == null || jsonRaySources.Length != 8)
-                                throw new Exception("mdr le caca");
+                                throw new Exception("Wrong light source");
                             foreach (var jsonRaySource in jsonRaySources)
                             {
-                                laser.AddSource(new RaySource(
-                                    jsonRaySource.Direction, 
-                                    jsonRaySource.Enabled, 
-                                    new RayColor(
-                                        jsonRaySource.Red, 
-                                        jsonRaySource.Green, 
-                                        jsonRaySource.Blue, 
-                                        0.9f)));
+                                Debug.Log(jsonRaySource);
+                                RayColor rayColor = 
+                                    new RayColor(jsonRaySource.Red, jsonRaySource.Green,jsonRaySource.Blue, 0.9f);
+                                RaySource raySource =
+                                    new RaySource(jsonRaySource.Direction, jsonRaySource.Enabled, rayColor);
+                                laser.AddSource(raySource);
                             }
                             break;
                     }

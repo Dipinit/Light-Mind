@@ -5,6 +5,18 @@
   {"Type": "Objective", "X": -5, "Y": 2, "Data": "{\"Red\": true, \"Green\": true, \"Blue\": false}"},
   {"Type": "Prism", "X": -1, "Y": -3, "Data": "{\"Red\": true, \"Green\": true, \"Blue\": false}"},
   {"Type": "Prism", "X": -1, "Y": -3, "Data": "{\"Red\": true, \"Green\": true, \"Blue\": false}"},
-  {"Type": "Filter Mirror", "X": 3, "Y": -1, "Data": "{\"Red\": false, \"Green\": false, \"Blue\": true, \"Orientation\": 135}"}
+  {"Type": "Filter Mirror", "X": 3, "Y": -1, "Data": "{\"Red\": false, \"Green\": false, \"Blue\": true, \"Orientation\": 135}"},
+  {
+    "Type": "Light Source",
+    "X": 3,
+    "Y": -4,
+    "Data": "{\"Items\": [{\"Direction\": 0, \"Enabled\": false, \"Red\": true, \"Green\": true, \"Blue\": false}, {\"Direction\": 45, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}, {\"Direction\": 90, \"Enabled\": true, \"Red\": false, \"Green\": true, \"Blue\": true}, {\"Direction\": 135, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}, {\"Direction\": 180, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}, {\"Direction\": 225, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}, {\"Direction\": 270, \"Enabled\": true, \"Red\": true, \"Green\": true, \"Blue\": true}, {\"Direction\": 315, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}]}"
+  },
+  {
+    "Type": "Light Source",
+    "X": 1,
+    "Y": -2,
+    "Data": "{\"Items\": [{\"Direction\": 0, \"Enabled\": true, \"Red\": true, \"Green\": true, \"Blue\": false}, {\"Direction\": 45, \"Enabled\": true, \"Red\": false, \"Green\": true, \"Blue\": false}, {\"Direction\": 90, \"Enabled\": true, \"Red\": false, \"Green\": true, \"Blue\": true}, {\"Direction\": 135, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}, {\"Direction\": 180, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}, {\"Direction\": 225, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}, {\"Direction\": 270, \"Enabled\": true, \"Red\": true, \"Green\": false, \"Blue\": false}, {\"Direction\": 315, \"Enabled\": false, \"Red\": false, \"Green\": false, \"Blue\": false}]}"
+  }
   ]
 }
