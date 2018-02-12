@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Map;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
@@ -12,18 +13,21 @@ namespace Assets.Scripts.UI
         private Text _text;
 
         private GameObject _instanciatedItem;
+        private GameManager _gameManager;
 
         public Sprite ItemImage;
         public Animator Animator;
 
         public GameObject ItemPrefab;
         public int ItemQuantity;
+        
 
         // Use this for initialization
         private void Start()
         {
             _image = transform.Find("Image").gameObject.GetComponent<Image>();
             _text = transform.Find("Text").gameObject.GetComponent<Text>();
+            _gameManager = FindObjectOfType<GameManager>();
 
             _image.sprite = ItemImage;
         }
@@ -52,7 +56,7 @@ namespace Assets.Scripts.UI
         {
             if (ItemQuantity <= 0) return;
             ItemQuantity--;
-            _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity);
+            _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity, _gameManager.transform);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -79,7 +83,12 @@ namespace Assets.Scripts.UI
                 Destroy(_instanciatedItem);
             }
             else
-                _instanciatedItem.transform.Find("Quad").GetComponent<DragAndDrop>().OnMouseUp();
+            {
+                DragAndDrop dragAndDrop = _instanciatedItem.GetComponentInChildren<DragAndDrop>();
+                //Vector3 pos = new Vector3(entity.X, entity.Y, 0);
+                _instanciatedItem.transform.position = dragAndDrop.SnapToGrid(_instanciatedItem.transform.position);
+                //_instanciatedItem.transform.Find("Quad").GetComponent<DragAndDrop>().OnMouseUp();
+            }
 
             _instanciatedItem = null;
         }
