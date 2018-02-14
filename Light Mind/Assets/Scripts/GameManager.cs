@@ -164,6 +164,7 @@ public class GameManager : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
                     objectInstance.transform.position = pos;
+                    BoardManager.AddItemPosition(pos);
                 }
             }
         }
@@ -172,7 +173,7 @@ public class GameManager : MonoBehaviour
     // Find the parent GameObject of all Quad Objects and get all objectives references
 	private Objective[] GetAllObjectives()
     {
-		return GameObject.FindObjectsOfType<Objective> ();
+		return FindObjectsOfType<Objective> ();
     }
 
     // Checks for a win condition (all objectives completed)

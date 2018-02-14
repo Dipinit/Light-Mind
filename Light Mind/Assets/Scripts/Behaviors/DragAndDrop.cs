@@ -9,7 +9,8 @@ namespace Behaviors
 
         private BoardManager _board;
         private Vector3 _screenPoint;
-        private Vector4 _lastPosition;
+        
+        private Vector3 _lastPosition;
 
         // Closest tile from this object
         private GameObject _closestCell;
@@ -24,6 +25,9 @@ namespace Behaviors
 
         private void OnMouseDown()
         {
+            _lastPosition = transform.position;
+            GameManager.Instance.BoardManager.RemoveItemPosition(_lastPosition);
+            
             UpdateDraggedPosition();
         }
 
@@ -101,6 +105,8 @@ namespace Behaviors
                 // Else, place on board
                 var cellPosition = _closestCell.transform.position;
                 transform.position = cellPosition;
+                
+                GameManager.Instance.BoardManager.AddItemPosition(cellPosition);
 
                 _audioSources[0].Play();
             }
