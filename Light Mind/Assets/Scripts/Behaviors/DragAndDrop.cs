@@ -5,7 +5,11 @@ namespace Behaviors
     [RequireComponent(typeof(AudioSource))]
     public class DragAndDrop : MonoBehaviour
     {
-        [Header("Snap")] public float SnapRange = 1.5f;
+        [Header("General")]
+        public bool IsDraggable = true;
+        
+        [Header("Snap")]
+        public float SnapRange = 1.5f;
 
         private BoardManager _board;
         private Vector3 _screenPoint;
@@ -27,6 +31,8 @@ namespace Behaviors
 
         private void OnMouseDown()
         {
+            if (!IsDraggable) return;
+            
             _lastPosition = transform.position;
             GameManager.Instance.BoardManager.RemoveItemPosition(_lastPosition);
             
@@ -37,6 +43,8 @@ namespace Behaviors
 
         private void OnMouseDrag()
         {
+            if (!IsDraggable) return;
+            
             UpdateDraggedPosition();
 
             // Illuminate nearest tile for board placement
@@ -45,6 +53,8 @@ namespace Behaviors
 
         private void OnMouseUp()
         {
+            if (!IsDraggable) return;
+            
             DropItem();
         }
 

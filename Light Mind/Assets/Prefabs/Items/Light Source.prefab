@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29ebee4e36c64291a207ce787b9b1fb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsDraggable: 0
   SnapRange: 1.5
 --- !u!114 &114626380714086942
 MonoBehaviour:
@@ -203,6 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9a8f16f79c48e4af48f3900d6f4092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsOrientable: 0
   Orientation: 0
   DoubleClickTime: 0.25
   Sources: []

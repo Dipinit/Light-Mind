@@ -60,6 +60,8 @@ MonoBehaviour:
     type: 2}
   ObjectivePrefab: {fileID: 1140023550082230, guid: b2836904fcbd34a0baba9c076dda36f3,
     type: 2}
+  ObstaclePrefab: {fileID: 1640529570702830, guid: 995307ca96dce4865a1a0ab764ca790d,
+    type: 2}
   FilterMirrorPrefab: {fileID: 1234115760814594, guid: 803e1ab1f97004592b4ee36a545d254a,
     type: 2}
   LightSourcePrefab: {fileID: 1499936701221448, guid: 5aea461884e5849ebb9b72f3eba1d83e,

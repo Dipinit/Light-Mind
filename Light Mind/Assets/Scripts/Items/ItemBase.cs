@@ -8,7 +8,8 @@ namespace Items
     // Used to change the GameObjects direction
     public abstract class ItemBase : RaySensitive
     {
-        // Item orientation setting
+        // Item orientation settings
+        public bool IsOrientable = true;
         public Direction Orientation = Direction.East;
         
         // The double click setting. Used to change the direction when double clicked 
@@ -51,6 +52,8 @@ namespace Items
         // Rotate the object of 90° degrees
         private void Rotate()
         {
+            if (!IsOrientable) return;
+            
             // Changed the store orientation based on current direction
             switch (Orientation)
             {

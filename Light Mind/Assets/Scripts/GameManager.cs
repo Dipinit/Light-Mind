@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject MirrorPrefab;
     public GameObject FilterPrefab;
     public GameObject ObjectivePrefab;
+    public GameObject ObstaclePrefab;
     public GameObject FilterMirrorPrefab;
     public GameObject LightSourcePrefab;
     public GameObject PrismPrefab;
@@ -156,16 +157,21 @@ public class GameManager : MonoBehaviour
                                 new RaySource((Direction) jsonRay["Direction"].i, jsonRay["Enabled"].b, rayColor);
                             laser.AddSource(raySource);
                         }
-
+                        break;
+                    case "Obstacle":
+                        Debug.Log("Instanciating an obstacle...");
+                        objectInstance = Instantiate(ObstaclePrefab, ItemsContainer.transform);
+                        break;
+                    default:
+                        Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));
                         break;
                 }
 
-                if (objectInstance != null)
-                {
-                    Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
-                    objectInstance.transform.position = pos;
-                    BoardManager.AddItemPosition(pos);
-                }
+                if (objectInstance == null) continue;
+                
+                Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
+                objectInstance.transform.position = pos;
+                BoardManager.AddItemPosition(pos);
             }
         }
     }

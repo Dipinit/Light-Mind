@@ -14,6 +14,7 @@
       {"Type": "Filter", "X": 2, "Y": 2, "Red": true, "Green": false, "Blue": true},
       {"Type": "Objective", "X": 4, "Y": 2, "Red": true, "Green": true, "Blue": false},
       {"Type": "Prism", "X": 1, "Y": 3, "Red": true, "Green": true, "Blue": false},
+      {"Type": "Obstacle", "X": 6, "Y": 6},
       {"Type": "Filter Mirror", "X": 3, "Y": 1, "Red": false, "Green": false, "Blue": true, "Orientation": 135},
       {
         "Type": "Light Source",
