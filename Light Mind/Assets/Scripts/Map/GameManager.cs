@@ -22,12 +22,15 @@ namespace Assets.Scripts.Map
         public GameObject FilterInventoryItemPrefab;
         public GameObject Inventory;
 
+		private Objective[] _objectives;
+
         private void Start()
         {
             string currentLevel = PlayerPrefs.GetString("currentLevel");
             if (!String.IsNullOrEmpty(currentLevel))
             {
                 LoadLevel(PlayerPrefs.GetString("currentLevel"));
+				getAllObjectives ();
             }
         }
         
@@ -95,6 +98,7 @@ namespace Assets.Scripts.Map
                         case "Objective":
                             Debug.Log("Instanciating an objective...");
                             gameObject = Instantiate(ObjectivePrefab, transform);
+							gameObject.tag = "objective";
                             Objective objective = gameObject.GetComponentInChildren<Objective>();
                             objective.Red = jsonEntity["Red"].b;
                             objective.Green = jsonEntity["Green"].b;
@@ -143,5 +147,23 @@ namespace Assets.Scripts.Map
             }
 
         }
+
+		// Find the parent GameObject of all Quad Objects and get all objectives references
+		private void getAllObjectives ()
+		{
+			_objectives = GameObject.FindGameObjectWithTag ("objective")
+				.GetComponentsInChildren<Objective> ();
+		}
+
+		// Checks for a win condition (all objectives completed)
+		public bool isLevelCompleted ()
+		{
+			foreach (var objective in _objectives) {
+				if (!objective.Completed) {
+					return false;
+				}
+			}
+			return true;
+		}
     }
 }

@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Map;
 
 public class DragAndDrop : MonoBehaviour {
 
@@ -23,8 +24,9 @@ public class DragAndDrop : MonoBehaviour {
 
 	Vector4 targetPos;
 
-	void Awake () {
+	private GameManager _gameManager;
 
+	void Awake () {
 		// Fix the position according to the scale of this object
 		// Corregir la posicion segun la escala de este objeto
 		var newPos = transform.localPosition;
@@ -46,6 +48,9 @@ public class DragAndDrop : MonoBehaviour {
 		// Add position
 		// Agregar posicion
 		AddPosition (lastPos);
+
+		// Get the game manager to be able to check win condition later on
+		_gameManager = GameObject.FindObjectOfType(typeof(GameManager)) as GameManager;
 	}
 
 	// Get recent values of the Grid
@@ -75,6 +80,14 @@ public class DragAndDrop : MonoBehaviour {
 		transform.localPosition = newPos;
 
 		UpdatePosition ();
+
+	}
+
+	void CheckWinCondition() {
+		if (_gameManager != null && _gameManager.isLevelCompleted ()) {
+			Debug.Log("Congratulations! All Objectives have been completed!");
+			//TODO: Load level completed menu here / show score / ...
+		}
 	}
 
 	// Al estar presionando el clic sobre este objeto
@@ -195,6 +208,9 @@ public class DragAndDrop : MonoBehaviour {
 		// Guardar posicion actual
 		lastParentPos = transform.parent.position;
 		lastPos = currentPosition;
+
+		// Check if the new position completed the level
+		CheckWinCondition ();
 	}
 
 	// Fix the GameObject position if the Grid Transform has changed
