@@ -10,9 +10,14 @@ namespace Menu
             SceneManager.LoadScene(1);
         }
 
+        public void ReturnToMenu(GameObject winMenu)
+        {
+            SceneManager.LoadScene("Scenes/MenuScene");
+        }
+
         public void QuitGame()
         {
             Application.Quit();
         }
     }
-}
+} 
