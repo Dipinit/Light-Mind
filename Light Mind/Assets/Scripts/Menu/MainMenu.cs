@@ -10,7 +10,7 @@ namespace Menu
             SceneManager.LoadScene(1);
         }
 
-        public void ReturnToMenu(GameObject winMenu)
+        public void ReturnToMenu()
         {
             SceneManager.LoadScene("Scenes/MenuScene");
         }
