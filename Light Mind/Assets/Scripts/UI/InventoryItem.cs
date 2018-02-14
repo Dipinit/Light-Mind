@@ -19,7 +19,6 @@ namespace UI
 
         public GameObject ItemPrefab;
         public int ItemQuantity;
-        
 
         // Use this for initialization
         private void Start()
@@ -55,6 +54,9 @@ namespace UI
             if (ItemQuantity <= 0) return;
             ItemQuantity--;
             _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity, GameManager.Instance.ItemsContainer.transform);
+            RaySensitive raySensitive = _instanciatedItem.GetComponent<RaySensitive>();
+            if (raySensitive) raySensitive.MeshCollider.convex = false;
+
         }
 
         public void OnDrag(PointerEventData eventData)

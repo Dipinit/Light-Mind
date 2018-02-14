@@ -176,6 +176,7 @@ public class GameManager : MonoBehaviour
                 objectInstance.transform.position = pos;
                 DragAndDrop dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
                 dragAndDrop.IsDraggable = jsonEntity["Draggable"].b;
+                RaySensitive raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
                 BoardManager.AddItemPosition(pos);
             }
         }

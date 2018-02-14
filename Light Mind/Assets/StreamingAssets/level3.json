@@ -10,12 +10,12 @@
     },
   "Entities":
     [
-      {"Type": "Objective", "X": 4, "Y": 0, "Red": true, "Green": false, "Blue": true, "Draggable": false},
+      {"Type": "Objective", "X": 4, "Y": 0, "Red": true, "Green": false, "Blue": true, "Draggable": true},
       {
         "Type": "Light Source",
         "X": 1,
         "Y": 2,
-        "Draggable": false,
+        "Draggable": true,
         "Rays":
           [
             {"Direction": 0, "Enabled": true, "Red": true, "Green": false, "Blue": true},

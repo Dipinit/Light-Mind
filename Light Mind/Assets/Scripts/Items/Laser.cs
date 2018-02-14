@@ -16,7 +16,7 @@ namespace Items
             InitSources();
             ResetRays();
         }
-
+        
         private void InitSources()
         {
             if (Sources == null)
@@ -25,7 +25,7 @@ namespace Items
                 _sources = new List<RaySource>();
         }
 
-        private void ResetRays()
+        public override void ResetRays()
         {
             foreach (var ray in EmittedRays)
             {

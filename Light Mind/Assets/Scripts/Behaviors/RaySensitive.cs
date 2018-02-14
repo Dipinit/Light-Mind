@@ -9,14 +9,19 @@ namespace Behaviors
     {
         public List<Ray> ReceveidRays;
         public List<Ray> EmittedRays;
-        private MeshCollider _meshCollider;
+        public MeshCollider MeshCollider;
         
         
         public virtual void Start()
         {
+            MeshCollider = GetComponent<MeshCollider>();
+            MeshCollider.convex = false;
             ReceveidRays = new List<Ray>();
             EmittedRays = new List<Ray>();
-            _meshCollider = GetComponent<MeshCollider>();
+        }
+
+        public virtual void ResetRays()
+        {
         }
         
         public virtual void Update ()
@@ -34,15 +39,15 @@ namespace Behaviors
         public void Disable()
         {
             DestroyEmittedRays();
-            if (_meshCollider != null)
-                _meshCollider.convex = false;
+            if (MeshCollider != null)
+                MeshCollider.convex = false;
         }
 
         public void Enable()
         {
-            if (_meshCollider != null)
-                _meshCollider.convex = true;
-            Start();
+            if (MeshCollider != null)
+                MeshCollider.convex = true;
+            ResetRays();
         }
         
         // Launched when a ray hits the object
@@ -60,10 +65,10 @@ namespace Behaviors
             
             // Log a new Hit evenement
             Debug.LogWarning(string.Format("{0} {1} hit {2} {3} with color {4} and direction {5}",
-                ray.RayEmitter.transform.parent.gameObject,
-                ray.RayEmitter.transform.parent.gameObject.GetInstanceID(),
-                transform.parent.gameObject,
-                transform.parent.gameObject.GetInstanceID(),
+                ray.RayEmitter.transform.gameObject,
+                ray.RayEmitter.transform.gameObject.GetInstanceID(),
+                transform.gameObject,
+                transform.gameObject.GetInstanceID(),
                 ray.Color,
                 ray.Direction
             ));
@@ -89,10 +94,10 @@ namespace Behaviors
                     ReceveidRays.RemoveAt(i);
 
                     Debug.LogWarning(string.Format("{0} {1} stopped hitting {2} {3} with color {4} and direction {5}",
-                        ray.RayEmitter.transform.parent.gameObject,
-                        ray.RayEmitter.transform.parent.gameObject.GetInstanceID(),
-                        transform.parent.gameObject,
-                        transform.parent.gameObject.GetInstanceID(),
+                        ray.RayEmitter.transform.gameObject,
+                        ray.RayEmitter.transform.gameObject.GetInstanceID(),
+                        transform.gameObject,
+                        transform.gameObject.GetInstanceID(),
                         ray.Color,
                         ray.Direction
                     ));
@@ -104,7 +109,7 @@ namespace Behaviors
         public Ray EmitNewRay(Direction direction, RayColor rayColor, Ray parent)
         {
             Debug.LogWarning(string.Format("Emitting new ray from {0} with color {1} and direction {2}",
-                transform.parent.gameObject,
+                transform.gameObject,
                 rayColor,
                 direction
             ));
