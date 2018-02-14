@@ -12,6 +12,7 @@ namespace Behaviors
         private Vector4 _lastPosition;
         private RaySensitive _raySensitive;
 
+
         // Closest tile from this object
         private GameObject _closestCell;
 
@@ -26,6 +27,9 @@ namespace Behaviors
 
         private void OnMouseDown()
         {
+            _lastPosition = transform.position;
+            GameManager.Instance.BoardManager.RemoveItemPosition(_lastPosition);
+            
             UpdateDraggedPosition();
             if (_raySensitive != null)
                 _raySensitive.Disable();
@@ -105,6 +109,8 @@ namespace Behaviors
                 // Else, place on board
                 var cellPosition = _closestCell.transform.position;
                 transform.position = cellPosition;
+                
+                GameManager.Instance.BoardManager.AddItemPosition(cellPosition);
 
                 _audioSources[0].Play();
             }
