@@ -131,8 +131,6 @@ namespace Behaviors
             
             if (_raySensitive != null)
                 _raySensitive.Enable();
-
-			GameManager.Instance.CheckWinCondition ();
         }
     }
 }

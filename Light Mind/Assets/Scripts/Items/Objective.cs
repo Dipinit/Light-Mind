@@ -74,6 +74,8 @@ namespace Items
                 {
                     Debug.LogWarning(string.Format("Objective {0} is completed", transform.gameObject.GetInstanceID()));
                     Completed = true;
+                    GameManager.Instance.CheckWinCondition ();
+
                 }
 
             }
@@ -84,6 +86,7 @@ namespace Items
                     Debug.LogWarning(string.Format("Objective {0} is not completed anymore",
                         transform.gameObject.GetInstanceID()));
                     Completed = false;
+                    GameManager.Instance.CheckWinCondition ();
                 }
             }
         }
