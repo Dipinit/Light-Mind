@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4016263193041878}
-  - component: {fileID: 114442506934292214}
+  - component: {fileID: 114386882692909422}
   - component: {fileID: 114926697728628188}
   m_Layer: 0
   m_Name: Game Manager
@@ -41,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114442506934292214
+--- !u!114 &114386882692909422
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1218424648802828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a75f6ad8204e5a941abb63e9d3462b95, type: 3}
+  m_Script: {fileID: 11500000, guid: 07ddae598091b482a80cf76d92faff71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BoardManager: {fileID: 0}
@@ -66,6 +66,15 @@ MonoBehaviour:
     type: 2}
   PrismPrefab: {fileID: 1794793606906982, guid: 15bcc95f4f58f4abab5c8d2d982beae8,
     type: 2}
+  MirrorInventoryItemPrefab: {fileID: 1261387423481122, guid: 161a9a6a4888b684ea6e26ff2aecdbf1,
+    type: 2}
+  FilterMirrorInventoryItemPrefab: {fileID: 1567602138404320, guid: bb3099510466b1d438036760bbde9c07,
+    type: 2}
+  PrismInventoryItemPrefab: {fileID: 1717933067496232, guid: 2f9a529adc6790944808be2a10b4d032,
+    type: 2}
+  FilterInventoryItemPrefab: {fileID: 1475637844830366, guid: e93dec52e4964804e817a58e1fbb41c1,
+    type: 2}
+  Inventory: {fileID: 0}
 --- !u!114 &114926697728628188
 MonoBehaviour:
   m_ObjectHideFlags: 1

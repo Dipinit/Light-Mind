@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Assets.Scripts.Utilities;
-using Assets.Scripts.Utilities.Json;
 using Behaviors;
 using Items;
+using UI;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -20,6 +21,14 @@ public class GameManager : MonoBehaviour
     public GameObject LightSourcePrefab;
     public GameObject PrismPrefab;
 
+    public GameObject MirrorInventoryItemPrefab;
+    public GameObject FilterMirrorInventoryItemPrefab;
+    public GameObject PrismInventoryItemPrefab;
+    public GameObject FilterInventoryItemPrefab;
+    public GameObject Inventory;
+
+    private Objective[] _objectives;
+
     private void Awake()
     {
         if (Instance == null)
@@ -29,12 +38,11 @@ public class GameManager : MonoBehaviour
 
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
-        
+
         // Create items container
         if (null == ItemsContainer)
         {
-            ItemsContainer = new GameObject();
-            ItemsContainer.name = "Items";
+            ItemsContainer = new GameObject {name = "Items"};
         }
 
         BoardManager = GetComponent<BoardManager>();
@@ -48,52 +56,78 @@ public class GameManager : MonoBehaviour
         if (!String.IsNullOrEmpty(currentLevel))
         {
             LoadLevel(PlayerPrefs.GetString("currentLevel"));
+            GetAllObjectives();
         }
     }
 
     public void LoadLevel(string level)
     {
-        // Instantiate(GridPrefab);
         string filePath = Path.Combine(Application.streamingAssetsPath, string.Format("{0}.json", level));
         if (File.Exists(filePath))
         {
             // Read the json from the file into a string
-            string dataAsJson = File.ReadAllText(filePath);
-            Debug.Log(dataAsJson);
+            string jsonText = File.ReadAllText(filePath);
+            Debug.Log(jsonText);
 
-            Entity[] loadedEntities = JsonHelper.FromJson<Entity>(dataAsJson);
-            foreach (var entity in loadedEntities)
+            JSONObject dataAsJson = new JSONObject(jsonText);
+
+            if (dataAsJson["Inventory"]["Mirrors"].i > 0)
             {
-                Debug.Log(entity);
+                GameObject itemGameObject = Instantiate(MirrorInventoryItemPrefab, Inventory.transform);
+                InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Mirrors"].i;
+            }
+
+            if (dataAsJson["Inventory"]["MirrorFilters"].i > 0)
+            {
+                GameObject itemGameObject = Instantiate(FilterMirrorInventoryItemPrefab, Inventory.transform);
+                InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["MirrorFilters"].i;
+            }
+
+            if (dataAsJson["Inventory"]["Prisms"].i > 0)
+            {
+                GameObject itemGameObject = Instantiate(PrismInventoryItemPrefab, Inventory.transform);
+                InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Prisms"].i;
+            }
+
+            if (dataAsJson["Inventory"]["Filters"].i > 0)
+            {
+                GameObject itemGameObject = Instantiate(FilterInventoryItemPrefab, Inventory.transform);
+                InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Filters"].i;
+            }
+
+            foreach (var jsonEntity in dataAsJson["Entities"].list)
+            {
                 GameObject objectInstance = null;
-                switch (entity.Type)
+                switch (jsonEntity["Type"].str)
                 {
                     case "Mirror":
                         Debug.Log("Instanciating a mirror...");
                         objectInstance = Instantiate(MirrorPrefab, ItemsContainer.transform);
                         Mirror mirror = objectInstance.GetComponentInChildren<Mirror>();
-                        JsonMirror jsonMirror = JsonUtility.FromJson<JsonMirror>(entity.Data);
-                        mirror.Orientation = jsonMirror.Orientation;
+                        mirror.Orientation = (Direction) jsonEntity["Orientation"].i;
                         break;
 
                     case "Filter":
                         Debug.Log("Instanciating a filter...");
                         objectInstance = Instantiate(FilterPrefab, ItemsContainer.transform);
                         Filter filter = objectInstance.GetComponentInChildren<Filter>();
-                        JsonFilter jsonFilter = JsonUtility.FromJson<JsonFilter>(entity.Data);
-                        filter.Red = jsonFilter.Red;
-                        filter.Green = jsonFilter.Green;
-                        filter.Blue = jsonFilter.Blue;
+                        filter.Red = jsonEntity["Red"].b;
+                        filter.Green = jsonEntity["Green"].b;
+                        filter.Blue = jsonEntity["Blue"].b;
                         break;
 
                     case "Objective":
                         Debug.Log("Instanciating an objective...");
                         objectInstance = Instantiate(ObjectivePrefab, ItemsContainer.transform);
+                        objectInstance.tag = "objective";
                         Objective objective = objectInstance.GetComponentInChildren<Objective>();
-                        JsonObjective jsonObjective = JsonUtility.FromJson<JsonObjective>(entity.Data);
-                        objective.Red = jsonObjective.Red;
-                        objective.Green = jsonObjective.Green;
-                        objective.Blue = jsonObjective.Blue;
+                        objective.Red = jsonEntity["Red"].b;
+                        objective.Green = jsonEntity["Green"].b;
+                        objective.Blue = jsonEntity["Blue"].b;
                         break;
 
                     case "Prism":
@@ -106,37 +140,47 @@ public class GameManager : MonoBehaviour
                         Debug.Log("Instanciating a filter mirror...");
                         objectInstance = Instantiate(FilterMirrorPrefab, ItemsContainer.transform);
                         FilterMirror filterMirror = objectInstance.GetComponentInChildren<FilterMirror>();
-                        JsonFilterMirror jsonFilterMirror = JsonUtility.FromJson<JsonFilterMirror>(entity.Data);
-                        filterMirror.Orientation = jsonFilterMirror.Orientation;
-                        filterMirror.Red = jsonFilterMirror.Red;
-                        filterMirror.Green = jsonFilterMirror.Green;
-                        filterMirror.Blue = jsonFilterMirror.Blue;
+                        filterMirror.Orientation = (Direction) jsonEntity["Orientation"].i;
+                        filterMirror.Red = jsonEntity["Red"].b;
+                        filterMirror.Green = jsonEntity["Green"].b;
+                        filterMirror.Blue = jsonEntity["Blue"].b;
                         break;
-
 
                     case "Light Source":
                         Debug.Log("Instanciating a light source...");
                         objectInstance = Instantiate(LightSourcePrefab, ItemsContainer.transform);
                         Laser laser = objectInstance.GetComponentInChildren<Laser>();
-                        JsonRaySource[] jsonRaySources = JsonHelper.FromJson<JsonRaySource>(entity.Data);
-                        if (jsonRaySources == null || jsonRaySources.Length != 8)
-                            throw new Exception("Wrong light source");
-                        foreach (var jsonRaySource in jsonRaySources)
+                        foreach (var jsonRay in jsonEntity["Rays"].list)
                         {
-                            Debug.Log(jsonRaySource);
                             RayColor rayColor =
-                                new RayColor(jsonRaySource.Red, jsonRaySource.Green, jsonRaySource.Blue, 0.9f);
+                                new RayColor(jsonRay["Red"].b, jsonRay["Green"].b, jsonRay["Blue"].b, 0.9f);
                             RaySource raySource =
-                                new RaySource(jsonRaySource.Direction, jsonRaySource.Enabled, rayColor);
+                                new RaySource((Direction) jsonRay["Direction"].i, jsonRay["Enabled"].b, rayColor);
                             laser.AddSource(raySource);
                         }
 
                         break;
                 }
 
-                Vector3 pos = new Vector3(entity.X, entity.Y, 0);
-                objectInstance.transform.position = pos;
+                if (objectInstance != null)
+                {
+                    Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
+                    objectInstance.transform.position = pos;
+                }
             }
         }
+    }
+
+    // Find the parent GameObject of all Quad Objects and get all objectives references
+    private void GetAllObjectives()
+    {
+        _objectives = GameObject.FindGameObjectWithTag("objective")
+            .GetComponentsInChildren<Objective>();
+    }
+
+    // Checks for a win condition (all objectives completed)
+    public bool IsLevelCompleted()
+    {
+        return _objectives.All(objective => objective.Completed);
     }
 }

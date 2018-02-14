@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Behaviors
 {
@@ -40,7 +39,7 @@ namespace Behaviors
         {
             DropItem();
         }
-        
+
         public void UpdateDraggedPosition()
         {
             // Get World Point using the mouse position
@@ -84,14 +83,14 @@ namespace Behaviors
                 _closestCell.transform.position));
             _closestCell.GetComponent<SpriteRenderer>().color = _board.CellHighlightColor;
         }
-        
+
         public void DropItem()
         {
             // If object is not over board, replace it in inventory or destroy it
             if (_closestCell == null)
             {
-                Debug.Log(string.Format("Destroying {0}", this.gameObject.name));
-                
+                Debug.Log(string.Format("Destroying {0}", gameObject.name));
+
                 // TODO: Replace item in inventory
                 Destroy(gameObject);
 
@@ -109,6 +108,17 @@ namespace Behaviors
             // Reset all cells color
             _board.ResetCells();
             _closestCell = null;
+            
+            CheckWinCondition();
+        }
+
+        private void CheckWinCondition()
+        {
+            if (GameManager.Instance.IsLevelCompleted())
+            {
+                Debug.Log("Congratulations! All Objectives have been completed!");
+                //TODO: Load level completed menu here / show score / ...
+            }
         }
     }
 }

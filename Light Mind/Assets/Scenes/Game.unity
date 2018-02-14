@@ -113,7 +113,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &797360666
+--- !u!1001 &243528984
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -152,6 +152,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: Inventory
+      value: 
+      objectReference: {fileID: 989084843}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b, type: 2}
   m_IsPrefabParent: 0
@@ -351,16 +356,21 @@ Prefab:
     - target: {fileID: 224485424631015472, guid: d5abb2c8184372e42a1b131771f41bbe,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 400.09244
+      value: 640.3846
       objectReference: {fileID: 0}
     - target: {fileID: 224485424631015472, guid: d5abb2c8184372e42a1b131771f41bbe,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5abb2c8184372e42a1b131771f41bbe, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &989084843 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1354003092505190, guid: d5abb2c8184372e42a1b131771f41bbe,
+    type: 2}
+  m_PrefabInternal: {fileID: 989084842}
 --- !u!1 &2143571736
 GameObject:
   m_ObjectHideFlags: 0
