@@ -64,3 +64,12 @@ MonoBehaviour:
     type: 2}
   PrismPrefab: {fileID: 1107157647083158, guid: 0aac08929fe26d641a8e06635178f0a4,
     type: 2}
+  MirrorInventoryItemPrefab: {fileID: 1261387423481122, guid: 161a9a6a4888b684ea6e26ff2aecdbf1,
+    type: 2}
+  FilterMirrorInventoryItemPrefab: {fileID: 1475637844830366, guid: e93dec52e4964804e817a58e1fbb41c1,
+    type: 2}
+  PrismInventoryItemPrefab: {fileID: 1717933067496232, guid: 2f9a529adc6790944808be2a10b4d032,
+    type: 2}
+  FilterInventoryItemPrefab: {fileID: 1567602138404320, guid: bb3099510466b1d438036760bbde9c07,
+    type: 2}
+  Inventory: {fileID: 0}
