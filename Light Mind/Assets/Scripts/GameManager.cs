@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject PrismInventoryItemPrefab;
     public GameObject FilterInventoryItemPrefab;
     public GameObject Inventory;
+    public GameObject WinScreen;
 
     private void Awake()
     {
@@ -189,6 +190,12 @@ public class GameManager : MonoBehaviour
 		if (objectives.All(objective => objective.Completed))
 		{
 			Debug.LogWarning("Congratulations! All Objectives have been completed!");
-		}
+            WinLevel();
+        }
+    }
+
+    public void WinLevel()
+    {
+        WinScreen.SetActive(true);
     }
 }
