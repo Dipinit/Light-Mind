@@ -172,6 +172,8 @@ public class GameManager : MonoBehaviour
                 
                 Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
                 objectInstance.transform.position = pos;
+                DragAndDrop dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
+                dragAndDrop.IsDraggable = false;
                 BoardManager.AddItemPosition(pos);
             }
         }
