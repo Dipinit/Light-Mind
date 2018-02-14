@@ -3,8 +3,13 @@ using UnityEngine;
 
 namespace Items
 {
+    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(ParticleSystem))]
     public class Prism : ItemBase
     {
+        private AudioSource[] _Prism_Sound;
+        private ParticleSystem _Prism_Particules;
+
         private Direction GetBlueRayDirection(Direction direction)
         {
             var blueRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
@@ -28,25 +33,31 @@ namespace Items
         
         public override void HandleReceivedRay(Ray ray)
         {
+            _Prism_Particules = GetComponent<ParticleSystem>();
             if (ray.Color.R)
             {
                 EmitNewRay(GetRedRayDirection(ray.Direction), new RayColor(true, false, false, 0.9f), ray);
+                _Prism_Particules.Play();
             }
             
             if (ray.Color.G)
             {
                 EmitNewRay(GetGreenRayDirection(ray.Direction), new RayColor(false, true, false, 0.9f), ray);
+                _Prism_Particules.Play();
             }
             
             if (ray.Color.B)
             {
                 EmitNewRay(GetBlueRayDirection(ray.Direction), new RayColor(false, false, true, 0.9f), ray);
+                _Prism_Particules.Play();
             }
         }
         
         // Launched when a ray hits the filter
         public override void HitEnter(Ray ray)
         {
+            _Prism_Sound = GetComponents<AudioSource>();
+            _Prism_Sound[1].Play();
             base.HitEnter(ray);
             HandleReceivedRay(ray);
         }
