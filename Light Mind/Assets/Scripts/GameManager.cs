@@ -36,8 +36,10 @@ public class GameManager : MonoBehaviour
         else if (Instance != this)
             Destroy(gameObject);
 
-        //Sets this to not be destroyed when reloading scene
-        DontDestroyOnLoad(gameObject);
+        // Sets this to not be destroyed when reloading scene
+        // Use this if you wanna keep track of game score between levels for example.
+        // Be careful, you need to manage item instanciation carefully if this is enabled!
+        // DontDestroyOnLoad(gameObject);
 
         // Create items container
         if (null == ItemsContainer)
