@@ -11,6 +11,8 @@ namespace Items
         public bool Blue = true;
         public bool Completed;
 
+		private GameManager _gameManager;
+
         // The current objective color
         private RayColor _color;
 

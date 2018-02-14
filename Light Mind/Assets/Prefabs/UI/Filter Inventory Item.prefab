@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemImage: {fileID: 21300000, guid: 32f164c147019aa47a458be1e255592d, type: 3}
   Animator: {fileID: 0}
-  ItemPrefab: {fileID: 1203345178083834, guid: a1c9b6eb04aa0f04d827c6989ff813a2, type: 2}
+  ItemPrefab: {fileID: 1678548892978424, guid: 88802630eabde4d399929bb13928d940, type: 2}
   ItemQuantity: 5
 --- !u!114 &114785020278726584
 MonoBehaviour:

@@ -108,17 +108,8 @@ namespace Behaviors
             // Reset all cells color
             _board.ResetCells();
             _closestCell = null;
-            
-            CheckWinCondition();
-        }
 
-        private void CheckWinCondition()
-        {
-            if (GameManager.Instance.IsLevelCompleted())
-            {
-                Debug.Log("Congratulations! All Objectives have been completed!");
-                //TODO: Load level completed menu here / show score / ...
-            }
+			GameManager.Instance.CheckWinCondition ();
         }
     }
 }

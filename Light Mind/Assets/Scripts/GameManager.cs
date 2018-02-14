@@ -27,8 +27,6 @@ public class GameManager : MonoBehaviour
     public GameObject FilterInventoryItemPrefab;
     public GameObject Inventory;
 
-    private Objective[] _objectives;
-
     private void Awake()
     {
         if (Instance == null)
@@ -172,15 +170,18 @@ public class GameManager : MonoBehaviour
     }
 
     // Find the parent GameObject of all Quad Objects and get all objectives references
-    private void GetAllObjectives()
+	private Objective[] GetAllObjectives()
     {
-        _objectives = GameObject.FindGameObjectWithTag("objective")
-            .GetComponentsInChildren<Objective>();
+		return GameObject.FindObjectsOfType<Objective> ();
     }
 
     // Checks for a win condition (all objectives completed)
-    public bool IsLevelCompleted()
+    public void CheckWinCondition()
     {
-        return _objectives.All(objective => objective.Completed);
+		Objective[] objectives = GetAllObjectives ();
+		if (objectives.All(objective => objective.Completed))
+		{
+			Debug.Log("Congratulations! All Objectives have been completed!");
+		}
     }
 }
