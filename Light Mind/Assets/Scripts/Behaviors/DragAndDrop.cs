@@ -10,6 +10,7 @@ namespace Behaviors
         private BoardManager _board;
         private Vector3 _screenPoint;
         private Vector4 _lastPosition;
+        private RaySensitive _raySensitive;
 
         // Closest tile from this object
         private GameObject _closestCell;
@@ -20,11 +21,14 @@ namespace Behaviors
         {
             _board = FindObjectOfType<BoardManager>();
             _audioSources = gameObject.GetComponents<AudioSource>();
+            _raySensitive = gameObject.GetComponent<RaySensitive>();
         }
 
         private void OnMouseDown()
         {
             UpdateDraggedPosition();
+            if (_raySensitive != null)
+                _raySensitive.Disable();
         }
 
         private void OnMouseDrag()
@@ -108,6 +112,9 @@ namespace Behaviors
             // Reset all cells color
             _board.ResetCells();
             _closestCell = null;
+            
+            if (_raySensitive != null)
+                _raySensitive.Enable();
 
 			GameManager.Instance.CheckWinCondition ();
         }

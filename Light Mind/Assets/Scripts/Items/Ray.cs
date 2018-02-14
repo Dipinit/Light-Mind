@@ -58,55 +58,79 @@ namespace Items
 			return _idIcr;
 		}
 
+		public void Disable()
+		{
+			Enabled = false;
+			LineRenderer.enabled = false;
+		}
+
+		public void Enable()
+		{
+			Enabled = true;
+			LineRenderer.enabled = true;
+		}
+
 		// Draw a line in a direction
 		public void Emit()
 		{
-			//Debug.Log(string.Format("Ray receiver: {0}", RayReceiver));
-			// Update the line renderer color
-			SetGradientColor();
-
-			// Set line initial position
-			LineRenderer.SetPosition(0, LineRenderer.transform.position);
-
-			// Set the line renderer position count to two positions (only one segment)
-			LineRenderer.positionCount = 2;
-
-			// Check if the ray hits an object in the input direction
-			RaycastHit hit;
-			if (Physics.Raycast(LineRenderer.transform.position, DirectionUtility.GetDirectionAsVector3(Direction),
-				out hit))
+			if (Enabled)
 			{
-				// If the ray hits an object with a collider
-				if (hit.collider)
+
+				if (LineRenderer.enabled != true)
+					LineRenderer.enabled = true;
+
+				//Debug.Log(string.Format("Ray receiver: {0}", RayReceiver));
+				// Update the line renderer color
+				SetGradientColor();
+
+				// Set line initial position
+				LineRenderer.SetPosition(0, LineRenderer.transform.position);
+
+				// Set the line renderer position count to two positions (only one segment)
+				LineRenderer.positionCount = 2;
+
+				// Check if the ray hits an object in the input direction
+				RaycastHit hit;
+				if (Physics.Raycast(LineRenderer.transform.position, DirectionUtility.GetDirectionAsVector3(Direction),
+					out hit))
 				{
-					// Set the end position to the object that was hit position
-					LineRenderer.SetPosition(1,
-						hit.point + 0.5F * DirectionUtility.GetDirectionAsVector3(Direction));
+					// If the ray hits an object with a collider
+					if (hit.collider)
+					{
+						// Set the end position to the object that was hit position
+						LineRenderer.SetPosition(1,
+							hit.point + 0.5F * DirectionUtility.GetDirectionAsVector3(Direction));
 
-					// Check if the object that was hit is a HitObject
-					var obj = hit.transform.gameObject;
-					var rayReceiver = obj.GetComponent<RaySensitive>();
-					if (rayReceiver == null || rayReceiver == RayReceiver) return;
-				
-					DeleteRayReceiver();
-				
-					// Store the new HitObject
-					RayReceiver = rayReceiver;
-					RayReceiver.HitEnter(this);
+						// Check if the object that was hit is a HitObject
+						var obj = hit.transform.gameObject;
+						var rayReceiver = obj.GetComponent<RaySensitive>();
+						if (rayReceiver == null || rayReceiver == RayReceiver) return;
 
+						DeleteRayReceiver();
+
+						// Store the new HitObject
+						RayReceiver = rayReceiver;
+						RayReceiver.HitEnter(this);
+
+					}
+					// If the ray hits an object with not collider and object and a current HitObject is set
+					else
+					{
+						DeleteRayReceiver();
+					}
 				}
-				// If the ray hits an object with not collider and object and a current HitObject is set
+				// If the ray hits nothing
 				else
 				{
+					// Draw a line in the input direction to the infinite
+					LineRenderer.SetPosition(1, DirectionUtility.GetDirectionAsVector3(Direction) * 5000);
 					DeleteRayReceiver();
 				}
 			}
-			// If the ray hits nothing
 			else
 			{
-				// Draw a line in the input direction to the infinite
-				LineRenderer.SetPosition(1, DirectionUtility.GetDirectionAsVector3(Direction) * 5000);
-				DeleteRayReceiver();
+				if (LineRenderer.enabled != false)
+					LineRenderer.enabled = false;
 			}
 		}
 

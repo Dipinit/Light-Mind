@@ -72,7 +72,7 @@ namespace Items
             {
                 if (!Completed)
                 {
-                    Debug.Log(string.Format("Objective {0} is completed", transform.gameObject.GetInstanceID()));
+                    Debug.LogWarning(string.Format("Objective {0} is completed", transform.gameObject.GetInstanceID()));
                     Completed = true;
                 }
 
@@ -81,7 +81,7 @@ namespace Items
             {
                 if (Completed)
                 {
-                    Debug.Log(string.Format("Objective {0} is not completed anymore",
+                    Debug.LogWarning(string.Format("Objective {0} is not completed anymore",
                         transform.gameObject.GetInstanceID()));
                     Completed = false;
                 }

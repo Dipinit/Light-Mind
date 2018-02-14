@@ -9,12 +9,14 @@ namespace Behaviors
     {
         public List<Ray> ReceveidRays;
         public List<Ray> EmittedRays;
+        private MeshCollider _meshCollider;
         
         
         public virtual void Start()
         {
             ReceveidRays = new List<Ray>();
             EmittedRays = new List<Ray>();
+            _meshCollider = GetComponent<MeshCollider>();
         }
         
         public virtual void Update ()
@@ -23,8 +25,24 @@ namespace Behaviors
             {
                 if (EmittedRays[i].Enabled
                     && (EmittedRays[i].Color.R || EmittedRays[i].Color.B || EmittedRays[i].Color.G))
+                {
                     EmittedRays[i].Emit();
+                }
             }
+        }
+
+        public void Disable()
+        {
+            DestroyEmittedRays();
+            if (_meshCollider != null)
+                _meshCollider.convex = false;
+        }
+
+        public void Enable()
+        {
+            if (_meshCollider != null)
+                _meshCollider.convex = true;
+            Start();
         }
         
         // Launched when a ray hits the object
@@ -41,7 +59,7 @@ namespace Behaviors
             this.ReceveidRays.Add(ray);
             
             // Log a new Hit evenement
-            Debug.Log(string.Format("{0} {1} hit {2} {3} with color {4} and direction {5}",
+            Debug.LogWarning(string.Format("{0} {1} hit {2} {3} with color {4} and direction {5}",
                 ray.RayEmitter.transform.parent.gameObject,
                 ray.RayEmitter.transform.parent.gameObject.GetInstanceID(),
                 transform.parent.gameObject,
@@ -70,7 +88,7 @@ namespace Behaviors
                 {
                     ReceveidRays.RemoveAt(i);
 
-                    Debug.Log(string.Format("{0} {1} stopped hitting {2} {3} with color {4} and direction {5}",
+                    Debug.LogWarning(string.Format("{0} {1} stopped hitting {2} {3} with color {4} and direction {5}",
                         ray.RayEmitter.transform.parent.gameObject,
                         ray.RayEmitter.transform.parent.gameObject.GetInstanceID(),
                         transform.parent.gameObject,
@@ -85,7 +103,7 @@ namespace Behaviors
         
         public Ray EmitNewRay(Direction direction, RayColor rayColor, Ray parent)
         {
-            Debug.Log(string.Format("Emitting new ray from {0} with color {1} and direction {2}",
+            Debug.LogWarning(string.Format("Emitting new ray from {0} with color {1} and direction {2}",
                 transform.parent.gameObject,
                 rayColor,
                 direction

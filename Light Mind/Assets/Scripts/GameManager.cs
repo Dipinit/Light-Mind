@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour
 		Objective[] objectives = GetAllObjectives ();
 		if (objectives.All(objective => objective.Completed))
 		{
-			Debug.Log("Congratulations! All Objectives have been completed!");
+			Debug.LogWarning("Congratulations! All Objectives have been completed!");
 		}
     }
 }
