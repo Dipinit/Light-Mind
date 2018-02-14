@@ -188,6 +188,7 @@ public class GameManager : MonoBehaviour
     // Checks for a win condition (all objectives completed)
     public void CheckWinCondition()
     {
+        Debug.Log("Checking Win conditions...");
 		Objective[] objectives = GetAllObjectives ();
 		if (objectives.All(objective => objective.Completed))
 		{

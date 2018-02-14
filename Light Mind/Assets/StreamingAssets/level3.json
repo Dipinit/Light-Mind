@@ -1,0 +1,32 @@
+{
+  "Name": "Level 3",
+  "Number": 3,
+  "Inventory":
+    {
+      "Mirrors": 99,
+      "MirrorFilters": 99,
+      "Prisms": 99,
+      "Filters": 99
+    },
+  "Entities":
+    [
+      {"Type": "Objective", "X": 4, "Y": 0, "Red": true, "Green": false, "Blue": true, "Draggable": false},
+      {
+        "Type": "Light Source",
+        "X": 1,
+        "Y": 2,
+        "Draggable": false,
+        "Rays":
+          [
+            {"Direction": 0, "Enabled": true, "Red": true, "Green": false, "Blue": true},
+            {"Direction": 45, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+            {"Direction": 90, "Enabled": false, "Red": false, "Green": true, "Blue": true},
+            {"Direction": 135, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+            {"Direction": 180, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+            {"Direction": 225, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+            {"Direction": 270, "Enabled": false, "Red": true, "Green": false, "Blue": false},
+            {"Direction": 315, "Enabled": false, "Red": false, "Green": false, "Blue": false}
+          ]
+      }
+    ]
+}

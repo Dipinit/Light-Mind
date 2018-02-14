@@ -77,6 +77,7 @@ MonoBehaviour:
   FilterInventoryItemPrefab: {fileID: 1475637844830366, guid: e93dec52e4964804e817a58e1fbb41c1,
     type: 2}
   Inventory: {fileID: 0}
+  WinScreen: {fileID: 0}
 --- !u!114 &114926697728628188
 MonoBehaviour:
   m_ObjectHideFlags: 1
