@@ -1,10 +1,10 @@
-﻿using Assets.Scripts.Map;
+﻿using Behaviors;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-namespace Assets.Scripts.UI
+namespace UI
 {
     public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
         IDragHandler, IEndDragHandler
@@ -13,7 +13,6 @@ namespace Assets.Scripts.UI
         private Text _text;
 
         private GameObject _instanciatedItem;
-        private GameManager _gameManager;
 
         public Sprite ItemImage;
         public Animator Animator;
@@ -27,7 +26,6 @@ namespace Assets.Scripts.UI
         {
             _image = transform.Find("Image").gameObject.GetComponent<Image>();
             _text = transform.Find("Text").gameObject.GetComponent<Text>();
-            _gameManager = FindObjectOfType<GameManager>();
 
             _image.sprite = ItemImage;
         }
@@ -56,15 +54,15 @@ namespace Assets.Scripts.UI
         {
             if (ItemQuantity <= 0) return;
             ItemQuantity--;
-            _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity, _gameManager.transform);
+            _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity, GameManager.Instance.ItemsContainer.transform);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
             if (_instanciatedItem == null) return;
-            var pointerWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            pointerWorldPosition.z = 0;
-            _instanciatedItem.transform.position = pointerWorldPosition;
+            
+            _instanciatedItem.GetComponent<DragAndDrop>().UpdateDraggedPosition();
+            _instanciatedItem.GetComponent<DragAndDrop>().HighlightNearestCell();
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -84,10 +82,7 @@ namespace Assets.Scripts.UI
             }
             else
             {
-                DragAndDrop dragAndDrop = _instanciatedItem.GetComponentInChildren<DragAndDrop>();
-                //Vector3 pos = new Vector3(entity.X, entity.Y, 0);
-                _instanciatedItem.transform.position = dragAndDrop.SnapToGrid(_instanciatedItem.transform.position);
-                //_instanciatedItem.transform.Find("Quad").GetComponent<DragAndDrop>().OnMouseUp();
+                _instanciatedItem.GetComponent<DragAndDrop>().DropItem();
             }
 
             _instanciatedItem = null;
