@@ -15,6 +15,11 @@ namespace Menu
             SceneManager.LoadScene("Scenes/MenuScene");
         }
 
+        public void LevelEditor()
+        {
+            SceneManager.LoadScene("Scenes/JulesEditor");
+        }
+
         public void QuitGame()
         {
             Application.Quit();
