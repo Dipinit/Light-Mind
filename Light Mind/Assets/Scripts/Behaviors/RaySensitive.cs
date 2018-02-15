@@ -13,12 +13,12 @@ namespace Behaviors
         
         public AudioSource[] AudioSources;
         public ParticleSystem ParticleSystem;
+        public bool ColliderEnabled = false;
         
         
         public virtual void Start()
         {
             _meshCollider = GetComponent<MeshCollider>();
-            if (_meshCollider) _meshCollider.convex = false;
             AudioSources = GetComponents<AudioSource>();
             ParticleSystem = GetComponent<ParticleSystem>();
             ReceveidRays = new List<Ray>();
@@ -31,6 +31,8 @@ namespace Behaviors
         
         public virtual void Update ()
         {
+            if (_meshCollider) _meshCollider.convex = ColliderEnabled;
+            
             for (int i = 0; i < EmittedRays.Count; i++)
             {
                 if (EmittedRays[i].Enabled
@@ -44,13 +46,13 @@ namespace Behaviors
         public void Disable()
         {
             DestroyEmittedRays();
-            if (_meshCollider) _meshCollider.convex = false;
+            ColliderEnabled = false;
 
         }
 
         public void Enable()
         {
-            if (_meshCollider) _meshCollider.convex = true;
+            ColliderEnabled = true;
             ResetRays();
         }
         

@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         string currentLevel = PlayerPrefs.GetString("currentLevel");
         if (!String.IsNullOrEmpty(currentLevel))
         {
-            LoadLevel(PlayerPrefs.GetString("currentLevel"));
+            LoadLevel(currentLevel);
         }
     }
     
@@ -190,6 +190,7 @@ public class GameManager : MonoBehaviour
             DragAndDrop dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
             dragAndDrop.IsDraggable = jsonEntity["Draggable"].b;
             RaySensitive raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
+            if (raySensitive) raySensitive.ColliderEnabled = true;
             BoardManager.AddItemPosition(pos);
         }
     }

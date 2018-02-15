@@ -12,8 +12,8 @@
     [
       {"Type": "Mirror", "X": 2, "Y": 3, "Orientation": 90, "Draggable": false},
       {"Type": "Filter", "X": 2, "Y": 2, "Red": true, "Green": false, "Blue": true, "Draggable": false},
-      {"Type": "Objective", "X": 4, "Y": 2, "Red": true, "Green": true, "Blue": false, "Draggable": false},
-      {"Type": "Objective", "X": 4, "Y": 2, "Red": true, "Green": true, "Blue": true, "Draggable": false},
+      {"Type": "Objective", "X": 4, "Y": 0, "Red": true, "Green": true, "Blue": false, "Draggable": false},
+      {"Type": "Objective", "X": 5, "Y": 3, "Red": true, "Green": true, "Blue": true, "Draggable": false},
       {"Type": "Prism", "X": 1, "Y": 3, "Red": true, "Green": true, "Blue": false, "Draggable": false},
       {"Type": "Filter Mirror", "X": 3, "Y": 1, "Red": false, "Green": false, "Blue": true, "Orientation": 135, "Draggable": false},
       {
