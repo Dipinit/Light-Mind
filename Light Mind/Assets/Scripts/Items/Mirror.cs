@@ -1,19 +1,30 @@
 ﻿using Assets.Scripts.Utilities;
+using UnityEngine;
 
 namespace Items
 {
+    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(ParticleSystem))]
     public class Mirror : ItemBase
     {
+        private AudioSource[] _Mirror_Rebound;
+        private ParticleSystem _Mirror_Particules;
+
         protected override void OnOrientationChange()
         {
+            _Mirror_Particules.Stop();
             UpdateEmittedRays();
         }
         
         public override void HandleReceivedRay(Ray ray)
         {
+            _Mirror_Rebound = GetComponents<AudioSource>();
+            _Mirror_Particules = GetComponent<ParticleSystem>();
             Direction reflectionDirection = GetReflectionDirection(ray);
             if (reflectionDirection != Direction.None)
             {
+                _Mirror_Rebound[1].Play();
+                _Mirror_Particules.Play();
                 EmitNewRay(reflectionDirection, ray.Color, ray);
             }
         }
