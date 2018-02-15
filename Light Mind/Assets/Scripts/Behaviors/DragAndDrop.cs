@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 
 namespace Behaviors
 {
@@ -111,6 +112,13 @@ namespace Behaviors
 
                 // TODO: Replace item in inventory
                 Destroy(gameObject);
+                RaySensitive raySensitive = gameObject.GetComponent<RaySensitive>();
+                if (raySensitive)
+                {
+                    string itemType = raySensitive.getItemType();
+                    Debug.LogWarning(itemType);
+                }
+                
 
                 GameObject.Find("Inventory").GetComponent<AudioSource>().Play();
             }

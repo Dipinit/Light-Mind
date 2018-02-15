@@ -55,6 +55,11 @@ namespace Behaviors
             ColliderEnabled = true;
             ResetRays();
         }
+
+        public string getItemType()
+        {
+            return this.GetType().Name;
+        }
         
         // Launched when a ray hits the object
         public virtual void HitEnter(Ray ray)
