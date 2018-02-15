@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 223832970841057922}
   - component: {fileID: 114829880065844978}
   - component: {fileID: 114255211661430014}
+  - component: {fileID: 95654843443188402}
   m_Layer: 5
   m_Name: WinMenu
   m_TagString: Untagged
@@ -91,7 +92,6 @@ GameObject:
   - component: {fileID: 222492686212453712}
   - component: {fileID: 114989024507998052}
   - component: {fileID: 114504539808637536}
-  - component: {fileID: 114858612621276878}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 224049199859897686}
   - component: {fileID: 222594634519822054}
   - component: {fileID: 114539276227946704}
+  - component: {fileID: 114442180274193270}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -116,6 +117,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &95654843443188402
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1359552651528418}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a36daf8685cac12418cb8de57f7173c2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114255211661430014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,6 +150,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114442180274193270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1854659427130932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72abb86af7c464af4b8d6ada371a22ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114504539808637536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -171,8 +200,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: PlayGame
+      - m_Target: {fileID: 114442180274193270}
+        m_MethodName: ReturnToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -458,17 +487,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114858612621276878
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1783364813426194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a239bd43859ccd40aa44e5bcab96ff6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114967096060709760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -669,9 +687,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 224914458606601508}
   - {fileID: 224859008051548446}
   - {fileID: 224626511406004482}
-  - {fileID: 224914458606601508}
   m_Father: {fileID: 224549642562563058}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -728,7 +746,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224049199859897686}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -746,11 +764,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224049199859897686}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -50}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 270}
   m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224914458606601508
@@ -765,7 +783,7 @@ RectTransform:
   m_Children:
   - {fileID: 224283331887450966}
   m_Father: {fileID: 224049199859897686}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
