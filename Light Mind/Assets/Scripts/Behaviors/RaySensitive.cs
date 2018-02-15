@@ -9,13 +9,18 @@ namespace Behaviors
     {
         public List<Ray> ReceveidRays;
         public List<Ray> EmittedRays;
-        public MeshCollider MeshCollider;
+        protected MeshCollider _meshCollider;
+        
+        public AudioSource[] AudioSources;
+        public ParticleSystem ParticleSystem;
+        public bool ColliderEnabled = false;
         
         
         public virtual void Start()
         {
-            MeshCollider = GetComponent<MeshCollider>();
-            MeshCollider.convex = false;
+            _meshCollider = GetComponent<MeshCollider>();
+            AudioSources = GetComponents<AudioSource>();
+            ParticleSystem = GetComponent<ParticleSystem>();
             ReceveidRays = new List<Ray>();
             EmittedRays = new List<Ray>();
         }
@@ -26,6 +31,8 @@ namespace Behaviors
         
         public virtual void Update ()
         {
+            if (_meshCollider) _meshCollider.convex = ColliderEnabled;
+            
             for (int i = 0; i < EmittedRays.Count; i++)
             {
                 if (EmittedRays[i].Enabled
@@ -39,15 +46,19 @@ namespace Behaviors
         public void Disable()
         {
             DestroyEmittedRays();
-            if (MeshCollider != null)
-                MeshCollider.convex = false;
+            ColliderEnabled = false;
+
         }
 
         public void Enable()
         {
-            if (MeshCollider != null)
-                MeshCollider.convex = true;
+            ColliderEnabled = true;
             ResetRays();
+        }
+
+        public string getItemType()
+        {
+            return this.GetType().Name;
         }
         
         // Launched when a ray hits the object
@@ -104,7 +115,26 @@ namespace Behaviors
                     break;
                 }
             }
+            
+            if (EmittedRays.Count == 0) StopReboundFeedback();
         }
+
+        private void StartReboundFeedback()
+        {
+            if (AudioSources != null && AudioSources.Length >= 2 && !AudioSources[1].isPlaying)
+                AudioSources[1].Play();
+            
+            if (ParticleSystem != null && !ParticleSystem.isPlaying) 
+                ParticleSystem.Play();
+        }
+        
+        private void StopReboundFeedback()
+        {
+           
+            if (ParticleSystem != null && ParticleSystem.isPlaying) 
+                ParticleSystem.Stop();
+        }
+        
         
         public Ray EmitNewRay(Direction direction, RayColor rayColor, Ray parent)
         {
@@ -115,6 +145,7 @@ namespace Behaviors
             ));
             Ray ray = new Ray(this, rayColor, direction, parent);
             EmittedRays.Add(ray);
+            StartReboundFeedback();
             return ray;
         }
 
@@ -139,6 +170,11 @@ namespace Behaviors
             {
                 HandleReceivedRay(ray);
             }
+        }
+
+        public MeshCollider MeshCollider
+        {
+            get { return _meshCollider; }
         }
     }
 }

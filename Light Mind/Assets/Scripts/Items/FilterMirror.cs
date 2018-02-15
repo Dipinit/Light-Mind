@@ -8,9 +8,6 @@ namespace Items
     public class FilterMirror : ItemBase
     {
         // Global 
-        private AudioSource[] _Mirror_Rebound;
-        private ParticleSystem _Mirror_Particules;
-
         private RayColor _color;
 
         private MeshRenderer _meshRenderer;
@@ -31,6 +28,7 @@ namespace Items
         public override void Update()
         {
             base.Update();
+
             // Update the RayColor if a color filter setting was changed
             if (_color.R != Red || _color.G != Green || _color.B != Blue)
             {
@@ -40,7 +38,6 @@ namespace Items
         
         protected override void OnOrientationChange()
         {
-            _Mirror_Particules.Stop();
             UpdateEmittedRays();
         }
         
@@ -202,13 +199,11 @@ namespace Items
 
         public override void HandleReceivedRay(Ray ray)
         {
-            _Mirror_Rebound = GetComponents<AudioSource>();
-            _Mirror_Particules = GetComponent<ParticleSystem>();
             RayColor filteredColor = GetFilteredColor(ray.Color);
 
             if (filteredColor.R || filteredColor.G || filteredColor.B)
             {
-                EmitNewRay(ray.Direction, filteredColor, ray);  
+                EmitNewRay(ray.Direction, filteredColor, ray);
             }
             
             Direction reflectionDirection = GetReflectionDirection(ray);
@@ -216,8 +211,6 @@ namespace Items
             if (reflectionDirection != Direction.None
                 && (reflectedColor.R || reflectedColor.G || reflectedColor.B))
             {
-                _Mirror_Rebound[1].Play();
-                _Mirror_Particules.Play();
                 EmitNewRay(reflectionDirection, reflectedColor, ray);
             }
         }

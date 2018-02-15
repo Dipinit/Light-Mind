@@ -38,15 +38,15 @@ namespace UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             // TODO: Highlighter l'Inventory Item au survol du pointeur
-            
-            throw new System.NotImplementedException();
+           
+            // throw new System.NotImplementedException();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             // TODO: Ne plus highlighter l'Inventory Item à la sortie du pointeur
             
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -55,7 +55,7 @@ namespace UI
             ItemQuantity--;
             _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity, GameManager.Instance.ItemsContainer.transform);
             RaySensitive raySensitive = _instanciatedItem.GetComponent<RaySensitive>();
-            if (raySensitive) raySensitive.MeshCollider.convex = false;
+            if (raySensitive && raySensitive.MeshCollider) raySensitive.MeshCollider.convex = false;
 
         }
 
@@ -78,7 +78,6 @@ namespace UI
                 Debug.Log("Item not dragged out of panel, aborting.");
 
                 // TODO: Mettre une animation de retour vers la position de départ de l'objet
-
                 ItemQuantity++;
                 Destroy(_instanciatedItem);
             }
