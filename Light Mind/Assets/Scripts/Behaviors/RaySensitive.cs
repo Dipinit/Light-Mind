@@ -9,13 +9,18 @@ namespace Behaviors
     {
         public List<Ray> ReceveidRays;
         public List<Ray> EmittedRays;
-        public MeshCollider MeshCollider;
+        protected MeshCollider _meshCollider;
+        
+        public AudioSource[] AudioSources;
+        public ParticleSystem ParticleSystem;
         
         
         public virtual void Start()
         {
-            MeshCollider = GetComponent<MeshCollider>();
-            MeshCollider.convex = false;
+            _meshCollider = GetComponent<MeshCollider>();
+            if (_meshCollider) _meshCollider.convex = false;
+            AudioSources = GetComponents<AudioSource>();
+            ParticleSystem = GetComponent<ParticleSystem>();
             ReceveidRays = new List<Ray>();
             EmittedRays = new List<Ray>();
         }
@@ -39,14 +44,13 @@ namespace Behaviors
         public void Disable()
         {
             DestroyEmittedRays();
-            if (MeshCollider != null)
-                MeshCollider.convex = false;
+            if (_meshCollider) _meshCollider.convex = false;
+
         }
 
         public void Enable()
         {
-            if (MeshCollider != null)
-                MeshCollider.convex = true;
+            if (_meshCollider) _meshCollider.convex = true;
             ResetRays();
         }
         
@@ -104,7 +108,26 @@ namespace Behaviors
                     break;
                 }
             }
+            
+            if (EmittedRays.Count == 0) StopReboundFeedback();
         }
+
+        private void StartReboundFeedback()
+        {
+            if (AudioSources != null && AudioSources.Length >= 2 && !AudioSources[1].isPlaying)
+                AudioSources[1].Play();
+            
+            if (ParticleSystem != null && !ParticleSystem.isPlaying) 
+                ParticleSystem.Play();
+        }
+        
+        private void StopReboundFeedback()
+        {
+           
+            if (ParticleSystem != null && ParticleSystem.isPlaying) 
+                ParticleSystem.Stop();
+        }
+        
         
         public Ray EmitNewRay(Direction direction, RayColor rayColor, Ray parent)
         {
@@ -115,6 +138,7 @@ namespace Behaviors
             ));
             Ray ray = new Ray(this, rayColor, direction, parent);
             EmittedRays.Add(ray);
+            StartReboundFeedback();
             return ray;
         }
 
@@ -139,6 +163,11 @@ namespace Behaviors
             {
                 HandleReceivedRay(ray);
             }
+        }
+
+        public MeshCollider MeshCollider
+        {
+            get { return _meshCollider; }
         }
     }
 }

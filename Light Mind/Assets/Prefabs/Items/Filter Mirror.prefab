@@ -170,7 +170,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -274,6 +274,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90491493153a495f9ac1114a92658dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MeshCollider: {fileID: 0}
+  AudioSources: []
+  ParticleSystem: {fileID: 0}
   IsOrientable: 1
   Orientation: 0
   DoubleClickTime: 0.25

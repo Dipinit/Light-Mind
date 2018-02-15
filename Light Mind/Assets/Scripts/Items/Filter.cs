@@ -68,7 +68,7 @@ namespace Items
             RayColor filteredColor = FilterColor(ray.Color);
             if (filteredColor.R || filteredColor.G || filteredColor.B)
             {
-                EmitNewRay(ray.Direction, filteredColor, ray);  
+                EmitNewRay(ray.Direction, filteredColor, ray);
             }
         }
     }

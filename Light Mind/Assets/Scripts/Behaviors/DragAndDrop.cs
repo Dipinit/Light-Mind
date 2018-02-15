@@ -97,8 +97,8 @@ namespace Behaviors
 
             if (null == _closestCell) return;
 
-            Debug.Log(string.Format("Closest {0} is at position {1}", _closestCell.gameObject.name,
-                _closestCell.transform.position));
+            //Debug.Log(string.Format("Closest {0} is at position {1}", _closestCell.gameObject.name,
+            //    _closestCell.transform.position));
             _closestCell.GetComponent<SpriteRenderer>().color = _board.CellHighlightColor;
         }
 
