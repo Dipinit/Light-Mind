@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23353880552865250}
   - component: {fileID: 114518655319134920}
   - component: {fileID: 82735299992311704}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Abstract Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,4 +190,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29ebee4e36c64291a207ce787b9b1fb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsDraggable: 1
   SnapRange: 1.5
