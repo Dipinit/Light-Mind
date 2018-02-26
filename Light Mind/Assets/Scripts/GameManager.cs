@@ -223,16 +223,19 @@ public class GameManager : MonoBehaviour
 
     public void SelectItem(GameObject item)
     {
-        if (item.GetInstanceID() == _selectedItem.GetInstanceID()) return;
-
-        _selectedItem = item;
-
-        ItemBase ib = _selectedItem.GetComponent<ItemBase>();
-
-        if (ib != null)
+        Debug.Log(item);
+        if (_selectedItem == null || (item.GetInstanceID() != _selectedItem.GetInstanceID()))
         {
-            if (ib.IsColorable) ShowColorPanel();
-            else HideColorPanel();
+            _selectedItem = item;
+            Debug.Log("Selected item");
+
+            ItemBase ib = _selectedItem.GetComponent<ItemBase>();
+
+            if (ib != null)
+            {
+                if (ib.IsColorable) ShowColorPanel();
+                else HideColorPanel();
+            }
         }
     }
 
