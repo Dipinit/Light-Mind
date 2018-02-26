@@ -1,0 +1,38 @@
+{
+  "Name": "Level 4",
+  "Number": 4,
+  "Inventory":
+    {
+      "Mirrors": 4,
+      "MirrorFilters": 4,
+      "Prisms": 4,
+      "Filters": 4
+    },
+    "Entities":
+      [
+        {"Type": "Objective", "X": 3, "Y": 5, "Red": true, "Green": false, "Blue": true, "Draggable": false},
+        {"Type": "Objective", "X": 7, "Y": 3, "Red": false, "Green": true, "Blue": true, "Draggable": false},
+        {"Type": "Obstacle", "X": 2, "Y": 5, "Draggable": false},
+        {"Type": "Obstacle", "X": 3, "Y": 4, "Draggable": false},
+        {"Type": "Obstacle", "X": 5, "Y": 2, "Draggable": false},
+        {"Type": "Obstacle", "X": 6, "Y": 4, "Draggable": false},
+        {"Type": "Obstacle", "X": 7, "Y": 2, "Draggable": false},
+        {
+          "Type": "Light Source",
+          "X": 1,
+          "Y": 2,
+          "Draggable": false,
+          "Rays":
+            [
+              {"Direction": 0, "Enabled": true, "Red": true, "Green": false, "Blue": true},
+              {"Direction": 45, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+              {"Direction": 90, "Enabled": true, "Red": false, "Green": true, "Blue": true},
+              {"Direction": 135, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+              {"Direction": 180, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+              {"Direction": 225, "Enabled": false, "Red": false, "Green": false, "Blue": false},
+              {"Direction": 270, "Enabled": false, "Red": true, "Green": false, "Blue": false},
+              {"Direction": 315, "Enabled": false, "Red": false, "Green": false, "Blue": false}
+            ]
+        }
+      ]
+}
