@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 using System.Linq;
 using Assets.Scripts.Utilities;
@@ -7,6 +6,7 @@ using Behaviors;
 using Items;
 using UI;
 using UnityEngine;
+using DragAndDrop = Behaviors.DragAndDrop;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     public GameObject FilterInventoryItemPrefab;
     public GameObject Inventory;
     public GameObject WinScreen;
+
+    private GameObject _selectedItem = null;
 
     private void Awake()
     {
@@ -218,6 +220,42 @@ public class GameManager : MonoBehaviour
             WinLevel();
         }
     }
+
+    public void SelectItem(GameObject item)
+    {
+        if (item.GetInstanceID() == _selectedItem.GetInstanceID()) return;
+
+        _selectedItem = item;
+
+        ItemBase ib = _selectedItem.GetComponent<ItemBase>();
+
+        if (ib != null)
+        {
+            if (ib.IsColorable) ShowColorPanel();
+            else HideColorPanel();
+        }
+    }
+
+    private void ShowColorPanel()
+    {
+        
+    }
+
+    private void HideColorPanel()
+    {
+        
+    }
+
+    private void SetSelectedItemColor(RayColor rayColor)
+    {
+        ItemBase ib = _selectedItem.GetComponent<ItemBase>();
+
+        if (ib != null)
+        {
+            ib.SetColor(rayColor);
+        }
+    }
+    
 
     public void WinLevel()
     {

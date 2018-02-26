@@ -46,12 +46,15 @@ namespace Items
         // Mouse up event
         private void OnMouseUpAsButton()
         {
+            GameManager.Instance.SelectItem(this.gameObject);
+
             // Detect double click
             if (Time.time - _lastClickTime < DoubleClickTime)
             {
                 // Rotate the object of 90° degrees
                 Rotate();
             }
+
 
             _lastClickTime = Time.time;
         }
