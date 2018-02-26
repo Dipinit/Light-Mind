@@ -162,6 +162,11 @@ Prefab:
       propertyPath: WinScreen
       value: 
       objectReference: {fileID: 799412718}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: ColorPicker
+      value: 
+      objectReference: {fileID: 959881502}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b, type: 2}
   m_IsPrefabParent: 0
@@ -251,9 +256,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &989084843 stripped
+--- !u!1 &959881502 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1354003092505190, guid: d5abb2c8184372e42a1b131771f41bbe,
+    type: 2}
+  m_PrefabInternal: {fileID: 1217944881}
+--- !u!1 &989084843 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1083797939088520, guid: d5abb2c8184372e42a1b131771f41bbe,
     type: 2}
   m_PrefabInternal: {fileID: 1217944881}
 --- !u!1001 &1217944881

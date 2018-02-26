@@ -52,10 +52,8 @@ namespace Items
         public override void HandleReceivedRay(Ray ray)
         {
             RayColor filteredColor = FilterColor(ray.Color);
-            if (filteredColor.R || filteredColor.G || filteredColor.B)
-            {
-                EmitNewRay(ray.Direction, filteredColor, ray);
-            }
+            var newColor = new RayColor(ray.Color.R ^ filteredColor.R, ray.Color.G ^ filteredColor.G, ray.Color.B ^ filteredColor.B, RayColor.DEFAULT_ALPHA);
+            EmitNewRay(ray.Direction, newColor, ray);
         }
     }
 }
