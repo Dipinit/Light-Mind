@@ -15,7 +15,8 @@ namespace Assets.Scripts.Utilities
         public static readonly RayColor CYAN = new RayColor(false, true, true, DEFAULT_ALPHA,"Cyan"); 
         public static readonly RayColor MAGENTA = new RayColor(true, false, true, DEFAULT_ALPHA,"Magenta"); 
         public static readonly RayColor NONE = new RayColor(false, false, false, DEFAULT_ALPHA, "None");
-        public static readonly RayColor[] COLORS = { WHITE, BLUE, GREEN, RED, YELLOW, CYAN, MAGENTA, NONE };
+        public static readonly RayColor[] COLORS = { WHITE, BLUE, GREEN, RED, YELLOW, CYAN, MAGENTA };
+        
         public bool R;
         public bool G;
         public bool B;
