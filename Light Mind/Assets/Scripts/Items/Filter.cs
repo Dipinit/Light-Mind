@@ -13,6 +13,7 @@ namespace Items
         {
             base.Start();
             IsColorable = true;
+            IsOrientable = false;
             _meshRenderer = GetComponent<MeshRenderer>();
         }
 

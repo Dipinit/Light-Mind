@@ -16,7 +16,8 @@ namespace Items
         public override void Start()
         {
             base.Start();
-            IsColorable = true;
+            IsColorable = false;
+            IsOrientable = false;
             _meshRenderer = GetComponent<MeshRenderer>();
         }
 

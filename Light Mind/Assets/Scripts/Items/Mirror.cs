@@ -12,6 +12,7 @@ namespace Items
         {
             base.Start();
             IsOrientable = true;
+            IsColorable = false;
         }
         
         protected override void OnOrientationChange()

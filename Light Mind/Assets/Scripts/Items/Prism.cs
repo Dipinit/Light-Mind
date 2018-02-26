@@ -7,6 +7,13 @@ namespace Items
     [RequireComponent(typeof(ParticleSystem))]
     public class Prism : ItemBase
     {
+        public override void Start()
+        {
+            base.Start();
+            IsOrientable = false;
+            IsColorable = false;
+        }
+        
         private Direction GetBlueRayDirection(Direction direction)
         {
             var blueRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
