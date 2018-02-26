@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
         this.Inventory.SetActive(true);
     }
 
-    private void SetSelectedItemColor(RayColor rayColor)
+    public void SetSelectedItemColor(RayColor rayColor)
     {
         ItemBase ib = _selectedItem.GetComponent<ItemBase>();
 

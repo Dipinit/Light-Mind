@@ -4,7 +4,6 @@ using UnityEngine;
 public class ColorPickerMenu : MonoBehaviour {
 
     public GameObject ColorPrefab;
-    public GameManager GameManager;
 
     // Use this for initialization
     void Start () {
@@ -14,5 +13,11 @@ public class ColorPickerMenu : MonoBehaviour {
             var _colorItem = currentColor.GetComponent<ColorItem>();
             _colorItem.SetColor(color);
         }
+    }
+
+
+    void OnMouseDown()
+    {
+        Debug.LogWarning(" ******************** Hello you ********************");
     }
 }
