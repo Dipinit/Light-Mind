@@ -1,11 +1,23 @@
 ﻿using System;
+using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 
 namespace Assets.Scripts.Utilities
 {
     [Serializable]
     public class RayColor
     {
+        public static readonly float DEFAULT_ALPHA = 0.9f;
+        public static readonly RayColor WHITE = new RayColor(true, true, true, DEFAULT_ALPHA); 
+        public static readonly RayColor BLUE = new RayColor(false, false, true, DEFAULT_ALPHA); 
+        public static readonly RayColor GREEN = new RayColor(false, true, false, DEFAULT_ALPHA); 
+        public static readonly RayColor RED = new RayColor(true, false, false, DEFAULT_ALPHA); 
+        public static readonly RayColor YELLOW = new RayColor(true, true, false, DEFAULT_ALPHA); 
+        public static readonly RayColor CYAN = new RayColor(false, true, true, DEFAULT_ALPHA); 
+        public static readonly RayColor MAGENTA = new RayColor(true, false, true, DEFAULT_ALPHA); 
+        public static readonly RayColor NONE = new RayColor(false, false, false, DEFAULT_ALPHA);
+        
         public bool R;
         public bool G;
         public bool B;

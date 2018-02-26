@@ -32,17 +32,17 @@ namespace Items
         {
             if (ray.Color.R)
             {
-                EmitNewRay(GetRedRayDirection(ray.Direction), new RayColor(true, false, false, 0.9f), ray);
+                EmitNewRay(GetRedRayDirection(ray.Direction), new RayColor(true, false, false, RayColor.DEFAULT_ALPHA), ray);
             }
             
             if (ray.Color.G)
             {
-                EmitNewRay(GetGreenRayDirection(ray.Direction), new RayColor(false, true, false, 0.9f), ray);
+                EmitNewRay(GetGreenRayDirection(ray.Direction), new RayColor(false, true, false, RayColor.DEFAULT_ALPHA), ray);
             }
             
             if (ray.Color.B)
             {
-                EmitNewRay(GetBlueRayDirection(ray.Direction), new RayColor(false, false, true, 0.9f), ray);
+                EmitNewRay(GetBlueRayDirection(ray.Direction), new RayColor(false, false, true, RayColor.DEFAULT_ALPHA), ray);
             }
         }
         

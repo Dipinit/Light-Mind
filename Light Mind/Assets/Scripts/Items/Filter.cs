@@ -7,42 +7,28 @@ namespace Items
     {
         // The Mesh Renderer of the GameObject. Used to change its color based on the filter colors.
         private MeshRenderer _meshRenderer;
-        
-        // The current filter color
-        private RayColor _color;
-
-        // Public filter color settings
-        public bool Red;
-        public bool Green;
-        public bool Blue;
 
         // Use this for initialization
         public override void Start()
         {
             base.Start();
+            IsColorable = true;
             _meshRenderer = GetComponent<MeshRenderer>();
-            UpdateColor();
         }
 
         // Update is called once per frame
         public override void Update()
         {   
             base.Update();
-            // Update the RayColor if a color filter setting was changed
-            if (_color.R != Red || _color.G != Green || _color.B != Blue)
-            {
-                UpdateColor();
-            }
         }
 
         // Update the current filter color
-        private void UpdateColor()
+        public override void SetColor(RayColor color)
         {
-            // Calculate the color based on filter color settings
-            _color = new RayColor(Red, Green, Blue, 0.9f);
+            base.SetColor(color);
             
             // Changed the color of the object
-            _meshRenderer.material.color = _color.GetColor();
+            _meshRenderer.material.color = color.GetColor();
 
             UpdateEmittedRays();
         }
@@ -51,7 +37,7 @@ namespace Items
         private RayColor FilterColor(RayColor color)
         {
             // Calculate the filtered color
-            var filteredColor = new RayColor(Red && color.R, Green && color.G, Blue && color.B, 0.9f);
+            var filteredColor = new RayColor(Color.R && color.R, Color.G && color.G, Color.B && color.B, RayColor.DEFAULT_ALPHA);
 
             return filteredColor;
         }

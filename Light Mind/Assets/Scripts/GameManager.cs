@@ -130,9 +130,11 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Instanciating a filter...");
                     objectInstance = Instantiate(FilterPrefab, ItemsContainer.transform);
                     Filter filter = objectInstance.GetComponentInChildren<Filter>();
-                    filter.Red = jsonEntity["Red"].b;
-                    filter.Green = jsonEntity["Green"].b;
-                    filter.Blue = jsonEntity["Blue"].b;
+                    filter.Color = new RayColor(
+                        jsonEntity["Red"].b,
+                        jsonEntity["Green"].b,
+                        jsonEntity["Blue"].b,
+                        RayColor.DEFAULT_ALPHA);
                     break;
 
                 case "Objective":
@@ -140,9 +142,11 @@ public class GameManager : MonoBehaviour
                     objectInstance = Instantiate(ObjectivePrefab, ItemsContainer.transform);
                     objectInstance.tag = "objective";
                     Objective objective = objectInstance.GetComponentInChildren<Objective>();
-                    objective.Red = jsonEntity["Red"].b;
-                    objective.Green = jsonEntity["Green"].b;
-                    objective.Blue = jsonEntity["Blue"].b;
+                    objective.Color = new RayColor(
+                        jsonEntity["Red"].b,
+                        jsonEntity["Green"].b,
+                        jsonEntity["Blue"].b,
+                        RayColor.DEFAULT_ALPHA);
                     break;
 
                 case "Prism":
@@ -156,9 +160,11 @@ public class GameManager : MonoBehaviour
                     objectInstance = Instantiate(FilterMirrorPrefab, ItemsContainer.transform);
                     FilterMirror filterMirror = objectInstance.GetComponentInChildren<FilterMirror>();
                     filterMirror.Orientation = (Direction) jsonEntity["Orientation"].i;
-                    filterMirror.Red = jsonEntity["Red"].b;
-                    filterMirror.Green = jsonEntity["Green"].b;
-                    filterMirror.Blue = jsonEntity["Blue"].b;
+                    filterMirror.Color = new RayColor(
+                        jsonEntity["Red"].b,
+                        jsonEntity["Green"].b,
+                        jsonEntity["Blue"].b,
+                        RayColor.DEFAULT_ALPHA);
                     break;
 
                 case "Light Source":
@@ -168,7 +174,7 @@ public class GameManager : MonoBehaviour
                     foreach (var jsonRay in jsonEntity["Rays"].list)
                     {
                         RayColor rayColor =
-                            new RayColor(jsonRay["Red"].b, jsonRay["Green"].b, jsonRay["Blue"].b, 0.9f);
+                            new RayColor(jsonRay["Red"].b, jsonRay["Green"].b, jsonRay["Blue"].b, RayColor.DEFAULT_ALPHA);
                         RaySource raySource =
                             new RaySource((Direction) jsonRay["Direction"].i, jsonRay["Enabled"].b, rayColor);
                         laser.AddSource(raySource);

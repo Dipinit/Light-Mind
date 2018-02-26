@@ -9,8 +9,12 @@ namespace Items
     public abstract class ItemBase : RaySensitive
     {
         // Item orientation settings
-        public bool IsOrientable = true;
+        public bool IsOrientable = false;
         public Direction Orientation = Direction.East;
+        
+        // Item color settings
+        public bool IsColorable = false;
+        public RayColor Color = RayColor.WHITE;
         
         // The double click setting. Used to change the direction when double clicked 
         public float DoubleClickTime = 0.25f;
@@ -18,9 +22,11 @@ namespace Items
         // Current item orientation
         private Direction _orientation = Direction.None;
         
+        // Current item color
+        private RayColor _color = RayColor.NONE;
+
         // Last time the laser was clicked. Used to change the direction when double clicked 
         private float _lastClickTime;
-
 
         // Use this for initialization
         public override void Start()
@@ -34,6 +40,7 @@ namespace Items
         {
             base.Update();
             UpdateOrientation();
+            UpdateColor();
         }
 
         // Mouse up event
@@ -84,6 +91,20 @@ namespace Items
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void UpdateColor()
+        {
+            // Update the RayColor if a color filter setting was changed
+            if (_color.R != Color.R || _color.G != Color.G || _color.B != Color.B)
+            {
+                SetColor(Color);
+            }
+        }
+
+        public virtual void SetColor(RayColor color)
+        {
+            _color = color;
         }
 
         // Update the actual object rotation
