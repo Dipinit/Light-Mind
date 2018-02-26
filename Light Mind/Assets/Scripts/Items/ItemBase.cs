@@ -107,7 +107,7 @@ namespace Items
 
         public virtual void SetColor(RayColor color)
         {
-            _color = color;
+            Color = color;
         }
 
         // Update the actual object rotation

@@ -224,11 +224,9 @@ public class GameManager : MonoBehaviour
 
     public void SelectItem(GameObject item)
     {
-        Debug.Log(item);
         if (_selectedItem == null || (item.GetInstanceID() != _selectedItem.GetInstanceID()))
         {
             _selectedItem = item;
-            Debug.Log("Selected item");
 
             ItemBase ib = _selectedItem.GetComponent<ItemBase>();
 
@@ -261,6 +259,8 @@ public class GameManager : MonoBehaviour
         {
             ib.SetColor(rayColor);
         }
+
+        _selectedItem = null;
     }
     
 
