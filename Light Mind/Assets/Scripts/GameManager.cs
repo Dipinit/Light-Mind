@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public GameObject PrismInventoryItemPrefab;
     public GameObject FilterInventoryItemPrefab;
     public GameObject Inventory;
+    public GameObject ColorPicker;
     public GameObject WinScreen;
 
     private GameObject _selectedItem = null;
@@ -241,12 +242,15 @@ public class GameManager : MonoBehaviour
 
     private void ShowColorPanel()
     {
-        
+        this.Inventory.SetActive(false);
+        this.ColorPicker.SetActive(true);
+
     }
 
-    private void HideColorPanel()
+    public void HideColorPanel()
     {
-        
+        this.ColorPicker.SetActive(false);
+        this.Inventory.SetActive(true);
     }
 
     private void SetSelectedItemColor(RayColor rayColor)
