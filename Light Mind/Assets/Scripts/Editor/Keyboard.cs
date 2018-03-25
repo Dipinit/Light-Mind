@@ -7,7 +7,7 @@ public class KeyboardInput : MonoBehaviour
 {
 
     TouchScreenKeyboard keyboard;
-    public Text levelName;
+    public string levelName;
 
     // Use this for initialization
     public void OpenKeyboard()
@@ -19,6 +19,13 @@ public class KeyboardInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (TouchScreenKeyboard.visible == false && keyboard != null)
+        {
+            if (keyboard.done)
+            {
+                levelName = keyboard.text;
+                keyboard = null;
+            }
+        }
     }
 }
