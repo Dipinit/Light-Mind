@@ -129,12 +129,14 @@ public class GameManager : MonoBehaviour
         }
 
 		// ADD TOWERS
+		/*
 		if (dataAsJson["Inventory"]["Towers"].i > 0)
 		{
 			GameObject itemGameObject = Instantiate(TowerInventoryPrefab, Inventory.transform);
 			InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
 			inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Towers"].i;
 		}
+		*/
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
         {
