@@ -37,6 +37,13 @@ public class GameManager : MonoBehaviour
 	public Boolean isTD = false;
 	public int lives = 10;
 
+	public GameObject EnemyPrefab;
+	public GameObject TowerPrefab;
+	public GameObject PathPrefab;
+	public GameObject TowerInventoryPrefab;
+	public GameObject SpawnerPrefab;
+	public GameObject EnderPrefab;
+
     private void Awake()
     {
         if (Instance == null)
@@ -114,7 +121,7 @@ public class GameManager : MonoBehaviour
             inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Prisms"].i;
         }
 
-        if (dataAsJson["Inventory"]["Filters"].i > 0)
+		if (dataAsJson["Inventory"]["Filters"].i > 0)
         {
             GameObject itemGameObject = Instantiate(FilterInventoryItemPrefab, Inventory.transform);
             InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
@@ -122,6 +129,12 @@ public class GameManager : MonoBehaviour
         }
 
 		// ADD TOWERS
+		if (dataAsJson["Inventory"]["Towers"].i > 0)
+		{
+			GameObject itemGameObject = Instantiate(TowerInventoryPrefab, Inventory.transform);
+			InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+			inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Towers"].i;
+		}
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
         {
@@ -194,9 +207,25 @@ public class GameManager : MonoBehaviour
                     objectInstance = Instantiate(ObstaclePrefab, ItemsContainer.transform);
                     break;
 				// ADD TOWER
-				// ADD SPAWN 
+				case "Tower":
+					Debug.Log("Instanciating a tower...");
+					objectInstance = Instantiate(TowerPrefab, ItemsContainer.transform);
+					break;
+				// ADD SPAWN
+				case "Spawner":
+					Debug.Log("Instanciating a spawner...");
+					objectInstance = Instantiate(SpawnerPrefab, ItemsContainer.transform);
+					break;
 				// ADD END
+				case "Ender":
+					Debug.Log("Instanciating an ender...");
+					objectInstance = Instantiate(EnderPrefab, ItemsContainer.transform);
+					break;
 				// ADD PATH
+				case "Path":
+					Debug.Log("Instanciating a path...");
+					objectInstance = Instantiate(PathPrefab, ItemsContainer.transform);
+					break;
                 default:
                     Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));
                     break;
