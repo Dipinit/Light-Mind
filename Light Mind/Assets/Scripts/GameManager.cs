@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour
 
     private GameObject _selectedItem = null;
 
+	// TD variables
+	public Boolean isTD = false;
+	public int lives = 10;
+
     private void Awake()
     {
         if (Instance == null)
@@ -117,6 +121,8 @@ public class GameManager : MonoBehaviour
             inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Filters"].i;
         }
 
+		// ADD TOWERS
+
         foreach (var jsonEntity in dataAsJson["Entities"].list)
         {
             GameObject objectInstance = null;
@@ -187,6 +193,10 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Instanciating an obstacle...");
                     objectInstance = Instantiate(ObstaclePrefab, ItemsContainer.transform);
                     break;
+				// ADD TOWER
+				// ADD SPAWN 
+				// ADD END
+				// ADD PATH
                 default:
                     Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));
                     break;
