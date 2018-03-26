@@ -34,8 +34,8 @@ public class GameManager : MonoBehaviour
     private GameObject _selectedItem = null;
 
 	// TD variables
+    public TDManager TDManager;
 	public Boolean isTD = false;
-	public int lives = 10;
 
 	public GameObject EnemyPrefab;
 	public GameObject TowerPrefab;
@@ -244,7 +244,11 @@ public class GameManager : MonoBehaviour
             dragAndDrop.IsDraggable = jsonEntity["Draggable"].b;
             RaySensitive raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
             if (raySensitive) raySensitive.ColliderEnabled = true;
-            BoardManager.AddItemPosition(pos);
+            BoardManager.AddItemPosition (pos);
+        }
+
+        if (isTD) {
+            TDManager.SetUpWaves (dataAsJson);
         }
     }
 

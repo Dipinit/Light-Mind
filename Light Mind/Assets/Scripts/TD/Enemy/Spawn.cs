@@ -17,7 +17,7 @@ public class Spawn : MonoBehaviour {
 		this.enemiesLeft = enemiesLeft;
 	}
 
-	void Start () {
+	public void StartWave () {
 		while (enemiesLeft > 0) {
 			Invoke ("SpawnNext", interval);
 		}

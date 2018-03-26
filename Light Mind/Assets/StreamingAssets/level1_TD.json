@@ -16,7 +16,17 @@
       {"Type": "Objective", "X": 4, "Y": 2, "Red": true, "Green": true, "Blue": false, "Draggable": false},
       {"Type": "Prism", "X": 1, "Y": 3, "Red": true, "Green": true, "Blue": false, "Draggable": false},
       {"Type": "Filter Mirror", "X": 3, "Y": 1, "Red": false, "Green": false, "Blue": true, "Orientation": 135, "Draggable": false},
-	  {"Type": "Path", "X": 1, "Y": 1, "Orientation": 135, "Draggable": false},
+      {"Type": "Spawner", "X": 0, "Y": 0, "Draggable": false},
+	  {"Type": "Path", 
+		"Paths": 
+		[
+				{"X": 1, "Y": 0},
+				{"X": 2, "Y": 0},
+				{"X": 3, "Y": 0},
+				{"X": 4, "Y": 0},
+		]
+	  },
+	  {"Type": "Ender", "X": 5, "Y": 0, "Draggable": false},
       {
         "Type": "Light Source",
         "X": 1,
@@ -34,5 +44,12 @@
             {"Direction": 315, "Enabled": false, "Red": false, "Green": false, "Blue": false}
           ]
       }
-    ]
+    ],
+	"Waves":
+	[
+		{"Enemies": "RB2RB2Y"},
+		{"Enemies": "B2Y5R8B2"},
+		{"Enemies": "T15"}
+	],
+	"Info": {"Lives": 10, "SpawnInterval": 3}
 }
