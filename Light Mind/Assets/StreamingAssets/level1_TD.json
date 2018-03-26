@@ -1,13 +1,13 @@
 {
-  "Name": "Level 0",
-  "Number": 0,
+  "Name": "Level 1",
+  "Number": 1,
   "Inventory":
     {
       "Mirrors": 2,
       "MirrorFilters": 1,
       "Prisms": 3,
       "Filters": 1,
-      "Towers": 0
+      "Towers": 2
     },
   "Entities":
     [
@@ -16,6 +16,7 @@
       {"Type": "Objective", "X": 4, "Y": 2, "Red": true, "Green": true, "Blue": false, "Draggable": false},
       {"Type": "Prism", "X": 1, "Y": 3, "Red": true, "Green": true, "Blue": false, "Draggable": false},
       {"Type": "Filter Mirror", "X": 3, "Y": 1, "Red": false, "Green": false, "Blue": true, "Orientation": 135, "Draggable": false},
+	  {"Type": "Path", "X": 1, "Y": 1, "Orientation": 135, "Draggable": false},
       {
         "Type": "Light Source",
         "X": 1,

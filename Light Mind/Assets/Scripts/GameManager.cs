@@ -69,6 +69,10 @@ public class GameManager : MonoBehaviour
     {
         BoardManager.CreateBoard();
 
+		if (isTD) {
+			BoardManager.AddTDElements ();
+		}
+
         string currentLevel = PlayerPrefs.GetString("currentLevel");
         if (!String.IsNullOrEmpty(currentLevel))
         {
@@ -79,7 +83,12 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(string level)
     {
-        string fileName = string.Format("{0}.json", level);
+		string fileName;
+		if (isTD) {
+			fileName = string.Format("{0}_TD.json", level);
+		} else {
+        	fileName = string.Format("{0}.json", level);
+		}
         string jsonText = null;
         string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
 
@@ -129,14 +138,12 @@ public class GameManager : MonoBehaviour
         }
 
 		// ADD TOWERS
-		/*
-		if (dataAsJson["Inventory"]["Towers"].i > 0)
+		if (isTD && dataAsJson["Inventory"]["Towers"].i > 0)
 		{
 			GameObject itemGameObject = Instantiate(TowerInventoryPrefab, Inventory.transform);
 			InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
 			inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Towers"].i;
 		}
-		*/
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
         {
