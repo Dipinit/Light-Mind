@@ -11,8 +11,6 @@ public class BoardManager : MonoBehaviour
     [Space(5)]
         
     [SerializeField] private GameObject _boardCellPrefab;
-	public GameObject spawnerPrefab;
-	public GameObject enderPrefab;
 
     [Header("Cell colors")]
     public Color CellDefaultColor;
@@ -59,15 +57,6 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
-
-	public void AddTDElements() {
-		// Add Spawner top left and Ender bottom right
-		var spawner = Instantiate(spawnerPrefab, Board.transform);
-		spawner.transform.position = new Vector3(0, 0, 0);
-
-		var ender = Instantiate(enderPrefab, Board.transform);
-		ender.transform.position = new Vector3(BoardSize.x - 1, BoardSize.y - 1, 0);
-	}
 
     public void AddItemPosition(Vector3 pos)
     {

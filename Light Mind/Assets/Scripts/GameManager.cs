@@ -69,10 +69,6 @@ public class GameManager : MonoBehaviour
     {
         BoardManager.CreateBoard();
 
-		if (isTD) {
-			BoardManager.AddTDElements ();
-		}
-
         string currentLevel = PlayerPrefs.GetString("currentLevel");
         if (!String.IsNullOrEmpty(currentLevel))
         {
