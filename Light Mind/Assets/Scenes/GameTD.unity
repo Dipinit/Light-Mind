@@ -191,6 +191,23 @@ Prefab:
       value: 
       objectReference: {fileID: 1712338240897536, guid: b9b2308e6c5618d40a2d6f0463db1724,
         type: 2}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: isTD
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: TowerInventoryPrefab
+      value: 
+      objectReference: {fileID: 1717933067496232, guid: 6f14f67bcb4fc2548b12ffb5e2678a2c,
+        type: 2}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: PathPrefab
+      value: 
+      objectReference: {fileID: 1415004937021204, guid: 81d0d71d7be6e40259f7fc4ff17996dd,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b, type: 2}
   m_IsPrefabParent: 0
@@ -781,5 +798,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

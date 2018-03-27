@@ -234,18 +234,23 @@ public class GameManager : MonoBehaviour
 				case "Path":
 					Debug.Log("Instanciating a path...");
 					objectInstance = Instantiate(PathPrefab, ItemsContainer.transform);
-					break;
+                    foreach(var jsonPath in jsonEntity["Paths"].list) {
+                        Vector3 posPath = new Vector3(jsonPath["X"].n, jsonPath["Y"].n, 0);
+                        objectInstance.transform.position = posPath;
+                        BoardManager.AddItemPosition (posPath);
+                    }
+					continue;
                 default:
                     Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));
                     break;
             }
 
             if (objectInstance == null) continue;
-            
+
             Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
             objectInstance.transform.position = pos;
             DragAndDrop dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
-            dragAndDrop.IsDraggable = jsonEntity["Draggable"].b;
+            if (dragAndDrop) dragAndDrop.IsDraggable = jsonEntity ["Draggable"].b;
             RaySensitive raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
             if (raySensitive) raySensitive.ColliderEnabled = true;
             BoardManager.AddItemPosition (pos);
