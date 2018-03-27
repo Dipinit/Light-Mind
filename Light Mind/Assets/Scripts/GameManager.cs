@@ -74,6 +74,10 @@ public class GameManager : MonoBehaviour
         {
             LoadLevel(currentLevel);
         }
+
+        if (isTD) {
+            TDManager.StartGame ();
+        }
     }
     
 
