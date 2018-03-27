@@ -232,8 +232,8 @@ public class GameManager : MonoBehaviour
 				// ADD PATH
 				case "Path":
 					Debug.Log("Instanciating a path...");
-					objectInstance = Instantiate(PathPrefab, ItemsContainer.transform);
                     foreach(var jsonPath in jsonEntity["Paths"].list) {
+                        objectInstance = Instantiate(PathPrefab, ItemsContainer.transform);
                         Vector3 posPath = new Vector3(jsonPath["X"].n, jsonPath["Y"].n, 0);
                         objectInstance.transform.position = posPath;
                         BoardManager.AddItemPosition (posPath);

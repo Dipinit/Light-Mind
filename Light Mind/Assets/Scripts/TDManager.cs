@@ -18,7 +18,7 @@ public class TDManager : MonoBehaviour {
     public int CurrentWave;
     private float _spawnInterval;
     private List<List<RayColor>> _enemyWaves = new List<List<RayColor>>();
-    public Dictionary<char, RayColor> WavesDico;
+    public Dictionary<char, RayColor> _wavesDico;
 
     // GUI
     public Button GoButton;
@@ -33,6 +33,9 @@ public class TDManager : MonoBehaviour {
 
     public void StartGame() {
         // Might add more things here
+        Spawn = GameObject.FindObjectOfType<Spawn> ();
+        Spawn.SetUp (this, _spawnInterval);
+        Debug.Log (Spawn);
         CurrentWave = 1;
         StartPausedPhase ();
     }
@@ -109,7 +112,7 @@ public class TDManager : MonoBehaviour {
         if (WHITE > 0) sb.Append ("WHITE x").Append (WHITE).Append (Environment.NewLine);
         if (MAGENTA > 0) sb.Append ("MAGENTA x").Append (MAGENTA).Append (Environment.NewLine);
         if (NONE > 0) sb.Append ("COLOR-IMMUNE x").Append (NONE).Append (Environment.NewLine);
-
+        Debug.Log (sb);
         return sb.ToString ();
     }
 
@@ -147,12 +150,12 @@ public class TDManager : MonoBehaviour {
 
         for (int i = 0; i < encodedWave.Length; i++) {
             char currChar = encodedWave [i];
-            if (WavesDico.ContainsKey (currChar)) {
-                WavesDico.TryGetValue (currChar, out previousColor);
+            if (_wavesDico.ContainsKey (currChar)) {
+                _wavesDico.TryGetValue (currChar, out previousColor);
                 waveColors.Add (previousColor);
             } else {
                 string countStr = "";
-                while (i < encodedWave.Length && !WavesDico.ContainsKey (encodedWave[i])) {
+                while (i < encodedWave.Length && !_wavesDico.ContainsKey (encodedWave[i])) {
                     countStr += currChar;
                     if (++i < encodedWave.Length) {
                         currChar = encodedWave [i];
@@ -172,15 +175,15 @@ public class TDManager : MonoBehaviour {
     }
 
     public void InitializeWavesDico() {
-        WavesDico = new Dictionary<char, RayColor>();
-        WavesDico.Add ('R', RayColor.RED);
-        WavesDico.Add ('B', RayColor.BLUE);
-        WavesDico.Add ('W', RayColor.WHITE);
-        WavesDico.Add ('C', RayColor.CYAN);
-        WavesDico.Add ('G', RayColor.GREEN);
-        WavesDico.Add ('M', RayColor.MAGENTA);
-        WavesDico.Add ('Y', RayColor.YELLOW);
-        WavesDico.Add ('N', RayColor.NONE);
+        _wavesDico = new Dictionary<char, RayColor>();
+        _wavesDico.Add ('R', RayColor.RED);
+        _wavesDico.Add ('B', RayColor.BLUE);
+        _wavesDico.Add ('W', RayColor.WHITE);
+        _wavesDico.Add ('C', RayColor.CYAN);
+        _wavesDico.Add ('G', RayColor.GREEN);
+        _wavesDico.Add ('M', RayColor.MAGENTA);
+        _wavesDico.Add ('Y', RayColor.YELLOW);
+        _wavesDico.Add ('N', RayColor.NONE);
     }
 
     public void InitializeGoButton() {

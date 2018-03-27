@@ -13,7 +13,6 @@ namespace Items
 		// Use this for initialization
 		public override void Start()
 		{
-			base.Start();
 			IsOrientable = true;
 			IsColorable = false;
 		}
@@ -22,12 +21,12 @@ namespace Items
 		{
 			// Effect - Recolor tower to boost dmg
 			this.color = ray.Color;
+            //TODO Recolor
 		}
 
 		// Launched when a ray hits the mirror
 		public override void HitEnter(Ray ray)
 		{
-			base.HitEnter(ray);
 			HandleReceivedRay(ray);
 		}
 	}
