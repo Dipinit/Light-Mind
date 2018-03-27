@@ -18,7 +18,7 @@ public class TDManager : MonoBehaviour {
     private Dictionary<char, RayColor> _wavesDico;
 
     // GUI
-    private Button _goButton;
+    public Button GoButton;
     public Text Lives;
     public Text WaveText;
 
@@ -37,7 +37,7 @@ public class TDManager : MonoBehaviour {
         // Change state
         _state = STATE.PLAYING;
         // Hide go button
-        _goButton.IsActive (false);
+        GoButton.gameObject.SetActive (false);
         // Update current wave
         WaveText.text = "Wave : " + Spawn.wave;
         // Call spawner
@@ -50,39 +50,43 @@ public class TDManager : MonoBehaviour {
         // Display next wave
         WaveText.text = "Next Wave: " + ShowNextWave(_enemyWaves[Spawn.wave]);
         // Show button Go
-        _goButton.IsActive(true);
+        GoButton.gameObject.SetActive (true);
     }
 
     String ShowNextWave(List<RayColor> wave) {
-        int RED, WHITE, BLUE, YELLOW, GREEN, CYAN, MAGENTA, NONE = 0;
+        int RED, WHITE, BLUE, YELLOW, GREEN, CYAN, MAGENTA, NONE;
+        RED = WHITE = BLUE = YELLOW = GREEN = CYAN = MAGENTA =  NONE = 0;
         foreach (RayColor color in wave) {
-            switch(color) {
-            case RayColor.RED:
+            if (color == RayColor.RED) {
                 RED++;
                 break;
-            case RayColor.WHITE:
+            }
+            if (color == RayColor.WHITE) {
                 WHITE++;
                 break;
-            case RayColor.BLUE:
+            }
+            if (color == RayColor.BLUE) {
                 BLUE++;
                 break;
-            case RayColor.YELLOW:
+            }
+            if (color == RayColor.YELLOW) {
                 YELLOW++;
                 break;
-            case RayColor.GREEN:
+            }
+            if (color == RayColor.GREEN) {
                 GREEN++;
                 break;
-            case RayColor.CYAN:
+            }
+            if (color == RayColor.CYAN) {
                 CYAN++;
                 break;
-            case RayColor.MAGENTA:
+            }
+            if (color == RayColor.MAGENTA) {
                 MAGENTA++;
                 break;
-            case RayColor.NONE:
+            }
+            if (color == RayColor.NONE) {
                 NONE++;
-                break;
-            default:
-                Debug.Log ("Unknown enemy color:" + color);
                 break;
             }
         }
@@ -94,6 +98,7 @@ public class TDManager : MonoBehaviour {
         if (CYAN > 0) sb.Append ("CYAN x").Append (CYAN).Append (Environment.NewLine);
         if (GREEN > 0) sb.Append ("GREEN x").Append(GREEN).Append (Environment.NewLine);
         if (WHITE > 0) sb.Append ("WHITE x").Append (WHITE).Append (Environment.NewLine);
+        if (MAGENTA > 0) sb.Append ("MAGENTA x").Append (MAGENTA).Append (Environment.NewLine);
         if (NONE > 0) sb.Append ("COLOR-IMMUNE x").Append (NONE).Append (Environment.NewLine);
 
         return sb.ToString ();
@@ -152,11 +157,15 @@ public class TDManager : MonoBehaviour {
         _wavesDico.Add ('N', RayColor.NONE);
     }
 
-    private void InitializeGoButton() {
-        _goButton = new Button ();
-        _goButton = GUI.Button (new Rect(Screen.width - 100, Screen.height - 100, 50, 50), "Go!");
-        _goButton.IsActive (false);
-        _goButton.onClick.AddListener (OnGoButtonClick);
+    public void InitializeGoButton() {
+        GameObject go = new GameObject ();
+        GoButton = go.AddComponent<Button>();
+        go.transform.SetParent (this.transform);
+        if (GUI.Button (new Rect(Screen.width - 100, Screen.height - 100, 50, 50), "Error 404")) {
+            OnGoButtonClick ();
+        }
+        GoButton.gameObject.SetActive (false);
+        GoButton.onClick.AddListener (OnGoButtonClick);
     }
 
     private void OnGoButtonClick() {
@@ -164,11 +173,15 @@ public class TDManager : MonoBehaviour {
         StartPlayingPhase ();
     }
 
-    private void InitializeTexts() {
-        WaveText = new Text ();
+    public void InitializeTexts() {
+        GameObject go = new GameObject ();
+        WaveText = go.AddComponent<Text>();
+        go.transform.SetParent (this.transform);
         WaveText.alignment = TextAnchor.UpperLeft;
 
-        Lives = new Text ();
+        GameObject go2 = new GameObject ();
+        Lives = go2.AddComponent<Text>();
+        go2.transform.SetParent (this.transform);
         Lives.alignment = TextAnchor.UpperCenter;
     }
 }
