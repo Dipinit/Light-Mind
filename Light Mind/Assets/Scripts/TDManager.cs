@@ -55,7 +55,7 @@ public class TDManager : MonoBehaviour {
         // Change state
         GameState = STATE.PAUSE;
         // Display next wave
-        WaveText.text = "Next Wave: " + ShowNextWave(_enemyWaves[Spawn.wave]);
+        WaveText.text = "Next Wave: " + ShowNextWave(_enemyWaves[CurrentWave]);
         // Show button Go
         GoButton.gameObject.SetActive (true);
     }
@@ -113,7 +113,7 @@ public class TDManager : MonoBehaviour {
 
     void StartNextWave() {
         // Might add more things
-        Spawn.StartWave ();
+        Spawn.StartWave (_enemyWaves[CurrentWave - 1]);
     }
 
     // Might delete if utility is low
