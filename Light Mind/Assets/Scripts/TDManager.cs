@@ -7,19 +7,22 @@ using UnityEngine.UI;
 using System.Text;
 
 public class TDManager : MonoBehaviour {
-    public enum STATE {PLAYING, PAUSE};
+    // Not used yet, might delete
+    public enum STATE {PLAYING, PAUSE, WIN, LOSE};
+
     public Spawn Spawn;
 
-    private STATE _state;
-    private int _waves;
-    private int _lives;
+    public STATE GameState;
+    public int WavesTotal;
+    public int LivesLeft;
+    public int CurrentWave;
     private float _spawnInterval;
     private List<List<RayColor>> _enemyWaves = new List<List<RayColor>>();
     private Dictionary<char, RayColor> _wavesDico;
 
     // GUI
     public Button GoButton;
-    public Text Lives;
+    public Text LivesText;
     public Text WaveText;
 
     public void Init() {
@@ -30,23 +33,27 @@ public class TDManager : MonoBehaviour {
 
     public void StartGame() {
         // Might add more things here
+        CurrentWave = 1;
         StartPausedPhase ();
     }
 
     private void StartPlayingPhase() {
         // Change state
-        _state = STATE.PLAYING;
+        GameState = STATE.PLAYING;
         // Hide go button
         GoButton.gameObject.SetActive (false);
         // Update current wave
-        WaveText.text = "Wave : " + Spawn.wave;
+        WaveText.text = "Wave : " + CurrentWave;
         // Call spawner
         StartNextWave();
+        // Check if enemies are all dead or player is
+        // THIS SHOULD BE CHECKED WHEN A TOWER FIRES AND WHEN AN ENEMY TAKES A LIFE POINT OFF
+        // Call CallNextPhase or StartPausePhase
     }
 
     private void StartPausedPhase() {
         // Change state
-        _state = STATE.PAUSE;
+        GameState = STATE.PAUSE;
         // Display next wave
         WaveText.text = "Next Wave: " + ShowNextWave(_enemyWaves[Spawn.wave]);
         // Show button Go
@@ -109,14 +116,27 @@ public class TDManager : MonoBehaviour {
         Spawn.StartWave ();
     }
 
+    // Might delete if utility is low
+    void CallNextPhase() {
+        if (GameState == STATE.PLAYING) {
+            StartPausedPhase ();
+        } else if (GameState == STATE.PAUSE) {
+            StartPlayingPhase ();
+        } else if (GameState == STATE.LOSE) {
+            // TODO
+        } else if (GameState == STATE.WIN) {
+            // TODO
+        }
+    }
+
     public void SetUpWaves(JSONObject data) {        
         foreach (var jsonEntity in data["Waves"].list)
         {
             DecodeEnemyWaves(jsonEntity ["Enemies"].str);
         }
-        _lives = Int32.Parse(data ["Info"].GetField ("Lives").str);
+        LivesLeft = Int32.Parse(data ["Info"].GetField ("Lives").str);
         _spawnInterval = float.Parse(data ["Info"].GetField ("SpawnInterval").str);
-        _waves = _enemyWaves.Count;
+        WavesTotal = _enemyWaves.Count;
     }
         
     private void DecodeEnemyWaves(String encodedWave) {
@@ -180,8 +200,8 @@ public class TDManager : MonoBehaviour {
         WaveText.alignment = TextAnchor.UpperLeft;
 
         GameObject go2 = new GameObject ();
-        Lives = go2.AddComponent<Text>();
+        LivesText = go2.AddComponent<Text>();
         go2.transform.SetParent (this.transform);
-        Lives.alignment = TextAnchor.UpperCenter;
+        LivesText.alignment = TextAnchor.UpperCenter;
     }
 }

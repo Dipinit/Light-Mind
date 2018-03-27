@@ -1,31 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Utilities;
+using UnityEditorInternal;
 
 public class Spawn : MonoBehaviour {
 
-	public GameObject monsterPrefab;
-	public float interval = 3;
-	public int wave = 1;
-	public int enemiesLeft;
+    public TDManager TDManager;
+	public GameObject MonsterPrefab;
+	public float SpawnInterval;
+    private int _enemiesLeft;
 
-	// Later on add ArrayOfEnemyTypes to see which enemies to spawn
-
-	void SetUp(float interval, int wave, int enemiesLeft) {
-		this.interval = interval;
-		this.wave = wave;
-		this.enemiesLeft = enemiesLeft;
+    void SetUp(TDManager TDManager, float interval) {
+        this.TDManager = TDManager;
+		this.SpawnInterval = interval;
+        // Might add more parameters
 	}
 
-	public void StartWave () {
-		while (enemiesLeft > 0) {
-			Invoke ("SpawnNext", interval);
+    public void StartWave (List<RayColor> wave) {
+        _enemiesLeft = wave.Count;
+		while (_enemiesLeft > 0) {
+			Invoke ("SpawnNext", SpawnInterval);
+            if (TDManager.GameState != TDManager.STATE.PLAYING) {
+                _enemiesLeft = 0;
+                Debug.Log ("Player lost, stopping enemy spawns.");
+            }
 		}
 	}
 
 	void SpawnNext() {
-		Instantiate (monsterPrefab, transform.position, Quaternion.identity);
-		enemiesLeft--;
+		Instantiate (MonsterPrefab, transform.position, Quaternion.identity);
+		_enemiesLeft--;
 	}
 
 }
