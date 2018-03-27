@@ -44,6 +44,8 @@ public class TDManager : MonoBehaviour {
         GoButton.gameObject.SetActive (false);
         // Update current wave
         WaveText.text = "Wave : " + CurrentWave;
+        // Lives
+        LivesText.text = "Lives : " + LivesLeft;
         // Call spawner
         StartNextWave();
         // Check if enemies are all dead or player is
@@ -203,5 +205,10 @@ public class TDManager : MonoBehaviour {
         LivesText = go2.AddComponent<Text>();
         go2.transform.SetParent (this.transform);
         LivesText.alignment = TextAnchor.UpperCenter;
+    }
+
+    public void DecreaseLives() {
+        LivesLeft--;
+        LivesText.text = "Lives : " + LivesLeft;
     }
 }

@@ -29,6 +29,7 @@ public class Spawn : MonoBehaviour {
 	}
 
 	void SpawnNext() {
+        //TODO Specify position of Spawn GameObject
 		Instantiate (MonsterPrefab, transform.position, Quaternion.identity);
 		_enemiesLeft--;
 	}
