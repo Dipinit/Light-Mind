@@ -49,7 +49,7 @@
 	[
 		{"Enemies": "RB2RB2Y"},
 		{"Enemies": "B2Y5R8B2"},
-		{"Enemies": "T15"}
+		{"Enemies": "C15"}
 	],
 	"Info": {"Lives": 10, "SpawnInterval": 3}
 }

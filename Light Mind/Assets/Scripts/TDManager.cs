@@ -18,7 +18,7 @@ public class TDManager : MonoBehaviour {
     public int CurrentWave;
     private float _spawnInterval;
     private List<List<RayColor>> _enemyWaves = new List<List<RayColor>>();
-    private Dictionary<char, RayColor> _wavesDico;
+    public Dictionary<char, RayColor> WavesDico;
 
     // GUI
     public Button GoButton;
@@ -136,8 +136,8 @@ public class TDManager : MonoBehaviour {
         {
             DecodeEnemyWaves(jsonEntity ["Enemies"].str);
         }
-        LivesLeft = Int32.Parse(data ["Info"].GetField ("Lives").str);
-        _spawnInterval = float.Parse(data ["Info"].GetField ("SpawnInterval").str);
+        LivesLeft = (int)data ["Info"].GetField ("Lives").n;
+        _spawnInterval = (float)data ["Info"].GetField ("SpawnInterval").n;
         WavesTotal = _enemyWaves.Count;
     }
         
@@ -147,16 +147,20 @@ public class TDManager : MonoBehaviour {
 
         for (int i = 0; i < encodedWave.Length; i++) {
             char currChar = encodedWave [i];
-            if (_wavesDico.ContainsKey (currChar)) {
-                _wavesDico.TryGetValue (currChar, out previousColor);
+            if (WavesDico.ContainsKey (currChar)) {
+                WavesDico.TryGetValue (currChar, out previousColor);
                 waveColors.Add (previousColor);
             } else {
                 string countStr = "";
-                while(!_wavesDico.ContainsKey (currChar) && i < encodedWave.Length) {
-                    countStr = countStr + currChar;
-                    currChar = encodedWave [++i];
+                while (i < encodedWave.Length && !WavesDico.ContainsKey (encodedWave[i])) {
+                    countStr += currChar;
+                    if (++i < encodedWave.Length) {
+                        currChar = encodedWave [i];
+                    }
                 }
-                int count = Int32.Parse (countStr);
+                i--;
+                int count = 0;
+                if (countStr.Length > 0) count = Int32.Parse (countStr);
                 while (count > 1) { //R2 = R + R since we already added R before, only go to > 1
                     waveColors.Add (previousColor);
                     count--;
@@ -167,25 +171,22 @@ public class TDManager : MonoBehaviour {
         _enemyWaves.Add (waveColors);
     }
 
-    private void InitializeWavesDico() {
-        _wavesDico = new Dictionary<char, RayColor>();
-        _wavesDico.Add ('R', RayColor.RED);
-        _wavesDico.Add ('B', RayColor.BLUE);
-        _wavesDico.Add ('W', RayColor.WHITE);
-        _wavesDico.Add ('C', RayColor.CYAN);
-        _wavesDico.Add ('G', RayColor.GREEN);
-        _wavesDico.Add ('M', RayColor.MAGENTA);
-        _wavesDico.Add ('Y', RayColor.YELLOW);
-        _wavesDico.Add ('N', RayColor.NONE);
+    public void InitializeWavesDico() {
+        WavesDico = new Dictionary<char, RayColor>();
+        WavesDico.Add ('R', RayColor.RED);
+        WavesDico.Add ('B', RayColor.BLUE);
+        WavesDico.Add ('W', RayColor.WHITE);
+        WavesDico.Add ('C', RayColor.CYAN);
+        WavesDico.Add ('G', RayColor.GREEN);
+        WavesDico.Add ('M', RayColor.MAGENTA);
+        WavesDico.Add ('Y', RayColor.YELLOW);
+        WavesDico.Add ('N', RayColor.NONE);
     }
 
     public void InitializeGoButton() {
         GameObject go = new GameObject ();
         GoButton = go.AddComponent<Button>();
         go.transform.SetParent (this.transform);
-        if (GUI.Button (new Rect(Screen.width - 100, Screen.height - 100, 50, 50), "Error 404")) {
-            OnGoButtonClick ();
-        }
         GoButton.gameObject.SetActive (false);
         GoButton.onClick.AddListener (OnGoButtonClick);
     }

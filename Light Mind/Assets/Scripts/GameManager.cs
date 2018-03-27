@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         BoardManager.CreateBoard();
+        if (isTD) TDManager.Init ();
 
         string currentLevel = PlayerPrefs.GetString("currentLevel");
         if (!String.IsNullOrEmpty(currentLevel))
@@ -75,9 +76,7 @@ public class GameManager : MonoBehaviour
             LoadLevel(currentLevel);
         }
 
-        if (isTD) {
-            TDManager.StartGame ();
-        }
+        if (isTD) TDManager.StartGame ();
     }
     
 
@@ -256,7 +255,7 @@ public class GameManager : MonoBehaviour
             BoardManager.AddItemPosition (pos);
         }
 
-        if (isTD) {
+        if (isTD && dataAsJson != null) {
             TDManager.SetUpWaves (dataAsJson);
         }
     }
