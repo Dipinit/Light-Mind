@@ -21,14 +21,16 @@ public class TDManager : MonoBehaviour {
     public Dictionary<char, RayColor> _wavesDico;
 
     // GUI
-    public Button GoButton;
+    public GameObject GoButton;
     public Text LivesText;
     public Text WaveText;
 
     public void Init() {
+        // Init the dictionary with all char and corresponding colors
         InitializeWavesDico ();
-        InitializeGoButton ();
-        InitializeTexts ();
+
+        // Add GoButton Listener
+        GoButton.GetComponent <Button>().onClick.AddListener (OnGoButtonClick);
     }
 
     public void StartGame() {
@@ -60,7 +62,7 @@ public class TDManager : MonoBehaviour {
         // Change state
         GameState = STATE.PAUSE;
         // Display next wave
-        WaveText.text = "Next Wave: " + ShowNextWave(_enemyWaves[CurrentWave]);
+        WaveText.text = "Next Wave: " + Environment.NewLine + ShowNextWave(_enemyWaves[CurrentWave]);
         // Show button Go
         GoButton.gameObject.SetActive (true);
     }
@@ -187,28 +189,12 @@ public class TDManager : MonoBehaviour {
     }
 
     public void InitializeGoButton() {
-        GameObject go = new GameObject ();
-        GoButton = go.AddComponent<Button>();
-        go.transform.SetParent (this.transform);
-        GoButton.gameObject.SetActive (false);
-        GoButton.onClick.AddListener (OnGoButtonClick);
+        GoButton.GetComponent <Button>().onClick.AddListener (OnGoButtonClick);
     }
 
     private void OnGoButtonClick() {
         // Go to next state
         StartPlayingPhase ();
-    }
-
-    public void InitializeTexts() {
-        GameObject go = new GameObject ();
-        WaveText = go.AddComponent<Text>();
-        go.transform.SetParent (this.transform);
-        WaveText.alignment = TextAnchor.UpperLeft;
-
-        GameObject go2 = new GameObject ();
-        LivesText = go2.AddComponent<Text>();
-        go2.transform.SetParent (this.transform);
-        LivesText.alignment = TextAnchor.UpperCenter;
     }
 
     public void DecreaseLives() {
