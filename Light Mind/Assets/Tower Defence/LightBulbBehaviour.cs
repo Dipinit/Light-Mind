@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 [System.Serializable]
 public class LightState
 {
     public GameObject visualization;
     public GameObject bullet;
+    public float fireRate;
 }
 
 public class LightBulbBehaviour : MonoBehaviour
@@ -18,7 +17,7 @@ public class LightBulbBehaviour : MonoBehaviour
 
 
 
-    public LightState CurrentLevel
+    public LightState CurrentState
     {
         get
         {
@@ -61,7 +60,7 @@ public class LightBulbBehaviour : MonoBehaviour
 
     void OnEnable()
     {
-        CurrentLevel = states[0];
+        CurrentState = states[0];
     }
 
     public LightState getNextLevel()
@@ -83,7 +82,7 @@ public class LightBulbBehaviour : MonoBehaviour
         int currentStateIndex = states.IndexOf(currentState);
         if (currentStateIndex < states.Count - 1)
         {
-            CurrentLevel = states[currentStateIndex + 1];
+            CurrentState = states[currentStateIndex + 1];
         }
     }
 
