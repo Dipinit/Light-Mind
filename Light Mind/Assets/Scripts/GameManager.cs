@@ -68,7 +68,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         BoardManager.CreateBoard();
-        if (isTD) TDManager.Init ();
 
         string currentLevel = PlayerPrefs.GetString("currentLevel");
         if (!String.IsNullOrEmpty(currentLevel))

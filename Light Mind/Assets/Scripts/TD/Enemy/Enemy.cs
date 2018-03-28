@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour {
 
     private List<Vector3> _paths = new List<Vector3>();
     private int _currPath = 0;
-    private float _speed = 1f;
+    private float _speed = 1.2f;
 
 	// Use this for initialization
 	void Start () {

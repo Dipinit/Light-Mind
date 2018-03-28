@@ -27,6 +27,14 @@ public class TDManager : MonoBehaviour {
     public Text LivesText;
     public Text WaveText;
 
+    public void StartGame() {
+        // Might add more things here
+        Spawn = GameObject.FindObjectOfType<Spawn> ();
+        Spawn.SetUp (this, _spawnInterval, _paths);
+        CurrentWave = 0;
+        StartPausedPhase ();
+    }
+
     public void Init() {
         // Init the dictionary with all char and corresponding colors
         InitializeWavesDico ();
@@ -35,22 +43,13 @@ public class TDManager : MonoBehaviour {
         GoButton.GetComponent <Button>().onClick.AddListener (OnGoButtonClick);
     }
 
-    public void StartGame() {
-        // Might add more things here
-        Spawn = GameObject.FindObjectOfType<Spawn> ();
-        Spawn.SetUp (this, _spawnInterval, _paths);
-        Debug.Log (Spawn);
-        CurrentWave = 1;
-        StartPausedPhase ();
-    }
-
     private void StartPlayingPhase() {
         // Change state
         GameState = STATE.PLAYING;
         // Hide go button
         GoButton.gameObject.SetActive (false);
         // Update current wave
-        WaveText.text = "Wave : " + CurrentWave;
+        WaveText.text = "Wave : " + CurrentWave + "/" + WavesTotal;
         // Lives
         LivesText.text = "Lives : " + LivesLeft;
         // Call spawner
@@ -61,10 +60,11 @@ public class TDManager : MonoBehaviour {
     }
 
     private void StartPausedPhase() {
+        CurrentWave++;
         // Change state
         GameState = STATE.PAUSE;
         // Display next wave
-        WaveText.text = "Next Wave: " + Environment.NewLine + ShowNextWave(_enemyWaves[CurrentWave]);
+        WaveText.text = "Next Wave: " + Environment.NewLine + ShowNextWave(_enemyWaves[CurrentWave - 1]);
         // Show button Go
         GoButton.gameObject.SetActive (true);
     }
@@ -126,7 +126,7 @@ public class TDManager : MonoBehaviour {
     }
 
     // Might delete if utility is low
-    void CallNextPhase() {
+    public void CallNextPhase() {
         if (GameState == STATE.PLAYING) {
             StartPausedPhase ();
         } else if (GameState == STATE.PAUSE) {
@@ -138,7 +138,8 @@ public class TDManager : MonoBehaviour {
         }
     }
 
-    public void SetUpWaves(JSONObject data) {        
+    public void SetUpWaves(JSONObject data) {
+        Init ();
         foreach (var jsonEntity in data["Waves"].list)
         {
             DecodeEnemyWaves(jsonEntity ["Enemies"].str);
@@ -205,6 +206,10 @@ public class TDManager : MonoBehaviour {
 
     public void DecreaseLives() {
         LivesLeft--;
-        LivesText.text = "Lives : " + LivesLeft;
+        if (LivesLeft <= 0) {
+            //TODO
+        } else {
+            LivesText.text = "Lives : " + LivesLeft;
+        }
     }
 }

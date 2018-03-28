@@ -15,9 +15,11 @@ public class Ender : MonoBehaviour {
 	}
 
     // if gameobject enemy touches Ender gameobject, inform TDManager
-    void OnTriggerEnter(Collider co) {
-        if (co.gameObject.name == "EnemyPrefab") {
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag.Equals ("enemy")) {
             TDManager.DecreaseLives ();
+            Destroy (other.gameObject);
         }
     }
     
