@@ -71,35 +71,35 @@ public class TDManager : MonoBehaviour {
         foreach (RayColor color in wave) {
             if (color == RayColor.RED) {
                 RED++;
-                break;
+                continue;
             }
             if (color == RayColor.WHITE) {
                 WHITE++;
-                break;
+                continue;
             }
             if (color == RayColor.BLUE) {
                 BLUE++;
-                break;
+                continue;
             }
             if (color == RayColor.YELLOW) {
                 YELLOW++;
-                break;
+                continue;
             }
             if (color == RayColor.GREEN) {
                 GREEN++;
-                break;
+                continue;
             }
             if (color == RayColor.CYAN) {
                 CYAN++;
-                break;
+                continue;
             }
             if (color == RayColor.MAGENTA) {
                 MAGENTA++;
-                break;
+                continue;
             }
             if (color == RayColor.NONE) {
                 NONE++;
-                break;
+                continue;
             }
         }
 
