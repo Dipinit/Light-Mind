@@ -235,6 +235,7 @@ public class GameManager : MonoBehaviour
                     foreach(var jsonPath in jsonEntity["Paths"].list) {
                         objectInstance = Instantiate(PathPrefab, ItemsContainer.transform);
                         Vector3 posPath = new Vector3(jsonPath["X"].n, jsonPath["Y"].n, 0);
+                        TDManager.AddPath (posPath);
                         objectInstance.transform.position = posPath;
                         BoardManager.AddItemPosition (posPath);
                     }

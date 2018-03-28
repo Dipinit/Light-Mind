@@ -4,15 +4,36 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-	GameObject pathGO;
+    private List<Vector3> _paths = new List<Vector3>();
+    private int _currPath = 0;
+    private float _speed = 1f;
 
 	// Use this for initialization
 	void Start () {
-		
+        Vector3 destination = GameObject.FindObjectOfType<DiamontBehaviour> ().transform.position;
+        _paths.Add (destination);
 	}
+
+    public void Init(List<Vector3> paths) {
+        _currPath = 0;
+        _paths = paths;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        /* @THOMAS
+         * Les enemies arrivent pas au milieu mais vienne juste touche le checkpoint donc des fois ils vont en diagonale
+         * Soit faut faire des map bien rectangulaires et tout, soit faut fixsi ca t'intéresses.
+         **/
+        if (_paths != null && _paths.Count > 0 && _currPath < _paths.Count) {
+            Vector3 nextPath = _paths [_currPath];
+           if (Vector3.Distance (transform.position,nextPath) > 1.0) {
+                transform.position += (nextPath-transform.position).normalized*Time.deltaTime*_speed;
+            } else {
+                _currPath++;
+            }
+        } else {
+            // CHECK COLLIDER
+        }
 	}
 }

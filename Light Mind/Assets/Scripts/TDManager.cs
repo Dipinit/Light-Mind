@@ -5,6 +5,7 @@ using System;
 using Assets.Scripts.Utilities;
 using UnityEngine.UI;
 using System.Text;
+using System.Xml.Linq;
 
 public class TDManager : MonoBehaviour {
     // Not used yet, might delete
@@ -19,6 +20,7 @@ public class TDManager : MonoBehaviour {
     private float _spawnInterval;
     private List<List<RayColor>> _enemyWaves = new List<List<RayColor>>();
     public Dictionary<char, RayColor> _wavesDico;
+    private List<Vector3> _paths = new List<Vector3> ();
 
     // GUI
     public GameObject GoButton;
@@ -36,7 +38,7 @@ public class TDManager : MonoBehaviour {
     public void StartGame() {
         // Might add more things here
         Spawn = GameObject.FindObjectOfType<Spawn> ();
-        Spawn.SetUp (this, _spawnInterval);
+        Spawn.SetUp (this, _spawnInterval, _paths);
         Debug.Log (Spawn);
         CurrentWave = 1;
         StartPausedPhase ();
@@ -195,6 +197,10 @@ public class TDManager : MonoBehaviour {
     private void OnGoButtonClick() {
         // Go to next state
         StartPlayingPhase ();
+    }
+
+    public void AddPath(Vector3 path) {
+        _paths.Add (path);
     }
 
     public void DecreaseLives() {
