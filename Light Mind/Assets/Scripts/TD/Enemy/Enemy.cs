@@ -27,7 +27,8 @@ public class Enemy : MonoBehaviour {
          **/
         if (_paths != null && _paths.Count > 0 && _currPath < _paths.Count) {
             Vector3 nextPath = _paths [_currPath];
-           if (Vector3.Distance (transform.position,nextPath) > 1.0) {
+            nextPath.z = -1;
+           if (Vector3.Distance (transform.position,nextPath) > 0.01) {
                 transform.position += (nextPath-transform.position).normalized*Time.deltaTime*_speed;
             } else {
                 _currPath++;
