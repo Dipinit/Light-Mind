@@ -20,13 +20,11 @@
 	  {"Type": "Path", 
 		"Paths": 
 		[
-				{"X": 1, "Y": 0},
-				{"X": 2, "Y": 0},
-				{"X": 3, "Y": 0},
-				{"X": 4, "Y": 0},
+				{"X": 7, "Y": 0},
+
 		]
 	  },
-	  {"Type": "Ender", "X": 5, "Y": 0, "Draggable": false},
+	  {"Type": "Ender", "X": 7, "Y": 7, "Draggable": false},
       {
         "Type": "Light Source",
         "X": 1,
