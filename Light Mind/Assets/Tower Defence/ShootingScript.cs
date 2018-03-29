@@ -63,8 +63,8 @@ public class ShootingScript : MonoBehaviour {
         bulletComp.startPosition = startPosition;
         bulletComp.targetPosition = targetPosition;
 
-        //Animator animator = lightBulb.visualization.GetComponent<Animator>();
-        //animator.SetTrigger("fireShot");
+        Animator animator = lightBulb.visualization.GetComponent<Animator>();
+        animator.SetTrigger("fireShot");
         //AudioSource audioSource = gameObject.GetComponent<AudioSource>();
         //audioSource.PlayOneShot(audioSource.clip);
     }
@@ -81,8 +81,8 @@ public class ShootingScript : MonoBehaviour {
         if (other.gameObject.tag.Equals("enemy"))
         {
             enemiesInRange.Add(other.gameObject);
-            //EnemyDestructionDelegate del = other.gameObject.GetComponent<EnemyDestructionDelegate>();
-            //del.enemyDelegate += OnEnemyDestroy;
+            Enemy del = other.gameObject.GetComponent<Enemy>();
+            del.enemyDelegate += OnEnemyDestroy;
         }
     }
 
@@ -91,8 +91,8 @@ public class ShootingScript : MonoBehaviour {
         if (other.gameObject.tag.Equals("Enemy"))
         {
             enemiesInRange.Remove(other.gameObject);
-            //EnemyDestructionDelegate del = other.gameObject.GetComponent<EnemyDestructionDelegate>();
-            //del.enemyDelegate -= OnEnemyDestroy;
+            EnemyDestructionDelegate del = other.gameObject.GetComponent<EnemyDestructionDelegate>();
+            del.enemyDelegate -= OnEnemyDestroy;
         }
     }
 }
