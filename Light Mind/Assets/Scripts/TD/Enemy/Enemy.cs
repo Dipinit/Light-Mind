@@ -5,6 +5,9 @@ using Assets.Scripts.Utilities;
 
 public class Enemy : MonoBehaviour {
 
+    public delegate void EnemyDelegate(GameObject enemy);
+    public EnemyDelegate enemyDelegate;
+
     private List<Vector3> _paths = new List<Vector3>();
     private int _currPath = 0;
     private float _speed = 1.2f;
@@ -43,4 +46,12 @@ public class Enemy : MonoBehaviour {
             // CHECK COLLIDER
         }
 	}
+
+    void OnDestroy()
+    {
+        if (enemyDelegate != null)
+        {
+            enemyDelegate(gameObject);
+        }
+    }
 }

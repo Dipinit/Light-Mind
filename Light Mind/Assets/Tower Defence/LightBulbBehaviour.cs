@@ -63,7 +63,7 @@ public class LightBulbBehaviour : MonoBehaviour
         CurrentState = states[0];
     }
 
-    public LightState getNextLevel()
+    public LightState getNextState()
     {
         int currentStateIndex = states.IndexOf(currentState);
         int maxStateIndex = states.Count - 1;
