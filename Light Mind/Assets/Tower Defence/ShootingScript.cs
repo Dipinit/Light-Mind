@@ -91,7 +91,7 @@ public class ShootingScript : MonoBehaviour {
         if (other.gameObject.tag.Equals("Enemy"))
         {
             enemiesInRange.Remove(other.gameObject);
-            EnemyDestructionDelegate del = other.gameObject.GetComponent<EnemyDestructionDelegate>();
+            Enemy del = other.gameObject.GetComponent<Enemy>();
             del.enemyDelegate -= OnEnemyDestroy;
         }
     }
