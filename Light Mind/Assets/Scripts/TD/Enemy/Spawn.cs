@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Utilities;
-using UnityEditorInternal;
-using UnityEngine.Experimental.UIElements;
-using System.IO;
 
 public class Spawn : MonoBehaviour {
 
