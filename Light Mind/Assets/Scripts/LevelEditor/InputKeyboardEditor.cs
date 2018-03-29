@@ -9,7 +9,6 @@ public class InputKeyboardEditor : MonoBehaviour
     public void OpenKeyboard()
     {
         keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
-
     }
 
     public void Save()
