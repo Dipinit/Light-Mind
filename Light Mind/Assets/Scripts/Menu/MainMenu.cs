@@ -5,10 +5,15 @@ namespace Menu
 {
     public class MainMenu : MonoBehaviour
     {
-        public void PlayGame()
-        {
-            SceneManager.LoadScene(1);
-        }
+		public void PlayClassicGame()
+		{
+			SceneManager.LoadScene(1);
+		}
+
+		public void PlayTDGame()
+		{
+			SceneManager.LoadScene("Scenes/GameTD");
+		}
 
         public void ReturnToMenu()
         {
