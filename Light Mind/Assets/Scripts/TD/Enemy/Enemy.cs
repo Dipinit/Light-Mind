@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Utilities;
 
 public class Enemy : MonoBehaviour {
 
@@ -8,15 +9,20 @@ public class Enemy : MonoBehaviour {
     private int _currPath = 0;
     private float _speed = 1.2f;
 
+    public RayColor EnemyColor;
+
 	// Use this for initialization
 	void Start () {
         Vector3 destination = GameObject.FindObjectOfType<DiamontBehaviour> ().transform.position;
         _paths.Add (destination);
 	}
 
-    public void Init(List<Vector3> paths) {
+    public void Init(List<Vector3> paths, RayColor color) {
         _currPath = 0;
         _paths = paths;
+        EnemyColor = color;
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        renderer.color = color.GetColor ();
     }
 	
 	// Update is called once per frame
