@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1b5acffc4d625458213b10c8d52538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemiesInRange: []
 --- !u!114 &114757364163161918
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,11 +141,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   states:
-  - visualization: {fileID: 1362600780946298, guid: e7daf9b6571a1fe4a8aa99753cff77cc,
-      type: 2}
-    bullet: {fileID: 0}
   - visualization: {fileID: 1321548321450264}
-    bullet: {fileID: 0}
+    bullet: {fileID: 1267995582353810, guid: bd93ebd2845130241871e32fe5908945, type: 2}
+    fireRate: 1
 --- !u!212 &212379973638068830
 SpriteRenderer:
   m_ObjectHideFlags: 1
