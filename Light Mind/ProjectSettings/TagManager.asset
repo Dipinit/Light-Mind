@@ -7,6 +7,7 @@ TagManager:
   - gridObject
   - objective
   - Grid Cell
+  - enemy
   layers:
   - Default
   - TransparentFX

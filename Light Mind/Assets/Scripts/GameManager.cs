@@ -33,6 +33,17 @@ public class GameManager : MonoBehaviour
 
     private GameObject _selectedItem = null;
 
+	// TD variables
+    public TDManager TDManager;
+	public Boolean isTD = false;
+
+	public GameObject EnemyPrefab;
+	public GameObject TowerPrefab;
+	public GameObject PathPrefab;
+	public GameObject TowerInventoryPrefab;
+	public GameObject SpawnerPrefab;
+	public GameObject EnderPrefab;
+
     private void Awake()
     {
         if (Instance == null)
@@ -63,12 +74,19 @@ public class GameManager : MonoBehaviour
         {
             LoadLevel(currentLevel);
         }
+
+        if (isTD) TDManager.StartGame ();
     }
     
 
     public void LoadLevel(string level)
     {
-        string fileName = string.Format("{0}.json", level);
+		string fileName;
+		if (isTD) {
+			fileName = string.Format("{0}_TD.json", level);
+		} else {
+        	fileName = string.Format("{0}.json", level);
+		}
         string jsonText = null;
         string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
 
@@ -110,12 +128,20 @@ public class GameManager : MonoBehaviour
             inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Prisms"].i;
         }
 
-        if (dataAsJson["Inventory"]["Filters"].i > 0)
+		if (dataAsJson["Inventory"]["Filters"].i > 0)
         {
             GameObject itemGameObject = Instantiate(FilterInventoryItemPrefab, Inventory.transform);
             InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
             inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Filters"].i;
         }
+
+		// ADD TOWERS
+		if (isTD && dataAsJson["Inventory"]["Towers"].i > 0)
+		{
+			GameObject itemGameObject = Instantiate(TowerInventoryPrefab, Inventory.transform);
+			InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+			inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Towers"].i;
+		}
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
         {
@@ -187,20 +213,50 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Instanciating an obstacle...");
                     objectInstance = Instantiate(ObstaclePrefab, ItemsContainer.transform);
                     break;
+				// ADD TOWER
+				case "Tower":
+					Debug.Log("Instanciating a tower...");
+					objectInstance = Instantiate(TowerPrefab, ItemsContainer.transform);
+					break;
+				// ADD SPAWN
+				case "Spawner":
+					Debug.Log("Instanciating a spawner...");
+					objectInstance = Instantiate(SpawnerPrefab, ItemsContainer.transform);
+					break;
+				// ADD END
+				case "Ender":
+					Debug.Log("Instanciating an ender...");
+					objectInstance = Instantiate(EnderPrefab, ItemsContainer.transform);
+					break;
+				// ADD PATH
+				case "Path":
+					Debug.Log("Instanciating a path...");
+                    foreach(var jsonPath in jsonEntity["Paths"].list) {
+                        objectInstance = Instantiate(PathPrefab, ItemsContainer.transform);
+                        Vector3 posPath = new Vector3(jsonPath["X"].n, jsonPath["Y"].n, 0);
+                        TDManager.AddPath (posPath);
+                        objectInstance.transform.position = posPath;
+                        BoardManager.AddItemPosition (posPath);
+                    }
+					continue;
                 default:
                     Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));
                     break;
             }
 
             if (objectInstance == null) continue;
-            
+
             Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
             objectInstance.transform.position = pos;
             DragAndDrop dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
-            dragAndDrop.IsDraggable = jsonEntity["Draggable"].b;
+            if (dragAndDrop) dragAndDrop.IsDraggable = jsonEntity ["Draggable"].b;
             RaySensitive raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
             if (raySensitive) raySensitive.ColliderEnabled = true;
-            BoardManager.AddItemPosition(pos);
+            BoardManager.AddItemPosition (pos);
+        }
+
+        if (isTD && dataAsJson != null) {
+            TDManager.SetUpWaves (dataAsJson);
         }
     }
 
