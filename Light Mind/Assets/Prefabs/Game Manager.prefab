@@ -104,11 +104,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892c95f5f25f3564299f0e06c687abfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spawn: {fileID: 0}
   GameState: 0
   WavesTotal: 0
   LivesLeft: 0
   CurrentWave: 0
+  SpawnInterval: 0
   GoButton: {fileID: 0}
   LivesText: {fileID: 0}
   WaveText: {fileID: 0}

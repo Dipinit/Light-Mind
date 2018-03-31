@@ -10,6 +10,7 @@ TagManager:
   - enemy
   - Path
   - Path Waypoint
+  - Spawn Point
   layers:
   - Default
   - TransparentFX

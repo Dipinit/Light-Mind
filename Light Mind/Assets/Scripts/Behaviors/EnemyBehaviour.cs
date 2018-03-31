@@ -12,7 +12,7 @@ namespace Behaviors
 		[SerializeField] private float _speed = 1.2f;
 
 		// Enemy movement AI
-		public Transform _targetWaypoint;
+		private Transform _targetWaypoint;
 		private int _currentWaypointIndex;
 
 		public RayColor Color;
@@ -44,6 +44,7 @@ namespace Behaviors
 			{
 				// Enemy has reached end point, let's reduce life
 				Destroy(gameObject);
+				GameManager.Instance.TdManager.DecreaseLives();
 				return;
 			}
             

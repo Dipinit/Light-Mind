@@ -30,15 +30,12 @@ public class BoardManager : MonoBehaviour
     {
         _lastBoardSize = BoardSize;
         _lastCellOffset = CellOffset;
-        
-        CreateBoard();
-        AdjustCamera();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (BoardSize.x == _lastBoardSize.x && BoardSize.y == _lastBoardSize.y && _lastCellOffset == CellOffset) return;
+        if (_lastBoardSize == BoardSize && _lastCellOffset == CellOffset) return;
 
         _lastBoardSize = BoardSize;
         _lastCellOffset = CellOffset;
@@ -101,6 +98,8 @@ public class BoardManager : MonoBehaviour
         ender.transform.position =
             new Vector3(CellToWorldPosition(EndPoint.x), 1.5f + ender.transform.localScale.y / 2,
                 CellToWorldPosition(EndPoint.y));
+        
+        AdjustCamera();
     }
 
     public void AddItemPosition(Vector3 pos)
@@ -131,6 +130,8 @@ public class BoardManager : MonoBehaviour
 
     private void UpdateBoard()
     {
+        Debug.Log("UpdateBoard requested.");
+        
         foreach (Transform child in Board.transform)
         {
             Destroy(child.gameObject);
@@ -138,7 +139,6 @@ public class BoardManager : MonoBehaviour
         Waypoints.Clear();
 
         CreateBoard();
-        AdjustCamera();
     }
 
     private void AdjustCamera()

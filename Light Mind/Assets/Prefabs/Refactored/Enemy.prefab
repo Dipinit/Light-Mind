@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1.2
+  _targetWaypoint: {fileID: 0}
   Color:
     R: 0
     G: 0

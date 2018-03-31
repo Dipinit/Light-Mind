@@ -68,15 +68,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        BoardManager.CreateBoard();
-
         var currentLevel = PlayerPrefs.GetString("currentLevel");
         if (!string.IsNullOrEmpty(currentLevel))
         {
             LoadLevel(currentLevel);
         }
 
-        if (IsTd) TdManager.StartGame ();
+        if (IsTd) TdManager.StartGame();
     }
     
 
