@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Utilities;
 using Behaviors;
 using Items;
+using Models;
 using UI;
 using UnityEngine;
 using DragAndDrop = Behaviors.DragAndDrop;
@@ -69,8 +70,8 @@ public class GameManager : MonoBehaviour
     {
         BoardManager.CreateBoard();
 
-        string currentLevel = PlayerPrefs.GetString("currentLevel");
-        if (!String.IsNullOrEmpty(currentLevel))
+        var currentLevel = PlayerPrefs.GetString("currentLevel");
+        if (!string.IsNullOrEmpty(currentLevel))
         {
             LoadLevel(currentLevel);
         }
@@ -81,19 +82,14 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(string level)
     {
-		string fileName;
-		if (isTD) {
-			fileName = string.Format("{0}_TD.json", level);
-		} else {
-        	fileName = string.Format("{0}.json", level);
-		}
-        string jsonText = null;
-        string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
+		var fileName = string.Format(isTD ? "{0}_TD.json" : "{0}.json", level);
+        string jsonText;
+        var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
-
+        // Read JSON data from file
         if (Application.platform == RuntimePlatform.Android)
         {
-            WWW www = new WWW(filePath);
+            var www = new WWW(filePath);
             while (!www.isDone) {};
             jsonText = www.text;
         }
@@ -102,11 +98,35 @@ public class GameManager : MonoBehaviour
             jsonText = File.ReadAllText(filePath);
         }
         
-        // Read the json from the file into a string
         Debug.Log(jsonText);
 
         JSONObject dataAsJson = new JSONObject(jsonText);
+        
+        // Create board from file
+        dataAsJson.GetField("Board", delegate(JSONObject boardData)
+        {
+            BoardManager.BoardSize.x = (int) boardData["Size"]["X"].i;
+            BoardManager.BoardSize.y = (int) boardData["Size"]["Y"].i;
 
+            BoardManager.CellSize = (int) boardData["CellSize"].i;
+            BoardManager.CellOffset = (int) boardData["CellOffset"].i;
+
+            BoardManager.SpawnPoint.x = (int) boardData["SpawnPoint"]["X"].i;
+            BoardManager.SpawnPoint.y = (int) boardData["SpawnPoint"]["Y"].i;
+
+            foreach (var path in boardData["Paths"].list)
+            {
+                BoardManager.Paths.Add(new BoardPath((int) path["X1"].i, (int) path["Y1"].i, (int) path["X2"].i,
+                    (int) path["Y2"].i));
+            }
+
+            BoardManager.EndPoint.x = (int) boardData["EndPoint"]["X"].i;
+            BoardManager.EndPoint.y = (int) boardData["EndPoint"]["Y"].i;
+
+            BoardManager.CreateBoard();
+        }, Debug.LogError);
+
+        // Load player inventory
         if (dataAsJson["Inventory"]["Mirrors"].i > 0)
         {
             GameObject itemGameObject = Instantiate(MirrorInventoryItemPrefab, Inventory.transform);
@@ -218,27 +238,6 @@ public class GameManager : MonoBehaviour
 					Debug.Log("Instanciating a tower...");
 					objectInstance = Instantiate(TowerPrefab, ItemsContainer.transform);
 					break;
-				// ADD SPAWN
-				case "Spawner":
-					Debug.Log("Instanciating a spawner...");
-					objectInstance = Instantiate(SpawnerPrefab, ItemsContainer.transform);
-					break;
-				// ADD END
-				case "Ender":
-					Debug.Log("Instanciating an ender...");
-					objectInstance = Instantiate(EnderPrefab, ItemsContainer.transform);
-					break;
-				// ADD PATH
-				case "Path":
-					Debug.Log("Instanciating a path...");
-                    foreach(var jsonPath in jsonEntity["Paths"].list) {
-                        objectInstance = Instantiate(PathPrefab, ItemsContainer.transform);
-                        Vector3 posPath = new Vector3(jsonPath["X"].n, jsonPath["Y"].n, 0);
-                        TDManager.AddPath (posPath);
-                        objectInstance.transform.position = posPath;
-                        BoardManager.AddItemPosition (posPath);
-                    }
-					continue;
                 default:
                     Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));
                     break;

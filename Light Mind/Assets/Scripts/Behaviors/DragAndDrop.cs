@@ -1,5 +1,4 @@
-﻿using UI;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Behaviors
 {
@@ -71,7 +70,7 @@ namespace Behaviors
 
         public void HighlightNearestCell()
         {
-            if (_closestCell) _closestCell.GetComponent<SpriteRenderer>().color = _board.CellDefaultColor;
+            if (_closestCell) _closestCell.GetComponent<Renderer>().material = _board.CellDefaultMaterial;
 
             float closestDistance = SnapRange;
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, SnapRange);
@@ -85,7 +84,6 @@ namespace Behaviors
             foreach (var hitCollider in hitColliders)
             {
                 if (hitCollider.gameObject == this) continue;
-                if (!hitCollider is BoxCollider2D) continue;
 
                 var distanceFromCell = Vector3.Distance(transform.position, hitCollider.gameObject.transform.position);
                 if (!(distanceFromCell < closestDistance)) continue;
@@ -100,7 +98,7 @@ namespace Behaviors
 
             //Debug.Log(string.Format("Closest {0} is at position {1}", _closestCell.gameObject.name,
             //    _closestCell.transform.position));
-            _closestCell.GetComponent<SpriteRenderer>().color = _board.CellHighlightColor;
+            _closestCell.GetComponent<Renderer>().material = _board.CellHighlightMaterial;
         }
 
         public void DropItem()

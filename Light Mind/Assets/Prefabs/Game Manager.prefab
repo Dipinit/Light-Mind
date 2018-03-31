@@ -77,7 +77,18 @@ MonoBehaviour:
   FilterInventoryItemPrefab: {fileID: 1475637844830366, guid: e93dec52e4964804e817a58e1fbb41c1,
     type: 2}
   Inventory: {fileID: 0}
+  ColorPicker: {fileID: 0}
   WinScreen: {fileID: 0}
+  TDManager: {fileID: 0}
+  isTD: 1
+  EnemyPrefab: {fileID: 0}
+  TowerPrefab: {fileID: 0}
+  PathPrefab: {fileID: 0}
+  TowerInventoryPrefab: {fileID: 0}
+  SpawnerPrefab: {fileID: 1511592329066990, guid: 8110023ebf03a7541966e7665a9e80bc,
+    type: 2}
+  EnderPrefab: {fileID: 1955502430799006, guid: 396766a44f811c6479c5700df5ee0258,
+    type: 2}
 --- !u!114 &114926697728628188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,8 +102,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Board: {fileID: 0}
   BoardSize: {x: 8, y: 8}
-  _boardCellPrefab: {fileID: 1067793420247688, guid: 912c2ced53e2b4d45a09b1d2131d333a,
+  _boardCellPrefab: {fileID: 1915875599051970, guid: 3b9ee00db7fa88d4ca5ac56519074a36,
     type: 2}
-  CellDefaultColor: {r: 0.5955882, g: 0.5955882, b: 0.5955882, a: 1}
-  CellHighlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  CellOffset: 1
+  CellDefaultMaterial: {fileID: 2100000, guid: b26c4154453b04c40982544a257e970b, type: 2}
+  CellHighlightMaterial: {fileID: 2100000, guid: ab8038f4ec47f0540b50c7179fc4ebee,
+    type: 2}
   OccupiedPositions: []
