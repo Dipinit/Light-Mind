@@ -19,13 +19,18 @@ public class BoardManager : MonoBehaviour
     public List<BoardPath> Paths = new List<BoardPath>();
     public Vector2Int EndPoint;
 
-    [Space(5)] public List<Vector3> OccupiedPositions;
+    [Space(5)]
+    public List<Vector3> OccupiedPositions;
+    public List<Transform> Waypoints = new List<Transform>();
 
-    private Vector2Int _lastGridSize;
+    private Vector2Int _lastBoardSize;
     private int _lastCellOffset;
 
     private void Start()
     {
+        _lastBoardSize = BoardSize;
+        _lastCellOffset = CellOffset;
+        
         CreateBoard();
         AdjustCamera();
     }
@@ -33,9 +38,9 @@ public class BoardManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (BoardSize.x == _lastGridSize.x && BoardSize.y == _lastGridSize.y && _lastCellOffset == CellOffset) return;
+        if (BoardSize.x == _lastBoardSize.x && BoardSize.y == _lastBoardSize.y && _lastCellOffset == CellOffset) return;
 
-        _lastGridSize = BoardSize;
+        _lastBoardSize = BoardSize;
         _lastCellOffset = CellOffset;
         UpdateBoard();
     }
@@ -84,6 +89,11 @@ public class BoardManager : MonoBehaviour
             var path = Instantiate(GameManager.Instance.PathPrefab, Board.transform);
             path.transform.localScale = pathData.GetPathScale(CellSize, CellOffset);
             path.transform.position = pathData.GetPathPosition(CellSize, CellOffset);
+            
+            // Instantiate path waypoint
+            var waypoint = Instantiate(GameManager.Instance.PathWaypointPrefab, Board.transform);
+            waypoint.transform.position = new Vector3(CellToWorldPosition(pathData.End.x), 1.0f, CellToWorldPosition(pathData.End.y));
+            Waypoints.Add(waypoint.transform);
         }
 
         // Create ender
@@ -125,6 +135,7 @@ public class BoardManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        Waypoints.Clear();
 
         CreateBoard();
         AdjustCamera();
@@ -146,7 +157,6 @@ public class BoardManager : MonoBehaviour
 
             var targetPosition = new Vector3(CellToWorldPosition(x), 1.0f, CellToWorldPosition(y));
             
-            Debug.Log(string.Format("Target position:{0}, Cell position: {1}", targetPosition, cell.position));
             if (cell.position.Equals(targetPosition))
             {
                 Destroy(cell.gameObject);

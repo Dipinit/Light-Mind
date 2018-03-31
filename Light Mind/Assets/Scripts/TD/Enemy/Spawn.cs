@@ -1,51 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Assets.Scripts.Utilities;
+using Behaviors;
+using UnityEngine;
 
-public class Spawn : MonoBehaviour {
+namespace TD.Enemy
+{
+    public class Spawn : MonoBehaviour
+    {
+        public float SpawnInterval;
+        private int _enemiesSpawned;
 
-    public TDManager TDManager;
-	public GameObject MonsterPrefab;
-	public float SpawnInterval;
-    private int _enemiesSpawned = 0;
-    private List<Vector3> _paths;
+        public void StartWave(List<RayColor> wave)
+        {
+            StartCoroutine(SpawnEnemies(wave));
+        }
 
-    public void SetUp(TDManager TDManager, float interval, List<Vector3> paths) {
-        this.TDManager = TDManager;
-		this.SpawnInterval = interval;
-        this._paths = paths;
-        this._enemiesSpawned = 0;
-        // Might add more parameters
-	}
+        private void Update()
+        {
+            if (_enemiesSpawned <= 0 || GameManager.Instance.TdManager.GameState != TDManager.State.Playing) return;
 
-    public void StartWave (List<RayColor> wave) {
-        StartCoroutine (SpawnEnemies (wave));
-	}
-
-    void Update() {
-        if (TDManager != null && _enemiesSpawned > 0 && TDManager.GameState == TDManager.STATE.PLAYING) {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag ("enemy");
-            if (enemies.Length == 0) {
-                TDManager.CallNextPhase ();
+            var enemies = GameObject.FindGameObjectsWithTag("enemy");
+            if (enemies.Length == 0)
+            {
+                GameManager.Instance.TdManager.CallNextPhase();
             }
         }
-    }
 
-    private IEnumerator SpawnEnemies(List<RayColor> wave) {
-        _enemiesSpawned = 0;
-        Debug.Log ("Wave Count: " + wave.Count);
-        Vector3 enemyPos = transform.position;
-        enemyPos.z = -1;
-        while (_enemiesSpawned < wave.Count) {
-            GameObject enemyGo = Instantiate (MonsterPrefab, enemyPos, Quaternion.identity);
-            Debug.Log ("Spawned");
-            Enemy enemy = (Enemy)enemyGo.GetComponent (typeof(Enemy));
-            enemy.Init (_paths, wave[_enemiesSpawned]);
-            _enemiesSpawned++;
-            yield return new WaitForSeconds (SpawnInterval);
+        private IEnumerator SpawnEnemies(IList<RayColor> wave)
+        {
+            _enemiesSpawned = 0;
+            Debug.Log(string.Format("Wave Count: {0}", wave.Count));
+            var enemyPos = transform.position;
+            enemyPos.z = -1;
+            while (_enemiesSpawned < wave.Count)
+            {
+                var enemyGo = Instantiate(GameManager.Instance.EnemyPrefab, enemyPos, Quaternion.identity);
+                Debug.Log("Spawned");
+                enemyGo.GetComponent<EnemyBehaviour>().Color = wave[_enemiesSpawned];
+                _enemiesSpawned++;
+                yield return new WaitForSeconds(SpawnInterval);
+            }
+
+            StopAllCoroutines();
         }
-        StopAllCoroutines ();
     }
-
 }

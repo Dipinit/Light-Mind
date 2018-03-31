@@ -8,6 +8,8 @@ TagManager:
   - objective
   - Grid Cell
   - enemy
+  - Path
+  - Path Waypoint
   layers:
   - Default
   - TransparentFX

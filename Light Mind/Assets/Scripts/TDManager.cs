@@ -1,19 +1,18 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using System;
-using Assets.Scripts.Utilities;
-using UnityEngine.UI;
 using System.Text;
-using System.Xml.Linq;
+using Assets.Scripts.Utilities;
+using TD.Enemy;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class TDManager : MonoBehaviour {
     // Not used yet, might delete
-    public enum STATE {PLAYING, PAUSE, WIN, LOSE};
+    public enum State {Playing, Pause, Win, Lose}
 
     public Spawn Spawn;
 
-    public STATE GameState;
+    public State GameState;
     public int WavesTotal;
     public int LivesLeft;
     public int CurrentWave;
@@ -29,23 +28,15 @@ public class TDManager : MonoBehaviour {
 
     public void StartGame() {
         // Might add more things here
-        Spawn = GameObject.FindObjectOfType<Spawn> ();
-        Spawn.SetUp (this, _spawnInterval, _paths);
+        Spawn = FindObjectOfType<Spawn> ();
+        Spawn.SpawnInterval = _spawnInterval;
         CurrentWave = 0;
         StartPausedPhase ();
     }
 
-    public void Init() {
-        // Init the dictionary with all char and corresponding colors
-        InitializeWavesDico ();
-
-        // Add GoButton Listener
-        GoButton.GetComponent <Button>().onClick.AddListener (OnGoButtonClick);
-    }
-
     private void StartPlayingPhase() {
         // Change state
-        GameState = STATE.PLAYING;
+        GameState = State.Playing;
         // Hide go button
         GoButton.gameObject.SetActive (false);
         // Update current wave
@@ -62,94 +53,109 @@ public class TDManager : MonoBehaviour {
     private void StartPausedPhase() {
         CurrentWave++;
         // Change state
-        GameState = STATE.PAUSE;
+        GameState = State.Pause;
         // Display next wave
         WaveText.text = "Next Wave: " + Environment.NewLine + ShowNextWave(_enemyWaves[CurrentWave - 1]);
         // Show button Go
         GoButton.gameObject.SetActive (true);
     }
 
-    String ShowNextWave(List<RayColor> wave) {
-        int RED, WHITE, BLUE, YELLOW, GREEN, CYAN, MAGENTA, NONE;
-        RED = WHITE = BLUE = YELLOW = GREEN = CYAN = MAGENTA =  NONE = 0;
-        foreach (RayColor color in wave) {
+    string ShowNextWave(IEnumerable<RayColor> wave) {
+        int red, white, blue, yellow, green, cyan, magenta, none;
+        red = white = blue = yellow = green = cyan = magenta = none = 0;
+        foreach (var color in wave) {
             if (color == RayColor.RED) {
-                RED++;
+                red++;
                 continue;
             }
             if (color == RayColor.WHITE) {
-                WHITE++;
+                white++;
                 continue;
             }
             if (color == RayColor.BLUE) {
-                BLUE++;
+                blue++;
                 continue;
             }
             if (color == RayColor.YELLOW) {
-                YELLOW++;
+                yellow++;
                 continue;
             }
             if (color == RayColor.GREEN) {
-                GREEN++;
+                green++;
                 continue;
             }
             if (color == RayColor.CYAN) {
-                CYAN++;
+                cyan++;
                 continue;
             }
             if (color == RayColor.MAGENTA) {
-                MAGENTA++;
+                magenta++;
                 continue;
             }
             if (color == RayColor.NONE) {
-                NONE++;
-                continue;
+                none++;
             }
         }
 
         StringBuilder sb = new StringBuilder ();
-        if (RED > 0) sb.Append ("RED x").Append (RED).Append (Environment.NewLine);
-        if (BLUE > 0) sb.Append ("BLUE x").Append (BLUE).Append (Environment.NewLine);
-        if (YELLOW > 0) sb.Append ("YELLOW x").Append (YELLOW).Append (Environment.NewLine);
-        if (CYAN > 0) sb.Append ("CYAN x").Append (CYAN).Append (Environment.NewLine);
-        if (GREEN > 0) sb.Append ("GREEN x").Append(GREEN).Append (Environment.NewLine);
-        if (WHITE > 0) sb.Append ("WHITE x").Append (WHITE).Append (Environment.NewLine);
-        if (MAGENTA > 0) sb.Append ("MAGENTA x").Append (MAGENTA).Append (Environment.NewLine);
-        if (NONE > 0) sb.Append ("COLOR-IMMUNE x").Append (NONE).Append (Environment.NewLine);
+        if (red > 0) sb.Append ("RED x").Append (red).Append (Environment.NewLine);
+        if (blue > 0) sb.Append ("BLUE x").Append (blue).Append (Environment.NewLine);
+        if (yellow > 0) sb.Append ("YELLOW x").Append (yellow).Append (Environment.NewLine);
+        if (cyan > 0) sb.Append ("CYAN x").Append (cyan).Append (Environment.NewLine);
+        if (green > 0) sb.Append ("GREEN x").Append(green).Append (Environment.NewLine);
+        if (white > 0) sb.Append ("WHITE x").Append (white).Append (Environment.NewLine);
+        if (magenta > 0) sb.Append ("MAGENTA x").Append (magenta).Append (Environment.NewLine);
+        if (none > 0) sb.Append ("COLOR-IMMUNE x").Append (none).Append (Environment.NewLine);
         Debug.Log (sb);
         return sb.ToString ();
     }
 
-    void StartNextWave() {
+    private void StartNextWave() {
         // Might add more things
         Spawn.StartWave (_enemyWaves[CurrentWave - 1]);
     }
 
     // Might delete if utility is low
-    public void CallNextPhase() {
-        if (GameState == STATE.PLAYING) {
-            StartPausedPhase ();
-        } else if (GameState == STATE.PAUSE) {
-            StartPlayingPhase ();
-        } else if (GameState == STATE.LOSE) {
-            // TODO
-        } else if (GameState == STATE.WIN) {
-            // TODO
+    public void CallNextPhase()
+    {
+        switch (GameState)
+        {
+            case State.Playing:
+                StartPausedPhase ();
+                break;
+            case State.Pause:
+                StartPlayingPhase ();
+                break;
+            case State.Lose:
+                // TODO
+                break;
+            case State.Win:
+                // TODO
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
-    public void SetUpWaves(JSONObject data) {
-        Init ();
+    public void SetUpWaves(JSONObject data)
+    {
+        // Init the dictionary with all char and corresponding colors
+        InitializeWavesDico ();
+
+        // Add GoButton Listener
+        GoButton.GetComponent <Button>().onClick.AddListener (OnGoButtonClick);
+        
         foreach (var jsonEntity in data["Waves"].list)
         {
             DecodeEnemyWaves(jsonEntity ["Enemies"].str);
         }
+
         LivesLeft = (int)data ["Info"].GetField ("Lives").n;
-        _spawnInterval = (float)data ["Info"].GetField ("SpawnInterval").n;
+        _spawnInterval = data ["Info"].GetField ("SpawnInterval").n;
         WavesTotal = _enemyWaves.Count;
     }
         
-    private void DecodeEnemyWaves(String encodedWave) {
+    private void DecodeEnemyWaves(string encodedWave) {
         List<RayColor> waveColors = new List<RayColor>();
         RayColor previousColor = RayColor.NONE;
 
@@ -209,7 +215,7 @@ public class TDManager : MonoBehaviour {
         if (LivesLeft <= 0) {
             //TODO
         } else {
-            LivesText.text = "Lives : " + LivesLeft;
+            LivesText.text = string.Format("Lives : {0}", LivesLeft);
         }
     }
 }

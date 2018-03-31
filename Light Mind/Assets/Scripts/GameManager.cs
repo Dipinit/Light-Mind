@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Assets.Scripts.Utilities;
 using Behaviors;
@@ -7,13 +6,14 @@ using Items;
 using Models;
 using UI;
 using UnityEngine;
-using DragAndDrop = Behaviors.DragAndDrop;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
     public BoardManager BoardManager;
+    public TDManager TdManager;
+
     public GameObject ItemsContainer;
 
     public GameObject MirrorPrefab;
@@ -29,18 +29,17 @@ public class GameManager : MonoBehaviour
     public GameObject PrismInventoryItemPrefab;
     public GameObject FilterInventoryItemPrefab;
     public GameObject Inventory;
+
     public GameObject ColorPicker;
     public GameObject WinScreen;
 
-    private GameObject _selectedItem = null;
+    private GameObject _selectedItem;
 
-	// TD variables
-    public TDManager TDManager;
-	public Boolean isTD = false;
-
+    public bool IsTd;
 	public GameObject EnemyPrefab;
 	public GameObject TowerPrefab;
 	public GameObject PathPrefab;
+	public GameObject PathWaypointPrefab;
 	public GameObject TowerInventoryPrefab;
 	public GameObject SpawnerPrefab;
 	public GameObject EnderPrefab;
@@ -64,6 +63,7 @@ public class GameManager : MonoBehaviour
         }
 
         BoardManager = GetComponent<BoardManager>();
+        TdManager = GetComponent<TDManager>();
     }
 
     private void Start()
@@ -76,13 +76,13 @@ public class GameManager : MonoBehaviour
             LoadLevel(currentLevel);
         }
 
-        if (isTD) TDManager.StartGame ();
+        if (IsTd) TdManager.StartGame ();
     }
     
 
     public void LoadLevel(string level)
     {
-		var fileName = string.Format(isTD ? "{0}_TD.json" : "{0}.json", level);
+		var fileName = string.Format(IsTd ? "{0}_TD.json" : "{0}.json", level);
         string jsonText;
         var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
@@ -90,7 +90,8 @@ public class GameManager : MonoBehaviour
         if (Application.platform == RuntimePlatform.Android)
         {
             var www = new WWW(filePath);
-            while (!www.isDone) {};
+            while (!www.isDone) {}
+            
             jsonText = www.text;
         }
         else 
@@ -156,7 +157,7 @@ public class GameManager : MonoBehaviour
         }
 
 		// ADD TOWERS
-		if (isTD && dataAsJson["Inventory"]["Towers"].i > 0)
+		if (IsTd && dataAsJson["Inventory"]["Towers"].i > 0)
 		{
 			GameObject itemGameObject = Instantiate(TowerInventoryPrefab, Inventory.transform);
 			InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
@@ -254,8 +255,8 @@ public class GameManager : MonoBehaviour
             BoardManager.AddItemPosition (pos);
         }
 
-        if (isTD && dataAsJson != null) {
-            TDManager.SetUpWaves (dataAsJson);
+        if (IsTd && dataAsJson != null) {
+            TdManager.SetUpWaves (dataAsJson);
         }
     }
 
@@ -279,36 +280,34 @@ public class GameManager : MonoBehaviour
 
     public void SelectItem(GameObject item)
     {
-        if (_selectedItem == null || (item.GetInstanceID() != _selectedItem.GetInstanceID()))
-        {
-            _selectedItem = item;
+        if (_selectedItem != null && (item.GetInstanceID() == _selectedItem.GetInstanceID())) return;
+        
+        _selectedItem = item;
 
-            ItemBase ib = _selectedItem.GetComponent<ItemBase>();
+        var ib = _selectedItem.GetComponent<ItemBase>();
 
-            if (ib != null)
-            {
-                if (ib.IsColorable) ShowColorPanel();
-                else HideColorPanel();
-            }
-        }
+        if (ib == null) return;
+        
+        if (ib.IsColorable) ShowColorPanel();
+        else HideColorPanel();
     }
 
     private void ShowColorPanel()
     {
-        this.Inventory.SetActive(false);
-        this.ColorPicker.SetActive(true);
+        Inventory.SetActive(false);
+        ColorPicker.SetActive(true);
 
     }
 
     public void HideColorPanel()
     {
-        this.ColorPicker.SetActive(false);
-        this.Inventory.SetActive(true);
+        ColorPicker.SetActive(false);
+        Inventory.SetActive(true);
     }
 
     public void SetSelectedItemColor(RayColor rayColor)
     {
-        ItemBase ib = _selectedItem.GetComponent<ItemBase>();
+        var ib = _selectedItem.GetComponent<ItemBase>();
 
         if (ib != null)
         {
