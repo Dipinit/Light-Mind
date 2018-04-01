@@ -11,6 +11,7 @@ TagManager:
   - Path
   - Path Waypoint
   - Spawn Point
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - 
   - 
   - Items
-  - 
+  - Studio
   - 
   - 
   - 

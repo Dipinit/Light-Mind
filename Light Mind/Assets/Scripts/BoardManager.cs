@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Items;
 using Models;
 using UnityEngine;
 
@@ -149,7 +150,23 @@ public class BoardManager : MonoBehaviour
                 CellToWorldPosition(BoardSize.y - 1) / 2.0f);
     }
 
-    private void DeleteCellAtPosition(int x, int y)
+    public void ResetCells()
+    {
+        foreach (Transform cell in Board.transform)
+        {
+            if (!cell.CompareTag("Grid Cell")) continue;
+            
+            var cellSprite = cell.gameObject.GetComponent<Renderer>();
+            cellSprite.material = CellDefaultMaterial;
+        }
+    }
+
+    public float CellToWorldPosition(int coordinate)
+    {
+        return coordinate == 0 ? 0 : coordinate * (CellSize + CellOffset);
+    }
+
+    public BoardCell GetCellAtPosition(int x, int y)
     {
         foreach (Transform cell in Board.transform)
         {
@@ -159,22 +176,16 @@ public class BoardManager : MonoBehaviour
             
             if (cell.position.Equals(targetPosition))
             {
-                Destroy(cell.gameObject);
+                return cell.gameObject.GetComponent<BoardCell>();
             }
         }
-    }
 
-    public void ResetCells()
-    {
-        foreach (Transform cell in Board.transform)
-        {
-            var cellSprite = cell.gameObject.GetComponent<Renderer>();
-            cellSprite.material = CellDefaultMaterial;
-        }
+        return null;
     }
-
-    public float CellToWorldPosition(int coordinate)
+    
+    private void DeleteCellAtPosition(int x, int y)
     {
-        return coordinate == 0 ? 0 : coordinate * (CellSize + CellOffset);
+        var cell = GetCellAtPosition(x, y);
+        if (cell) Destroy(cell.gameObject);
     }
 }

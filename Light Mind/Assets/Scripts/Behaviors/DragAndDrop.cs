@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Items;
+using UnityEngine;
 
 namespace Behaviors
 {
@@ -24,18 +25,20 @@ namespace Behaviors
 
         private void Awake()
         {
-            _board = FindObjectOfType<BoardManager>();
-            _audioSources = gameObject.GetComponents<AudioSource>();
-            _raySensitive = gameObject.GetComponent<RaySensitive>();
+            _board = GameManager.Instance.BoardManager;
+            _audioSources = GetComponents<AudioSource>();
+            _raySensitive = GetComponent<RaySensitive>();
         }
 
         private void OnMouseDown()
         {
+            Debug.Log("Trying to drag an item...");
+
             if (!IsDraggable) return;
-            
+
             _lastPosition = transform.position;
             GameManager.Instance.BoardManager.RemoveItemPosition(_lastPosition);
-            
+
             UpdateDraggedPosition();
             if (_raySensitive != null)
                 _raySensitive.Disable();
@@ -54,15 +57,15 @@ namespace Behaviors
         private void OnMouseUp()
         {
             if (!IsDraggable) return;
-            
+
             DropItem();
         }
 
         public void UpdateDraggedPosition()
         {
             // Get World Point using the mouse position
-            _screenPoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            _screenPoint.z = 0;
+            _screenPoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
+                2.0f));
 
             // Change GameObject position
             transform.position = _screenPoint;
@@ -72,8 +75,8 @@ namespace Behaviors
         {
             if (_closestCell) _closestCell.GetComponent<Renderer>().material = _board.CellDefaultMaterial;
 
-            float closestDistance = SnapRange;
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, SnapRange);
+            var closestDistance = SnapRange;
+            var hitColliders = Physics.OverlapSphere(transform.position, SnapRange);
 
             if (hitColliders.Length == 0)
             {
@@ -83,12 +86,13 @@ namespace Behaviors
 
             foreach (var hitCollider in hitColliders)
             {
-                if (hitCollider.gameObject == this) continue;
+                if (!hitCollider.gameObject.CompareTag("Grid Cell")) continue;
 
                 var distanceFromCell = Vector3.Distance(transform.position, hitCollider.gameObject.transform.position);
                 if (!(distanceFromCell < closestDistance)) continue;
 
-                if (_board.IsOccupied(hitCollider.gameObject.transform.position)) continue;
+                var boardCell = hitCollider.GetComponent<BoardCell>();
+                if (boardCell.IsOccupied()) continue;
 
                 closestDistance = distanceFromCell;
                 _closestCell = hitCollider.gameObject;
@@ -98,7 +102,8 @@ namespace Behaviors
 
             //Debug.Log(string.Format("Closest {0} is at position {1}", _closestCell.gameObject.name,
             //    _closestCell.transform.position));
-            _closestCell.GetComponent<Renderer>().material = _board.CellHighlightMaterial;
+            var closestBoardCell = _closestCell.GetComponent<BoardCell>();
+            closestBoardCell.HighlightCell();
         }
 
         public void DropItem()
@@ -116,7 +121,7 @@ namespace Behaviors
                     string itemType = raySensitive.getItemType();
                     Debug.LogWarning(itemType);
                 }
-                
+
 
                 GameObject.Find("Inventory").GetComponent<AudioSource>().Play();
             }

@@ -244,13 +244,21 @@ public class GameManager : MonoBehaviour
 
             if (objectInstance == null) continue;
 
-            Vector3 pos = new Vector3(jsonEntity["X"].n, jsonEntity["Y"].n, 0);
-            objectInstance.transform.position = pos;
-            DragAndDrop dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
+            var boardCell = BoardManager.GetCellAtPosition((int) jsonEntity["X"].i, (int) jsonEntity["Y"].i);
+
+            if (boardCell == null)
+            {
+                Debug.LogError(string.Format("Could not find board cell at position ({0}, {1})", (int) jsonEntity["X"].i, (int) jsonEntity["Y"].i));
+                continue;
+            }
+            
+            boardCell.AddItem(objectInstance);
+            
+            var dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
             if (dragAndDrop) dragAndDrop.IsDraggable = jsonEntity ["Draggable"].b;
-            RaySensitive raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
+            
+            var raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
             if (raySensitive) raySensitive.ColliderEnabled = true;
-            BoardManager.AddItemPosition (pos);
         }
 
         if (IsTd && dataAsJson != null) {

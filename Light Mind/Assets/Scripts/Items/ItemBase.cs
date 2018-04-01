@@ -120,29 +120,29 @@ namespace Items
             // Update the item rotation based on the previous orientation
             switch (Orientation)
             {
-                case Direction.East:
+                case Direction.North:
                     transform.eulerAngles = new Vector3(0, 0, 0);
                     break;
                 case Direction.NorthEast:
-                    transform.eulerAngles = new Vector3(0, 0, 45);
+                    transform.eulerAngles = new Vector3(0, 45, 0);
                     break;
-                case Direction.North:
-                    transform.eulerAngles = new Vector3(0, 0, 90);
-                    break;
-                case Direction.NorthWest:
-                    transform.eulerAngles = new Vector3(0, 0, 135);
-                    break;
-                case Direction.West:
-                    transform.eulerAngles = new Vector3(0, 0, 180);
-                    break;
-                case Direction.SouthWest:
-                    transform.eulerAngles = new Vector3(0, 0, -135);
-                    break;
-                case Direction.South:
-                    transform.eulerAngles = new Vector3(0, 0, -90);
+                case Direction.East:
+                    transform.eulerAngles = new Vector3(0, 90, 0);
                     break;
                 case Direction.SouthEast:
-                    transform.eulerAngles = new Vector3(0, 0, -45);
+                    transform.eulerAngles = new Vector3(0, 135, 0);
+                    break;
+                case Direction.South:
+                    transform.eulerAngles = new Vector3(0, 180, 0);
+                    break;
+                case Direction.SouthWest:
+                    transform.eulerAngles = new Vector3(0, -135, 0);
+                    break;
+                case Direction.West:
+                    transform.eulerAngles = new Vector3(0, -90, 0);
+                    break;
+                case Direction.NorthWest:
+                    transform.eulerAngles = new Vector3(0, -45, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
