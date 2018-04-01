@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 5e13e2b5315c4ac46be0702df68ff67e
-timeCreated: 1522500870
+guid: 5eda7c997ac36c2428a25d658332853c
+timeCreated: 1522543285
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -25,17 +25,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Turret_GunMetal
-    second: {fileID: 2100000, guid: a430dd6dcf4bcd249b660b2560a48a36, type: 2}
+    second: {fileID: 2100000, guid: b3d6e04ca058b82489c221dbadc83521, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Turret_Metal
-    second: {fileID: 2100000, guid: 356de998e3af61a4eb8fbfc6b61c9d7a, type: 2}
+    second: {fileID: 2100000, guid: cccc35d7a3b765c41b8a78e86afe9dda, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Turret_Metal2
-    second: {fileID: 2100000, guid: 4fef30775ad5a924d9a30d371c073341, type: 2}
+    second: {fileID: 2100000, guid: 6c1768a4593850d42b3336c24358b824, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -65,7 +65,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 3
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -86,8 +86,8 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 38
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
   importAnimation: 1
