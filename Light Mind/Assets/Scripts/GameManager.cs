@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public BoardManager BoardManager;
+    [Header("Manager Scripts")] public BoardManager BoardManager;
     public TDManager TdManager;
 
-    public GameObject ItemsContainer;
+    [Header("Containers")] public GameObject ItemsContainer;
 
-    public GameObject MirrorPrefab;
+    [Header("Items")] public GameObject MirrorPrefab;
     public GameObject FilterPrefab;
     public GameObject ObjectivePrefab;
     public GameObject ObstaclePrefab;
@@ -24,25 +24,32 @@ public class GameManager : MonoBehaviour
     public GameObject LightSourcePrefab;
     public GameObject PrismPrefab;
 
-    public GameObject MirrorInventoryItemPrefab;
+    [Header("Inventory Items")] public GameObject MirrorInventoryItemPrefab;
     public GameObject FilterMirrorInventoryItemPrefab;
     public GameObject PrismInventoryItemPrefab;
     public GameObject FilterInventoryItemPrefab;
-    public GameObject Inventory;
 
+    [Header("UI")] public GameObject Inventory;
     public GameObject ColorPicker;
     public GameObject WinScreen;
 
-    private GameObject _selectedItem;
+    [Header("Tower Defense")] public bool IsTd;
+    public GameObject EnemyPrefab;
 
-    public bool IsTd;
-	public GameObject EnemyPrefab;
-	public GameObject TowerPrefab;
-	public GameObject PathPrefab;
-	public GameObject PathWaypointPrefab;
-	public GameObject TowerInventoryPrefab;
-	public GameObject SpawnerPrefab;
-	public GameObject EnderPrefab;
+    [Header("Turrets")] public GameObject StandardTurretPrefab;
+    public GameObject MissileTurretPrefab;
+    public GameObject LaserTurretPrefab;
+
+    [Header("Turrets Inventory Items")] public GameObject StandardTurretInventoryItemPrefab;
+    public GameObject MissileTurretInventoryItemPrefab;
+    public GameObject LaserTurretInventoryItemPrefab;
+
+    [Header("Enemy Path")] public GameObject SpawnerPrefab;
+    public GameObject EnderPrefab;
+    public GameObject PathPrefab;
+    public GameObject PathWaypointPrefab;
+
+    private GameObject _selectedItem;
 
     private void Awake()
     {
@@ -76,11 +83,11 @@ public class GameManager : MonoBehaviour
 
         if (IsTd) TdManager.StartGame();
     }
-    
+
 
     public void LoadLevel(string level)
     {
-		var fileName = string.Format(IsTd ? "{0}_TD.json" : "{0}.json", level);
+        var fileName = string.Format(IsTd ? "{0}_TD.json" : "{0}.json", level);
         string jsonText;
         var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
@@ -88,19 +95,21 @@ public class GameManager : MonoBehaviour
         if (Application.platform == RuntimePlatform.Android)
         {
             var www = new WWW(filePath);
-            while (!www.isDone) {}
-            
+            while (!www.isDone)
+            {
+            }
+
             jsonText = www.text;
         }
-        else 
+        else
         {
             jsonText = File.ReadAllText(filePath);
         }
-        
+
         Debug.Log(jsonText);
 
         JSONObject dataAsJson = new JSONObject(jsonText);
-        
+
         // Create board from file
         dataAsJson.GetField("Board", delegate(JSONObject boardData)
         {
@@ -147,20 +156,31 @@ public class GameManager : MonoBehaviour
             inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Prisms"].i;
         }
 
-		if (dataAsJson["Inventory"]["Filters"].i > 0)
+        if (dataAsJson["Inventory"]["Filters"].i > 0)
         {
             GameObject itemGameObject = Instantiate(FilterInventoryItemPrefab, Inventory.transform);
             InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
             inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Filters"].i;
         }
 
-		// ADD TOWERS
-		if (IsTd && dataAsJson["Inventory"]["Towers"].i > 0)
-		{
-			GameObject itemGameObject = Instantiate(TowerInventoryPrefab, Inventory.transform);
-			InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-			inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Towers"].i;
-		}
+        if (IsTd)
+        {
+            if (dataAsJson["Inventory"]["StandardTurret"].i > 0)
+            {
+                var itemGameObject = Instantiate(StandardTurretInventoryItemPrefab, Inventory.transform);
+                var inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["StandardTurret"].i;
+            }
+
+            if (dataAsJson["Inventory"]["MissileTurret"].i > 0)
+            {
+                var itemGameObject = Instantiate(MissileTurretInventoryItemPrefab, Inventory.transform);
+                var inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["MissileTurret"].i;
+            }
+
+            // TODO: Add laser turret inventory item
+        }
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
         {
@@ -222,21 +242,31 @@ public class GameManager : MonoBehaviour
                     foreach (var jsonRay in jsonEntity["Rays"].list)
                     {
                         RayColor rayColor =
-                            new RayColor(jsonRay["Red"].b, jsonRay["Green"].b, jsonRay["Blue"].b, RayColor.DEFAULT_ALPHA);
+                            new RayColor(jsonRay["Red"].b, jsonRay["Green"].b, jsonRay["Blue"].b,
+                                RayColor.DEFAULT_ALPHA);
                         RaySource raySource =
                             new RaySource((Direction) jsonRay["Direction"].i, jsonRay["Enabled"].b, rayColor);
                         laser.AddSource(raySource);
                     }
+
                     break;
                 case "Obstacle":
                     Debug.Log("Instanciating an obstacle...");
                     objectInstance = Instantiate(ObstaclePrefab, ItemsContainer.transform);
                     break;
-				// ADD TOWER
-				case "Tower":
-					Debug.Log("Instanciating a tower...");
-					objectInstance = Instantiate(TowerPrefab, ItemsContainer.transform);
-					break;
+
+                case "Standard Turret":
+                    Debug.Log("Instanciating a standard turret...");
+                    objectInstance = Instantiate(StandardTurretPrefab, ItemsContainer.transform);
+                    break;
+
+                case "Missile Turret":
+                    Debug.Log("Instanciating a missile turret...");
+                    objectInstance = Instantiate(MissileTurretPrefab, ItemsContainer.transform);
+                    break;
+
+                // TODO: Add Laser turret instances
+
                 default:
                     Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));
                     break;
@@ -244,42 +274,42 @@ public class GameManager : MonoBehaviour
 
             if (objectInstance == null) continue;
 
-            var boardCell = BoardManager.GetCellAt(new Vector2Int((int) jsonEntity["X"].i, (int) jsonEntity["Y"].i));
-
-            if (boardCell == null)
+            var objectInstancePosition = new Vector2Int((int) jsonEntity["X"].i, (int) jsonEntity["Y"].i);
+            if (!BoardManager.AddItem(objectInstance, objectInstancePosition))
             {
-                Debug.LogError(string.Format("Could not find board cell at position ({0}, {1})", (int) jsonEntity["X"].i, (int) jsonEntity["Y"].i));
+                Debug.LogError(string.Format("Could not instantiate {0} at position {1}.", objectInstance,
+                    objectInstancePosition));
+                Destroy(objectInstance);
                 continue;
             }
-            
-            boardCell.AddItem(objectInstance);
-            
+
             var dragAndDrop = objectInstance.GetComponentInChildren<DragAndDrop>();
-            if (dragAndDrop) dragAndDrop.IsDraggable = jsonEntity ["Draggable"].b;
-            
+            if (dragAndDrop) dragAndDrop.IsDraggable = jsonEntity["Draggable"].b;
+
             var raySensitive = objectInstance.GetComponentInChildren<RaySensitive>();
             if (raySensitive) raySensitive.ColliderEnabled = true;
         }
 
-        if (IsTd && dataAsJson != null) {
-            TdManager.SetUpWaves (dataAsJson);
+        if (IsTd && dataAsJson != null)
+        {
+            TdManager.SetUpWaves(dataAsJson);
         }
     }
 
     // Find the parent GameObject of all Quad Objects and get all objectives references
-	private Objective[] GetAllObjectives()
+    private Objective[] GetAllObjectives()
     {
-		return FindObjectsOfType<Objective> ();
+        return FindObjectsOfType<Objective>();
     }
 
     // Checks for a win condition (all objectives completed)
     public void CheckWinCondition()
     {
         Debug.Log("Checking Win conditions...");
-		Objective[] objectives = GetAllObjectives ();
-		if (objectives.All(objective => objective.Completed))
-		{
-			Debug.LogWarning("Congratulations! All Objectives have been completed!");
+        Objective[] objectives = GetAllObjectives();
+        if (objectives.All(objective => objective.Completed))
+        {
+            Debug.LogWarning("Congratulations! All Objectives have been completed!");
             WinLevel();
         }
     }
@@ -287,13 +317,13 @@ public class GameManager : MonoBehaviour
     public void SelectItem(GameObject item)
     {
         if (_selectedItem != null && (item.GetInstanceID() == _selectedItem.GetInstanceID())) return;
-        
+
         _selectedItem = item;
 
         var ib = _selectedItem.GetComponent<ItemBase>();
 
         if (ib == null) return;
-        
+
         if (ib.IsColorable) ShowColorPanel();
         else HideColorPanel();
     }
@@ -302,7 +332,6 @@ public class GameManager : MonoBehaviour
     {
         Inventory.SetActive(false);
         ColorPicker.SetActive(true);
-
     }
 
     public void HideColorPanel()
@@ -322,7 +351,7 @@ public class GameManager : MonoBehaviour
 
         _selectedItem = null;
     }
-    
+
 
     public void WinLevel()
     {

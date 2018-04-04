@@ -84,16 +84,22 @@ MonoBehaviour:
   IsTd: 1
   EnemyPrefab: {fileID: 1137640825898898, guid: c6ca9c55d98a29e4a948b62856b9116d,
     type: 2}
-  TowerPrefab: {fileID: 1153160497009334, guid: f8079b50a6599fe4ebc749e5e6102724,
+  StandardTurretPrefab: {fileID: 1153160497009334, guid: f8079b50a6599fe4ebc749e5e6102724,
     type: 2}
-  PathPrefab: {fileID: 1563610250728318, guid: 5be939b2ed2cb7d4483a9772f802c242, type: 2}
-  PathWaypointPrefab: {fileID: 1554856314379480, guid: 71e8b99c5ef322d458f35170da439b21,
+  MissileTurretPrefab: {fileID: 1115505147068452, guid: dd5d166fe919e754185adc3f903757e3,
     type: 2}
-  TowerInventoryPrefab: {fileID: 1717933067496232, guid: 6f14f67bcb4fc2548b12ffb5e2678a2c,
+  LaserTurretPrefab: {fileID: 0}
+  StandardTurretInventoryItemPrefab: {fileID: 1717933067496232, guid: 6f14f67bcb4fc2548b12ffb5e2678a2c,
     type: 2}
+  MissileTurretInventoryItemPrefab: {fileID: 1582024524003120, guid: 890dd4970ba1966489870fc14ca2eebe,
+    type: 2}
+  LaserTurretInventoryItemPrefab: {fileID: 0}
   SpawnerPrefab: {fileID: 1511592329066990, guid: 8110023ebf03a7541966e7665a9e80bc,
     type: 2}
   EnderPrefab: {fileID: 1955502430799006, guid: 396766a44f811c6479c5700df5ee0258,
+    type: 2}
+  PathPrefab: {fileID: 1563610250728318, guid: 5be939b2ed2cb7d4483a9772f802c242, type: 2}
+  PathWaypointPrefab: {fileID: 1554856314379480, guid: 71e8b99c5ef322d458f35170da439b21,
     type: 2}
 --- !u!114 &114553513558107608
 MonoBehaviour:
