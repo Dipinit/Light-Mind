@@ -4,9 +4,11 @@ namespace Behaviors
 {
     public class Bullet : MonoBehaviour
     {
-        public float Speed = 70f;
-        public GameObject ImpactEffect;
-        
+        [Header("Fire Properties")] public float Speed = 70f;
+        public float ExplosionRadius;
+
+        [Header("FX")] public GameObject ImpactEffect;
+
         private Transform _target;
 
         public void Seek(Transform target)
@@ -20,7 +22,7 @@ namespace Behaviors
             {
                 Destroy(gameObject);
                 return;
-            };
+            }
 
             var directionToTarget = _target.position - transform.position;
             var distanceThisFrame = Speed * Time.deltaTime;
@@ -30,16 +32,49 @@ namespace Behaviors
                 HitTarget();
                 return;
             }
-            
+
             transform.Translate(directionToTarget.normalized * distanceThisFrame, Space.World);
+            transform.LookAt(_target);
         }
 
         private void HitTarget()
         {
             var effectInstance = Instantiate(ImpactEffect, transform.position, transform.rotation);
-            Destroy(effectInstance, 2f);
-            
+            Destroy(effectInstance, 5f);
+
+            if (ExplosionRadius > 0f)
+            {
+                Explode();
+            }
+            else
+            {
+                Damage(_target);
+            }
+
             Destroy(gameObject);
+        }
+
+        private void Explode()
+        {
+            var hitColliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("enemy"))
+                {
+                    Damage(hitCollider.transform);
+                }
+            }
+        }
+
+        private void Damage(Component enemy)
+        {
+            Destroy(enemy.gameObject);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, ExplosionRadius);
         }
     }
 }

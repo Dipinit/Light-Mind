@@ -367,6 +367,6 @@ MonoBehaviour:
   FireRate: 1
   PartToRotate: {fileID: 4776973004137290}
   RotateSpeed: 10
-  BulletPrefab: {fileID: 1716949523026110, guid: 76fa1ce8b413bb147832fc398cd4c7e3,
+  BulletPrefab: {fileID: 1086569615714358, guid: caf8a8e538243c24e8b4151463c0ab1a,
     type: 2}
   FirePoint: {fileID: 4505737613366762}
