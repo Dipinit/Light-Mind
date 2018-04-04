@@ -20,8 +20,7 @@ public class BoardManager : MonoBehaviour
     public List<BoardPath> Paths = new List<BoardPath>();
     public Vector2Int EndPoint;
 
-    [Space(5)]
-    public List<Vector3> OccupiedPositions;
+    [Space(5)] public List<Vector3> OccupiedPositions;
     public List<Transform> Waypoints = new List<Transform>();
 
     private Vector2Int _lastBoardSize;
@@ -79,7 +78,7 @@ public class BoardManager : MonoBehaviour
             {
                 for (var j = pathData.Start.y; j <= pathData.End.y; j++)
                 {
-                    DeleteCellAtPosition(i, j);
+                    DeleteCellAt(new Vector2Int(i, j));
                 }
             }
 
@@ -87,10 +86,11 @@ public class BoardManager : MonoBehaviour
             var path = Instantiate(GameManager.Instance.PathPrefab, Board.transform);
             path.transform.localScale = pathData.GetPathScale(CellSize, CellOffset);
             path.transform.position = pathData.GetPathPosition(CellSize, CellOffset);
-            
+
             // Instantiate path waypoint
             var waypoint = Instantiate(GameManager.Instance.PathWaypointPrefab, Board.transform);
-            waypoint.transform.position = new Vector3(CellToWorldPosition(pathData.End.x), 1.0f, CellToWorldPosition(pathData.End.y));
+            waypoint.transform.position = new Vector3(CellToWorldPosition(pathData.End.x), 1.0f,
+                CellToWorldPosition(pathData.End.y));
             Waypoints.Add(waypoint.transform);
         }
 
@@ -99,44 +99,68 @@ public class BoardManager : MonoBehaviour
         ender.transform.position =
             new Vector3(CellToWorldPosition(EndPoint.x), 1.5f + ender.transform.localScale.y / 2,
                 CellToWorldPosition(EndPoint.y));
-        
+
         AdjustCamera();
     }
 
-    public void AddItemPosition(Vector3 pos)
+    public bool AddItem(GameObject item, Vector2Int position)
     {
-        if (!OccupiedPositions.Contains(pos))
+        try
         {
-            OccupiedPositions.Add(pos);
-            // Debug.Log(string.Format("Added position to grid: {0}.", pos));
+            var cell = GetCellAt(position);
+            if (cell.IsOccupied()) return false;
+            cell.AddItem(item);
+            Debug.Log(string.Format("Added item {0} to grid at position {1}.", item, position));
+            return true;
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogException(e);
+            return false;
         }
     }
 
-    public void RemoveItemPosition(Vector3 pos)
+    public bool RemoveItemAt(Vector2Int position)
     {
-        if (OccupiedPositions.Contains(pos))
+        try
         {
-            OccupiedPositions.Remove(pos);
-            // Debug.Log(string.Format("Removed position from grid: {0}.", pos));
+            var cell = GetCellAt(position);
+            if (!cell.IsOccupied()) return false;
+            cell.RemoveItem();
+            Debug.Log(string.Format("Removed item from grid at position {0}.", position));
+            return true;
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogException(e);
+            return false;
         }
     }
 
-    public bool IsOccupied(Vector3 targetPosition)
+    public bool IsOccupied(Vector2Int position)
     {
-        if (!OccupiedPositions.Contains(targetPosition)) return false;
-
-        Debug.Log(string.Format("Position {0} is occupied", targetPosition));
-        return true;
+        try
+        {
+            var cell = GetCellAt(position);
+            Debug.Log(string.Format("Position {0} occupied: {1}", position, cell.IsOccupied()));
+            return cell.IsOccupied();
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogException(e);
+            return false;
+        }
     }
 
     private void UpdateBoard()
     {
         Debug.Log("UpdateBoard requested.");
-        
+
         foreach (Transform child in Board.transform)
         {
             Destroy(child.gameObject);
         }
+
         Waypoints.Clear();
 
         CreateBoard();
@@ -155,25 +179,19 @@ public class BoardManager : MonoBehaviour
         foreach (Transform cell in Board.transform)
         {
             if (!cell.CompareTag("Grid Cell")) continue;
-            
-            var cellSprite = cell.gameObject.GetComponent<Renderer>();
-            cellSprite.material = CellDefaultMaterial;
+
+            cell.GetComponent<BoardCell>().ResetCellColor();
         }
     }
 
-    public float CellToWorldPosition(int coordinate)
-    {
-        return coordinate == 0 ? 0 : coordinate * (CellSize + CellOffset);
-    }
-
-    public BoardCell GetCellAtPosition(int x, int y)
+    public BoardCell GetCellAt(Vector2Int position)
     {
         foreach (Transform cell in Board.transform)
         {
             if (!cell.CompareTag("Grid Cell")) continue;
 
-            var targetPosition = new Vector3(CellToWorldPosition(x), 1.0f, CellToWorldPosition(y));
-            
+            var targetPosition = new Vector3(CellToWorldPosition(position.x), 1.0f, CellToWorldPosition(position.y));
+
             if (cell.position.Equals(targetPosition))
             {
                 return cell.gameObject.GetComponent<BoardCell>();
@@ -182,10 +200,21 @@ public class BoardManager : MonoBehaviour
 
         return null;
     }
-    
-    private void DeleteCellAtPosition(int x, int y)
+
+    private void DeleteCellAt(Vector2Int position)
     {
-        var cell = GetCellAtPosition(x, y);
+        var cell = GetCellAt(position);
         if (cell) Destroy(cell.gameObject);
+    }
+
+    public int WorldToCellPosition(float worldCoordinate)
+    {
+        var coordinate = Mathf.RoundToInt(worldCoordinate);
+        return coordinate == 0 ? 0 : coordinate / (CellSize + CellOffset);
+    }
+
+    public float CellToWorldPosition(int coordinate)
+    {
+        return coordinate == 0 ? 0 : coordinate * (CellSize + CellOffset);
     }
 }

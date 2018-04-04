@@ -244,7 +244,7 @@ public class GameManager : MonoBehaviour
 
             if (objectInstance == null) continue;
 
-            var boardCell = BoardManager.GetCellAtPosition((int) jsonEntity["X"].i, (int) jsonEntity["Y"].i);
+            var boardCell = BoardManager.GetCellAt(new Vector2Int((int) jsonEntity["X"].i, (int) jsonEntity["Y"].i));
 
             if (boardCell == null)
             {

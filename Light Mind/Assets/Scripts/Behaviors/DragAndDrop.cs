@@ -6,11 +6,9 @@ namespace Behaviors
     [RequireComponent(typeof(AudioSource))]
     public class DragAndDrop : MonoBehaviour
     {
-        [Header("General")]
-        public bool IsDraggable = true;
-        
-        [Header("Snap")]
-        public float SnapRange = 1.5f;
+        [Header("General")] public bool IsDraggable = true;
+
+        [Header("Snap")] public float SnapRange = 1.5f;
 
         private BoardManager _board;
         private Vector3 _screenPoint;
@@ -37,7 +35,9 @@ namespace Behaviors
             if (!IsDraggable) return;
 
             _lastPosition = transform.position;
-            GameManager.Instance.BoardManager.RemoveItemPosition(_lastPosition);
+            var gridPosition = new Vector2Int(_board.WorldToCellPosition(_lastPosition.x),
+                _board.WorldToCellPosition(_lastPosition.z));
+            GameManager.Instance.BoardManager.RemoveItemAt(gridPosition);
 
             UpdateDraggedPosition();
             if (_raySensitive != null)
@@ -47,7 +47,7 @@ namespace Behaviors
         private void OnMouseDrag()
         {
             if (!IsDraggable) return;
-            
+
             UpdateDraggedPosition();
 
             // Illuminate nearest tile for board placement
@@ -102,8 +102,7 @@ namespace Behaviors
 
             //Debug.Log(string.Format("Closest {0} is at position {1}", _closestCell.gameObject.name,
             //    _closestCell.transform.position));
-            var closestBoardCell = _closestCell.GetComponent<BoardCell>();
-            closestBoardCell.HighlightCell();
+            _closestCell.GetComponent<BoardCell>().HighlightCell();
         }
 
         public void DropItem()
@@ -111,14 +110,13 @@ namespace Behaviors
             // If object is not over board, replace it in inventory or destroy it
             if (_closestCell == null)
             {
-                Debug.Log(string.Format("Destroying {0}", gameObject.name));
+                Debug.Log(string.Format("Destroying {0} because it's not dropped over the board.", gameObject.name));
 
                 // TODO: Replace item in inventory
                 Destroy(gameObject);
-                RaySensitive raySensitive = gameObject.GetComponent<RaySensitive>();
-                if (raySensitive)
+                if (_raySensitive)
                 {
-                    string itemType = raySensitive.getItemType();
+                    var itemType = _raySensitive.getItemType();
                     Debug.LogWarning(itemType);
                 }
 
@@ -130,8 +128,9 @@ namespace Behaviors
                 // Else, place on board
                 var cellPosition = _closestCell.transform.position;
                 transform.position = cellPosition;
-                
-                GameManager.Instance.BoardManager.AddItemPosition(cellPosition);
+
+                var gridPosition = new Vector2Int(_board.WorldToCellPosition(cellPosition.x), _board.WorldToCellPosition(cellPosition.z));
+                GameManager.Instance.BoardManager.AddItem(gameObject, gridPosition);
 
                 _audioSources[0].Play();
             }
@@ -139,7 +138,7 @@ namespace Behaviors
             // Reset all cells color
             _board.ResetCells();
             _closestCell = null;
-            
+
             if (_raySensitive != null)
                 _raySensitive.Enable();
         }
