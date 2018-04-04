@@ -64,8 +64,8 @@ namespace Behaviors
         public void UpdateDraggedPosition()
         {
             // Get World Point using the mouse position
-            _screenPoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
-                2.0f));
+            _screenPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _screenPoint.y = 2.0f;
 
             // Change GameObject position
             transform.position = _screenPoint;
