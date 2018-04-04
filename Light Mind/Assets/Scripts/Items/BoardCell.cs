@@ -38,5 +38,12 @@ namespace Items
         {
             return _currentItem != null;
         }
+
+        public Vector2Int GetPosition()
+        {
+            var boardManager = GameManager.Instance.BoardManager;
+            return new Vector2Int(boardManager.WorldToCellPosition(transform.position.x),
+                boardManager.WorldToCellPosition(transform.position.z));
+        }
     }
 }
