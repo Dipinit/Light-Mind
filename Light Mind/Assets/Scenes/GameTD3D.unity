@@ -519,7 +519,7 @@ Prefab:
     - target: {fileID: 224848626060642158, guid: 425247ad90bd8574baa2197fb0240a5b,
         type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 224848626060642158, guid: 425247ad90bd8574baa2197fb0240a5b,
         type: 2}
@@ -604,6 +604,34 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 425247ad90bd8574baa2197fb0240a5b, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1430244399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1430244400}
+  m_Layer: 0
+  m_Name: Items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1430244400
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1430244399}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.33000004, y: 2.3899999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1621822307
 Prefab:
   m_ObjectHideFlags: 0
@@ -643,26 +671,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
         type: 2}
-      propertyPath: GoButton
+      propertyPath: ItemsContainer
       value: 
-      objectReference: {fileID: 1076996293}
-    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
-        type: 2}
-      propertyPath: LivesText
-      value: 
-      objectReference: {fileID: 449528201}
-    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
-        type: 2}
-      propertyPath: WaveText
-      value: 
-      objectReference: {fileID: 139991429}
-    - target: {fileID: 114926697728628188, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
-        type: 2}
-      propertyPath: Board
-      value: 
-      objectReference: {fileID: 920378298}
+      objectReference: {fileID: 1430244399}
     - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
         type: 2}
       propertyPath: Inventory
@@ -678,6 +691,26 @@ Prefab:
       propertyPath: WinScreen
       value: 
       objectReference: {fileID: 920409373}
+    - target: {fileID: 114926697728628188, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: Board
+      value: 
+      objectReference: {fileID: 920378298}
+    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: GoButton
+      value: 
+      objectReference: {fileID: 1076996293}
+    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: LivesText
+      value: 
+      objectReference: {fileID: 449528201}
+    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: WaveText
+      value: 
+      objectReference: {fileID: 139991429}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b, type: 2}
   m_IsPrefabParent: 0
@@ -726,7 +759,7 @@ Prefab:
     - target: {fileID: 224447511607907574, guid: d5abb2c8184372e42a1b131771f41bbe,
         type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 224447511607907574, guid: d5abb2c8184372e42a1b131771f41bbe,
         type: 2}

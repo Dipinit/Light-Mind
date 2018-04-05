@@ -179,7 +179,12 @@ public class GameManager : MonoBehaviour
                 inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["MissileTurret"].i;
             }
 
-            // TODO: Add laser turret inventory item
+            if (dataAsJson["Inventory"]["LaserTurret"].i > 0)
+            {
+                var itemGameObject = Instantiate(LaserTurretInventoryItemPrefab, Inventory.transform);
+                var inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["LaserTurret"].i;
+            }
         }
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
@@ -220,7 +225,7 @@ public class GameManager : MonoBehaviour
                 case "Prism":
                     Debug.Log("Instanciating a prism...");
                     objectInstance = Instantiate(PrismPrefab, ItemsContainer.transform);
-                    Prism prism = objectInstance.GetComponentInChildren<Prism>();
+                    // Prism prism = objectInstance.GetComponentInChildren<Prism>();
                     break;
 
                 case "Filter Mirror":
@@ -250,6 +255,7 @@ public class GameManager : MonoBehaviour
                     }
 
                     break;
+
                 case "Obstacle":
                     Debug.Log("Instanciating an obstacle...");
                     objectInstance = Instantiate(ObstaclePrefab, ItemsContainer.transform);
@@ -265,7 +271,10 @@ public class GameManager : MonoBehaviour
                     objectInstance = Instantiate(MissileTurretPrefab, ItemsContainer.transform);
                     break;
 
-                // TODO: Add Laser turret instances
+                case "Laser Turret":
+                    Debug.Log("Instanciating a laser turret...");
+                    objectInstance = Instantiate(LaserTurretPrefab, ItemsContainer.transform);
+                    break;
 
                 default:
                     Debug.LogError(string.Format("Object of type {0} is not supported.", jsonEntity["Type"].str));

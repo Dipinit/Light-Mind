@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65515111342203544}
   - component: {fileID: 23721411574184182}
   - component: {fileID: 114488666052687494}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Board Cell
   m_TagString: Grid Cell
   m_Icon: {fileID: 0}

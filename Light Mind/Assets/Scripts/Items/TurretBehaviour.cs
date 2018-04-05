@@ -7,19 +7,23 @@ namespace Behaviors
 {
     public class TurretBehaviour : ItemBase
     {
-        [Header("Attributes")]
+        [Header("General")] public bool Enabled;
         public float Range = 15f;
+
+        [Header("Use Bullets (default)")] public GameObject BulletPrefab;
         public float FireRate = 1f;
-        public bool Enabled = false;
-        private float _fireCountdown = 0f;
-        
-        [Header("Unity Setup Fields")]
-        public Transform PartToRotate;
+        private float _fireCountdown;
+
+        [Header("Use Laser")] public bool UseLaser;
+        public LineRenderer LineRenderer;
+        public ParticleSystem ImpactEffect;
+        public Light ImpactLight;
+
+        [Header("Unity Setup Fields")] public Transform PartToRotate;
         public float RotateSpeed = 10f;
 
-        public GameObject BulletPrefab;
         public Transform FirePoint;
-        
+
         private Transform _currentTarget;
 
         // Use this for initialization
@@ -27,12 +31,59 @@ namespace Behaviors
         {
             InvokeRepeating("UpdateTarget", 0f, 0.5f);
         }
-
+        
         // Update is called once per frame
         private void Update()
         {
-            if (_currentTarget == null || !Enabled) return;
+            if (_currentTarget == null || !Enabled)
+            {
+                if (!UseLaser || !LineRenderer.enabled) return;
+                LineRenderer.enabled = false;
+                ImpactEffect.Stop();
+                ImpactLight.enabled = false;
 
+                return;
+            }
+
+            LockOnTarget();
+
+            if (UseLaser)
+            {
+                ToggleLaser();
+            }
+            else
+            {
+                // Shoot at target
+                if (_fireCountdown <= 0f)
+                {
+                    Shoot();
+                    _fireCountdown = 1f / FireRate;
+                }
+
+                _fireCountdown -= Time.deltaTime;
+            }
+        }
+
+        private void ToggleLaser()
+        {
+            if (!LineRenderer.enabled)
+            {
+                LineRenderer.enabled = true;
+                ImpactEffect.Play();
+                ImpactLight.enabled = true;
+            }
+
+            LineRenderer.SetPosition(0, FirePoint.position);
+            LineRenderer.SetPosition(1, _currentTarget.position);
+
+            var direction = FirePoint.position - _currentTarget.position;
+
+            ImpactEffect.transform.position = _currentTarget.position + direction.normalized * 0.5f;
+            ImpactEffect.transform.rotation = Quaternion.LookRotation(direction);
+        }
+        
+        private void LockOnTarget()
+        {
             // Lock on nearest enemy
             var directionToTarget = _currentTarget.position - transform.position;
             var lookRotation = Quaternion.LookRotation(directionToTarget);
@@ -40,15 +91,6 @@ namespace Behaviors
                 .eulerAngles;
 
             PartToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-            
-            // Shoot at target
-            if (_fireCountdown <= 0f)
-            {
-                Shoot();
-                _fireCountdown = 1f / FireRate;
-            }
-
-            _fireCountdown -= Time.deltaTime;
         }
 
         private void UpdateTarget()
