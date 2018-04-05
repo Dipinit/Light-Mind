@@ -45,14 +45,14 @@ namespace Behaviors
         public void Disable()
         {
             DestroyEmittedRays();
-            gameObject.layer = LayerMask.NameToLayer("Default");
+            gameObject.layer = LayerMask.NameToLayer("InactiveItems");
             ColliderEnabled = false;
         }
 
         public void Enable()
         {
             ColliderEnabled = true;
-            gameObject.layer = LayerMask.NameToLayer("Items");
+            gameObject.layer = LayerMask.NameToLayer("ActiveItems");
             ResetRays();
         }
 

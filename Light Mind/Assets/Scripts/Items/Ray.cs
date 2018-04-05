@@ -91,7 +91,7 @@ namespace Items
 				// Set the line renderer position count to two positions (only one segment)
 				LineRenderer.positionCount = 2;
 
-				int layerMask = 1 << LayerMask.NameToLayer("Items");
+				int layerMask = 1 << LayerMask.NameToLayer("ActiveItems");
 
 				// Check if the ray hits an object in the input direction
 				RaycastHit hit;
