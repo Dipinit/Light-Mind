@@ -8,7 +8,7 @@ public class ColorItem : MonoBehaviour
 
     public void OnMouseDown()
     {
-        //Debug.LogWarning(Color.Name);
+        Debug.LogWarning(Color.Name);
         GameManager.Instance.SetSelectedItemColor(Color);
         GameManager.Instance.HideColorPanel();
     }

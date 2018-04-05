@@ -18,7 +18,7 @@ namespace Items
             base.Awake();
             IsColorable = false;
             IsOrientable = false;
-            _meshRenderer = GetComponent<MeshRenderer>();
+            _meshRenderer = GetComponentInChildren<MeshRenderer>();
         }
 
         // Update is called once per frame

@@ -7,7 +7,7 @@ namespace Items
     [RequireComponent(typeof(ParticleSystem))]
     public class FilterMirror : ItemBase
     {
-        private Renderer _renderer;
+        private MeshRenderer[] _renderers;
 
         // Use this for initialization
         public override void Awake()
@@ -15,7 +15,7 @@ namespace Items
             base.Awake();
             IsColorable = true;
             IsOrientable = true;
-            _renderer = GetComponent<Renderer>();
+            _renderers = GetComponentsInChildren<MeshRenderer>();
         }
         
         protected override void OnOrientationChange()
@@ -154,7 +154,10 @@ namespace Items
         {
            base.SetColor(color);
             // Changed the color of the object
-            _renderer.material.color = color.GetColor();
+            foreach (var renderer in _renderers)
+            {
+                renderer.material.color = color.GetColor();
+            }
             
             UpdateEmittedRays();
         }

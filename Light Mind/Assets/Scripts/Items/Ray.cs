@@ -29,6 +29,8 @@ namespace Items
 
 		public int Id;
 
+		public Vector3 VectorOffset = new Vector3(0.0f, 1.0f, 0.0f);
+
 		public Ray(RaySensitive rayEmitter, RayColor color, Direction direction, Ray parent)
 		{
 			RayEmitter = rayEmitter;
@@ -36,7 +38,7 @@ namespace Items
 				color,
 				direction
 			));
-			LineRendererParent.transform.position = rayEmitter.transform.position + new Vector3(0.0f, 2.0f, 0.0f);
+			LineRendererParent.transform.position = rayEmitter.transform.position + VectorOffset;
 			LineRendererParent.transform.rotation = rayEmitter.transform.rotation;
 			LineRendererParent.transform.parent = rayEmitter.transform;
 			LineRenderer = LineRendererParent.AddComponent<LineRenderer>();
@@ -104,12 +106,10 @@ namespace Items
 					if (hit.collider)
 					{
 						// Set the end position to the object that was hit position
-						LineRenderer.SetPosition(1,
-							hit.point + 0.5F * DirectionUtility.GetDirectionAsVector3(Direction));
+						LineRenderer.SetPosition(1, hit.transform.position + VectorOffset);
 
 						// Check if the object that was hit is a HitObject
-						var obj = hit.transform.gameObject;
-						var rayReceiver = obj.GetComponent<RaySensitive>();
+						var rayReceiver = hit.transform.gameObject.GetComponent<RaySensitive>();
 						
 						// If the receiver hit by the ray is the current receiver
 						if (rayReceiver != null && rayReceiver == RayReceiver) return;

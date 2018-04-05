@@ -6,7 +6,7 @@ namespace Items
     public class Filter : ItemBase
     {
         // The Renderer of the GameObject. Used to change its color based on the filter colors.
-        private Renderer _renderer;
+        private MeshRenderer[] _renderers;
 
         // Use this for initialization
         public override void Awake()
@@ -14,7 +14,7 @@ namespace Items
             base.Awake();
             IsColorable = true;
             IsOrientable = false;
-            _renderer = GetComponent<Renderer>();
+            _renderers = GetComponentsInChildren<MeshRenderer>();
         }
 
         // Update the current filter color
@@ -23,8 +23,11 @@ namespace Items
             base.SetColor(color);
             
             // Changed the color of the object
-            _renderer.material.color = color.GetColor();
-
+            foreach (var renderer in _renderers)
+            {
+                renderer.material.color = color.GetColor();
+            }
+            
             UpdateEmittedRays();
         }
 
