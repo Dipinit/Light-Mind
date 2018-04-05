@@ -59,5 +59,15 @@ namespace Assets.Scripts.Utilities
             if (R && !G && B) return "Magenta";
             return "None";
         }
+
+        public static RayColor Add(RayColor x, RayColor y)
+        {
+            return new RayColor(x.R || y.R, x.G || y.G, x.B || y.B, (x.Alpha + y.Alpha) / 2);
+        }
+        
+        public static RayColor Substract(RayColor x, RayColor y)
+        {
+            return new RayColor(x.R && !y.R, x.G && !y.G, x.B && !y.B, (x.Alpha + y.Alpha) / 2);
+        }
     }
 }

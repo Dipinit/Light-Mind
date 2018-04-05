@@ -1,4 +1,5 @@
-﻿using Items;
+﻿using Assets.Scripts.Utilities;
+using Items;
 using UnityEngine;
 using Ray = Items.Ray;
 
@@ -9,6 +10,7 @@ namespace Behaviors
         [Header("Attributes")]
         public float Range = 15f;
         public float FireRate = 1f;
+        public bool Enabled = false;
         private float _fireCountdown = 0f;
         
         [Header("Unity Setup Fields")]
@@ -29,7 +31,7 @@ namespace Behaviors
         // Update is called once per frame
         private void Update()
         {
-            if (_currentTarget == null) return;
+            if (_currentTarget == null || !Enabled) return;
 
             // Lock on nearest enemy
             var directionToTarget = _currentTarget.position - transform.position;
@@ -92,12 +94,33 @@ namespace Behaviors
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
-            HandleReceivedRay(ray);
+            CalculateColor();
         }
         
-        public override void HandleReceivedRay(Ray ray)
+        public override void HitExit(Ray ray)
         {
-            SetColor(ray.Color);
+            base.HitExit(ray);
+            CalculateColor();
+        }
+
+        private void CalculateColor()
+        {
+            if (ReceveidRays.Count > 0)
+            {
+                RayColor color = ReceveidRays[0].Color;
+                for (int i = 1; i < ReceveidRays.Count; i++)
+                {
+                    color = RayColor.Add(color, ReceveidRays[i].Color);
+                }
+
+                Color = color;
+                Enabled = true;
+            }
+            else
+            {
+                Color = RayColor.NONE;
+                Enabled = false;
+            }
         }
     }
 }
