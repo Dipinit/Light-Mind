@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 199532982584120480}
   - component: {fileID: 82007496637806022}
   - component: {fileID: 198933817362545670}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mirror
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4913008742354428}
   - component: {fileID: 33596414367131138}
   - component: {fileID: 23164574519545094}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Left Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 4471218702453640}
   - component: {fileID: 33517590681445986}
   - component: {fileID: 23649300188663344}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 4668998733224152}
   - component: {fileID: 33102664604177292}
   - component: {fileID: 23574185575116858}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Right Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4211546159322064}
   - component: {fileID: 33131352186677952}
   - component: {fileID: 23527836674918118}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Reflect Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4545612751620522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EmitPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

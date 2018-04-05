@@ -89,10 +89,16 @@ namespace Items
 				// Set the line renderer position count to two positions (only one segment)
 				LineRenderer.positionCount = 2;
 
+				int layerMask = 1 << LayerMask.NameToLayer("Items");
+
 				// Check if the ray hits an object in the input direction
 				RaycastHit hit;
-				if (Physics.Raycast(LineRenderer.transform.position, DirectionUtility.GetDirectionAsVector3(Direction),
-					out hit))
+				if (Physics.Raycast(
+					LineRenderer.transform.position,
+					DirectionUtility.GetDirectionAsVector3(Direction),
+					out hit,
+					Mathf.Infinity,
+					layerMask))
 				{
 					// If the ray hits an object with a collider
 					if (hit.collider)
