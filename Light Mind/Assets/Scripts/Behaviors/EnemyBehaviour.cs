@@ -8,6 +8,7 @@ namespace Behaviors
 		public delegate void EnemyDelegate(GameObject enemy);
 
 		public EnemyDelegate enemyDelegate;
+		public int life = 100;
 
 		[SerializeField] private float _speed = 1.2f;
 

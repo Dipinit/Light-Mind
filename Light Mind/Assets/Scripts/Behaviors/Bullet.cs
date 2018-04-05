@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Assets.Scripts.Utilities;
+using UnityEngine;
 
 namespace Behaviors
 {
@@ -6,6 +8,9 @@ namespace Behaviors
     {
         [Header("Fire Properties")] public float Speed = 70f;
         public float ExplosionRadius;
+
+        public int DamageBase = 20;
+        public RayColor Color = RayColor.WHITE;
 
         [Header("FX")] public GameObject ImpactEffect;
 
@@ -68,12 +73,39 @@ namespace Behaviors
 
         private void Damage(Component enemy)
         {
-            Destroy(enemy.gameObject);
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            if (enemyBehaviour != null)
+            {
+                int damage = CalculateDamage(enemyBehaviour.Color);
+                enemyBehaviour.life -= damage;
+                Debug.Log(String.Format("{0} bullet hit a {1} enemy causing {2} damage ({3} remaining)",
+                    Color.GetName(),
+                    enemyBehaviour.Color.GetName(),
+                    damage,
+                    enemyBehaviour.life
+                    ));
+
+                if (enemyBehaviour.life <= 0)
+                {
+                    Destroy(enemy.gameObject);
+                }
+            }
+        }
+
+        private int CalculateDamage(RayColor enemyColor)
+        {
+            int damage = 0;
+            
+            if (enemyColor.B != Color.B) damage += DamageBase;
+            if (enemyColor.G != Color.G) damage += DamageBase;
+            if (enemyColor.R != Color.R) damage += DamageBase;
+            
+            return damage;
         }
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = UnityEngine.Color.red;
             Gizmos.DrawWireSphere(transform.position, ExplosionRadius);
         }
     }

@@ -7,25 +7,23 @@ namespace Assets.Scripts.Utilities
     public class RayColor
     {
         public static readonly float DEFAULT_ALPHA = 0.9f;
-        public static readonly RayColor WHITE = new RayColor(true, true, true, DEFAULT_ALPHA, "White");
-        public static readonly RayColor BLUE = new RayColor(false, false, true, DEFAULT_ALPHA, "Blue"); 
-        public static readonly RayColor GREEN = new RayColor(false, true, false, DEFAULT_ALPHA, "Green"); 
-        public static readonly RayColor RED = new RayColor(true, false, false, DEFAULT_ALPHA, "Red"); 
-        public static readonly RayColor YELLOW = new RayColor(true, true, false, DEFAULT_ALPHA,"Yellow"); 
-        public static readonly RayColor CYAN = new RayColor(false, true, true, DEFAULT_ALPHA,"Cyan"); 
-        public static readonly RayColor MAGENTA = new RayColor(true, false, true, DEFAULT_ALPHA,"Magenta"); 
-        public static readonly RayColor NONE = new RayColor(false, false, false, DEFAULT_ALPHA, "None");
+        public static readonly RayColor WHITE = new RayColor(true, true, true, DEFAULT_ALPHA);
+        public static readonly RayColor BLUE = new RayColor(false, false, true, DEFAULT_ALPHA); 
+        public static readonly RayColor GREEN = new RayColor(false, true, false, DEFAULT_ALPHA); 
+        public static readonly RayColor RED = new RayColor(true, false, false, DEFAULT_ALPHA); 
+        public static readonly RayColor YELLOW = new RayColor(true, true, false, DEFAULT_ALPHA); 
+        public static readonly RayColor CYAN = new RayColor(false, true, true, DEFAULT_ALPHA); 
+        public static readonly RayColor MAGENTA = new RayColor(true, false, true, DEFAULT_ALPHA); 
+        public static readonly RayColor NONE = new RayColor(false, false, false, DEFAULT_ALPHA);
         public static readonly RayColor[] COLORS = { WHITE, BLUE, GREEN, RED, YELLOW, CYAN, MAGENTA };
         
         public bool R;
         public bool G;
         public bool B;
         public float Alpha;
-        public string Name;
 
-        public RayColor(bool r, bool g, bool b, float alpha, string name = "color")
+        public RayColor(bool r, bool g, bool b, float alpha)
         {
-            Name = name;
             R = r;
             G = g;
             B = b;
@@ -48,6 +46,18 @@ namespace Assets.Scripts.Utilities
         public bool Equals(RayColor obj)
         {
             return obj.R == R && obj.G == G && obj.B == B && obj.Alpha == Alpha;
+        }
+
+        public string GetName()
+        {
+            if (R && G && B) return "White";
+            if (!R && !G && B) return "Blue";
+            if (!R && G && !B) return "Green";
+            if (R && !G && !B) return "Red";
+            if (R && G && !B) return "Yellow";
+            if (!R && G && B) return "Cyan";
+            if (R && !G && B) return "Magenta";
+            return "None";
         }
     }
 }

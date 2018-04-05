@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Utilities;
 using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour {
 
     public float speed = 10;
-    public int damage;
+    public int damage = 50;
     public GameObject target;
     public Vector3 startPosition;
     public Vector3 targetPosition;
+    public RayColor color;
 
     private float distance;
     private float startTime;
