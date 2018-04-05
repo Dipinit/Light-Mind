@@ -13,9 +13,9 @@ namespace Items
         private MeshRenderer _meshRenderer;
 
         // Use this for initialization
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
+            base.Awake();
             IsColorable = false;
             IsOrientable = false;
             _meshRenderer = GetComponent<MeshRenderer>();

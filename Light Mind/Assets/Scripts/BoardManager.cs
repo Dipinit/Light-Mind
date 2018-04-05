@@ -110,7 +110,7 @@ public class BoardManager : MonoBehaviour
             var cell = GetCellAt(position);
             if (cell.IsOccupied()) return false;
             cell.AddItem(item);
-            Debug.Log(string.Format("Added item {0} to grid at position {1}.", item, position));
+            //Debug.Log(string.Format("Added item {0} to grid at position {1}.", item, position));
             return true;
         }
         catch (NullReferenceException e)
@@ -127,7 +127,7 @@ public class BoardManager : MonoBehaviour
             var cell = GetCellAt(position);
             if (!cell.IsOccupied()) return false;
             cell.RemoveItem();
-            Debug.Log(string.Format("Removed item from grid at position {0}.", position));
+            //Debug.Log(string.Format("Removed item from grid at position {0}.", position));
             return true;
         }
         catch (NullReferenceException e)
@@ -142,7 +142,7 @@ public class BoardManager : MonoBehaviour
         try
         {
             var cell = GetCellAt(position);
-            Debug.Log(string.Format("Position {0} occupied: {1}", position, cell.IsOccupied()));
+            //Debug.Log(string.Format("Position {0} occupied: {1}", position, cell.IsOccupied()));
             return cell.IsOccupied();
         }
         catch (NullReferenceException e)

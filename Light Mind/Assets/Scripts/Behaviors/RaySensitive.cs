@@ -14,9 +14,8 @@ namespace Behaviors
         public AudioSource[] AudioSources;
         public ParticleSystem ParticleSystem;
         public bool ColliderEnabled = false;
-        
-        
-        public virtual void Start()
+
+        public virtual void Awake()
         {
             _meshCollider = GetComponent<MeshCollider>();
             AudioSources = GetComponents<AudioSource>();
@@ -47,7 +46,6 @@ namespace Behaviors
         {
             DestroyEmittedRays();
             ColliderEnabled = false;
-
         }
 
         public void Enable()

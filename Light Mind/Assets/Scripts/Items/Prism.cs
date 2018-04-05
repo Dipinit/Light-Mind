@@ -7,9 +7,9 @@ namespace Items
     [RequireComponent(typeof(ParticleSystem))]
     public class Prism : ItemBase
     {
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
+            base.Awake();
             IsOrientable = false;
             IsColorable = false;
         }
@@ -17,21 +17,21 @@ namespace Items
         private Direction GetBlueRayDirection(Direction direction)
         {
             var blueRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
-            blueRayDirection = Quaternion.AngleAxis(90, Vector3.forward) * blueRayDirection;
+            blueRayDirection = Quaternion.AngleAxis(90, Vector3.up) * blueRayDirection;
             return DirectionUtility.ToDirection(blueRayDirection);
         }
         
         private Direction GetGreenRayDirection(Direction direction)
         {
             var greenRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
-            greenRayDirection = Quaternion.AngleAxis(-90, Vector3.forward) * greenRayDirection;
+            greenRayDirection = Quaternion.AngleAxis(-90, Vector3.up) * greenRayDirection;
             return DirectionUtility.ToDirection(greenRayDirection);
         }
         
         private Direction GetRedRayDirection(Direction direction)
         {
             var redRayDirection = DirectionUtility.GetDirectionAsVector3(direction);
-            redRayDirection = Quaternion.AngleAxis(0, Vector3.forward) * redRayDirection;
+            redRayDirection = Quaternion.AngleAxis(0, Vector3.up) * redRayDirection;
             return DirectionUtility.ToDirection(redRayDirection);
         }
         

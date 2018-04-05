@@ -11,7 +11,7 @@ namespace Items
 		public RayColor color = RayColor.WHITE;
 		public TowerTypes towerType = TowerTypes.NORMAL;
 		// Use this for initialization
-		public override void Start()
+		public override void Awake()
 		{
 			IsOrientable = true;
 			IsColorable = false;

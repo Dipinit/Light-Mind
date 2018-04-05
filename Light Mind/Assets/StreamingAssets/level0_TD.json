@@ -52,7 +52,7 @@
       "X": 2,
       "Y": 3,
       "Orientation": 90,
-      "Draggable": false
+      "Draggable": true
     },
     {
       "Type": "Filter",
@@ -61,7 +61,7 @@
       "Red": true,
       "Green": false,
       "Blue": true,
-      "Draggable": false
+      "Draggable": true
     },
     {
       "Type": "Objective",
@@ -70,7 +70,7 @@
       "Red": true,
       "Green": true,
       "Blue": false,
-      "Draggable": false
+      "Draggable": true
     },
     {
       "Type": "Prism",
@@ -79,7 +79,7 @@
       "Red": true,
       "Green": true,
       "Blue": false,
-      "Draggable": false
+      "Draggable": true
     },
     {
       "Type": "Filter Mirror",
@@ -89,13 +89,13 @@
       "Green": false,
       "Blue": true,
       "Orientation": 135,
-      "Draggable": false
+      "Draggable": true
     },
     {
       "Type": "Light Source",
       "X": 1,
       "Y": 2,
-      "Draggable": false,
+      "Draggable": true,
       "Rays": [
         {
           "Direction": 0,
@@ -114,9 +114,9 @@
         {
           "Direction": 90,
           "Enabled": true,
-          "Red": false,
+          "Red": true,
           "Green": true,
-          "Blue": false
+          "Blue": true
         },
         {
           "Direction": 135,
@@ -163,7 +163,7 @@
       "Green": false,
       "Blue": true,
       "Orientation": 135,
-      "Draggable": false
+      "Draggable": true
     },
     {
       "Type": "Missile Turret",
@@ -173,7 +173,7 @@
       "Green": false,
       "Blue": true,
       "Orientation": 135,
-      "Draggable": false
+      "Draggable": true
     }
   ],
   "Waves": [

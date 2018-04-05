@@ -30,7 +30,7 @@ namespace Behaviors
 
         private void OnMouseDown()
         {
-            Debug.Log("Trying to drag an item...");
+            //Debug.Log("Trying to drag an item...");
 
             if (!IsDraggable) return;
 

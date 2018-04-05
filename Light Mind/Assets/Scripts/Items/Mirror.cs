@@ -8,9 +8,9 @@ namespace Items
     public class Mirror : ItemBase
     {
         // Use this for initialization
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
+            base.Awake();
             IsOrientable = true;
             IsColorable = false;
         }

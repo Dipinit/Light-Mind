@@ -104,14 +104,18 @@ namespace Items
 						// Check if the object that was hit is a HitObject
 						var obj = hit.transform.gameObject;
 						var rayReceiver = obj.GetComponent<RaySensitive>();
-						if (rayReceiver == null || rayReceiver == RayReceiver) return;
-
+						
+						// If the receiver hit by the ray is the current receiver
+						if (rayReceiver != null && rayReceiver == RayReceiver) return;
+						
 						DeleteRayReceiver();
 
-						// Store the new HitObject
-						RayReceiver = rayReceiver;
-						RayReceiver.HitEnter(this);
-
+						if (rayReceiver != null)
+						{
+							// Store the new HitObject
+							RayReceiver = rayReceiver;
+							RayReceiver.HitEnter(this);
+						}
 					}
 					// If the ray hits an object with not collider and object and a current HitObject is set
 					else
@@ -163,6 +167,14 @@ namespace Items
 
 		public static void Delete(Ray ray)
 		{
+			if (ray.RayReceiver != null)
+			{
+				Debug.Log("RayReceiver is not null");
+			}
+			else
+			{
+				Debug.Log("RayReceiver is null");
+			}
 			ray.DeleteRayReceiver();
 			UnityEngine.Object.Destroy(ray.LineRendererParent);
 		}

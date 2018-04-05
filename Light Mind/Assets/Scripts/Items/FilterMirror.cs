@@ -10,9 +10,9 @@ namespace Items
         private Renderer _renderer;
 
         // Use this for initialization
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
+            base.Awake();
             IsColorable = true;
             IsOrientable = true;
             _renderer = GetComponent<Renderer>();
