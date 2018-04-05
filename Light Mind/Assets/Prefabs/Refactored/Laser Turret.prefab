@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4008486309984788}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4627835588567560}
   - component: {fileID: 33366849532747276}
   - component: {fileID: 23206250192787498}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4526833402688294}
   - component: {fileID: 108251103045105020}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 114147567320595770}
   - component: {fileID: 120369556659647924}
   - component: {fileID: 82079728758060192}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Laser Turret
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4183419973703632}
   - component: {fileID: 198889336059220124}
   - component: {fileID: 199014796460881654}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ImpactEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4872348029295894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PartToRotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 4039788386156742}
   - component: {fileID: 33319399439337396}
   - component: {fileID: 23779034811260412}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 4692196996667484}
   - component: {fileID: 198825089989962072}
   - component: {fileID: 199462531498646416}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,6 +493,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfb87aaa9d0e6240bdcabc3518e5d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AudioSources: []
+  ParticleSystem: {fileID: 0}
+  ColliderEnabled: 0
+  IsOrientable: 0
+  Orientation: 0
+  IsColorable: 1
+  Color:
+    R: 1
+    G: 1
+    B: 1
+    Alpha: 0.9
+  DoubleClickTime: 0.25
+  Enabled: 0
   Range: 20
   BulletPrefab: {fileID: 0}
   FireRate: 1

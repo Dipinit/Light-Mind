@@ -1,9 +1,8 @@
 ﻿using Assets.Scripts.Utilities;
-using Items;
+using Behaviors;
 using UnityEngine;
-using Ray = Items.Ray;
 
-namespace Behaviors
+namespace Items
 {
     public class TurretBehaviour : ItemBase
     {
@@ -31,10 +30,12 @@ namespace Behaviors
         {
             InvokeRepeating("UpdateTarget", 0f, 0.5f);
         }
-        
+
         // Update is called once per frame
-        private void Update()
+        public override void Update()
         {
+            base.Update();
+
             if (_currentTarget == null || !Enabled)
             {
                 if (!UseLaser || !LineRenderer.enabled) return;
@@ -81,7 +82,7 @@ namespace Behaviors
             ImpactEffect.transform.position = _currentTarget.position + direction.normalized * 0.5f;
             ImpactEffect.transform.rotation = Quaternion.LookRotation(direction);
         }
-        
+
         private void LockOnTarget()
         {
             // Lock on nearest enemy
@@ -131,14 +132,14 @@ namespace Behaviors
             Gizmos.color = UnityEngine.Color.red;
             Gizmos.DrawWireSphere(transform.position, Range);
         }
-        
+
         // Launched when a ray hits the mirror
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
             CalculateColor();
         }
-        
+
         public override void HitExit(Ray ray)
         {
             base.HitExit(ray);
