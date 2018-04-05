@@ -36,7 +36,7 @@ namespace Items
 				color,
 				direction
 			));
-			LineRendererParent.transform.position = rayEmitter.transform.position;
+			LineRendererParent.transform.position = rayEmitter.transform.position + new Vector3(0.0f, 2.0f, 0.0f);
 			LineRendererParent.transform.rotation = rayEmitter.transform.rotation;
 			LineRendererParent.transform.parent = rayEmitter.transform;
 			LineRenderer = LineRendererParent.AddComponent<LineRenderer>();

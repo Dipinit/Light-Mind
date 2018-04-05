@@ -5,8 +5,8 @@ namespace Items
 {
     public class Filter : ItemBase
     {
-        // The Mesh Renderer of the GameObject. Used to change its color based on the filter colors.
-        private MeshRenderer _meshRenderer;
+        // The Renderer of the GameObject. Used to change its color based on the filter colors.
+        private Renderer _renderer;
 
         // Use this for initialization
         public override void Start()
@@ -14,13 +14,7 @@ namespace Items
             base.Start();
             IsColorable = true;
             IsOrientable = false;
-            _meshRenderer = GetComponent<MeshRenderer>();
-        }
-
-        // Update is called once per frame
-        public override void Update()
-        {   
-            base.Update();
+            _renderer = GetComponent<Renderer>();
         }
 
         // Update the current filter color
@@ -29,7 +23,7 @@ namespace Items
             base.SetColor(color);
             
             // Changed the color of the object
-            _meshRenderer.material.color = color.GetColor();
+            _renderer.material.color = color.GetColor();
 
             UpdateEmittedRays();
         }
@@ -52,7 +46,7 @@ namespace Items
 
         public override void HandleReceivedRay(Ray ray)
         {
-            RayColor filteredColor = FilterColor(ray.Color);
+            var filteredColor = FilterColor(ray.Color);
             var newColor = new RayColor(ray.Color.R ^ filteredColor.R, ray.Color.G ^ filteredColor.G, ray.Color.B ^ filteredColor.B, RayColor.DEFAULT_ALPHA);
             EmitNewRay(ray.Direction, newColor, ray);
         }
