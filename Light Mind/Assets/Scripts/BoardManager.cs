@@ -20,9 +20,6 @@ public class BoardManager : MonoBehaviour
     public List<BoardPath> Paths = new List<BoardPath>();
     public Vector2Int EndPoint;
 
-    [Space(5)] public List<Vector3> OccupiedPositions;
-    public List<Transform> Waypoints = new List<Transform>();
-
     private Vector2Int _lastBoardSize;
     private int _lastCellOffset;
 
@@ -86,12 +83,6 @@ public class BoardManager : MonoBehaviour
             var path = Instantiate(GameManager.Instance.PathPrefab, Board.transform);
             path.transform.localScale = pathData.GetPathScale(CellSize, CellOffset);
             path.transform.position = pathData.GetPathPosition(CellSize, CellOffset);
-
-            // Instantiate path waypoint
-            var waypoint = Instantiate(GameManager.Instance.PathWaypointPrefab, Board.transform);
-            waypoint.transform.position = new Vector3(CellToWorldPosition(pathData.End.x), 1.0f,
-                CellToWorldPosition(pathData.End.y));
-            Waypoints.Add(waypoint.transform);
         }
 
         // Create ender
@@ -99,6 +90,9 @@ public class BoardManager : MonoBehaviour
         ender.transform.position =
             new Vector3(CellToWorldPosition(EndPoint.x), 1.5f + ender.transform.localScale.y / 2,
                 CellToWorldPosition(EndPoint.y));
+
+        // Build navigation using NavMesh
+        GameManager.Instance.NavigationSurface.BuildNavMesh();
 
         AdjustCamera();
     }
@@ -160,8 +154,6 @@ public class BoardManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
-        Waypoints.Clear();
 
         CreateBoard();
     }

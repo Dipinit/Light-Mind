@@ -76,15 +76,15 @@ namespace Behaviors
             if (enemyBehaviour == null) return;
 
             var damage = CalculateDamage(enemyBehaviour.Color);
-            enemyBehaviour.life -= damage;
+            enemyBehaviour.Life -= damage;
             Debug.Log(string.Format("{0} bullet hit a {1} enemy causing {2} damage ({3} remaining)",
                 Color.GetName(),
                 enemyBehaviour.Color.GetName(),
                 damage,
-                enemyBehaviour.life
+                enemyBehaviour.Life
             ));
 
-            if (enemyBehaviour.life <= 0)
+            if (enemyBehaviour.Life <= 0)
             {
                 Destroy(enemy.gameObject);
             }

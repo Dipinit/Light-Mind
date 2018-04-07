@@ -6,6 +6,7 @@ using Items;
 using Models;
 using UI;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -47,7 +48,8 @@ public class GameManager : MonoBehaviour
     [Header("Enemy Path")] public GameObject SpawnerPrefab;
     public GameObject EnderPrefab;
     public GameObject PathPrefab;
-    public GameObject PathWaypointPrefab;
+
+    [Header("Enemy Navigation")] public NavMeshSurface NavigationSurface;
 
     private GameObject _selectedItem;
 

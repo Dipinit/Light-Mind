@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114386882692909422}
   - component: {fileID: 114926697728628188}
   - component: {fileID: 114553513558107608}
+  - component: {fileID: 114457739937711970}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -103,6 +104,35 @@ MonoBehaviour:
   PathPrefab: {fileID: 1563610250728318, guid: 5be939b2ed2cb7d4483a9772f802c242, type: 2}
   PathWaypointPrefab: {fileID: 1554856314379480, guid: 71e8b99c5ef322d458f35170da439b21,
     type: 2}
+  NavigationSurface: {fileID: 114457739937711970}
+--- !u!114 &114457739937711970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1218424648802828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
 --- !u!114 &114553513558107608
 MonoBehaviour:
   m_ObjectHideFlags: 1
