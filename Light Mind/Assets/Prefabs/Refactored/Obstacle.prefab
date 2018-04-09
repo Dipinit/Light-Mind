@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 65945569163235218}
   - component: {fileID: 114301265215544444}
   - component: {fileID: 82487665901042164}
-  m_Layer: 0
+  - component: {fileID: 114825260081638848}
+  m_Layer: 8
   m_Name: Obstacle
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -39,7 +40,7 @@ GameObject:
   - component: {fileID: 4020504270385808}
   - component: {fileID: 33410614143467098}
   - component: {fileID: 23201144249718004}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,3 +220,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsDraggable: 0
   SnapRange: 50
+--- !u!114 &114825260081638848
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509541853575896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3097c62f92694ad588596560ae81a59e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSources: []
+  ParticleSystem: {fileID: 0}
+  ColliderEnabled: 0
+  IsOrientable: 0
+  Orientation: 0
+  IsColorable: 0
+  Color:
+    R: 1
+    G: 1
+    B: 1
+    Alpha: 0.9
+  DoubleClickTime: 0.25

@@ -14,6 +14,8 @@ namespace Items
         private float _fireCountdown;
 
         [Header("Use Laser")] public bool UseLaser;
+        public int LaserDamageBasePerSecond = 30;
+        private float LaserDamageUpdateRate = 0.2f;
         public LineRenderer LineRenderer;
         public ParticleSystem ImpactEffect;
         public Light ImpactLight;
@@ -29,6 +31,7 @@ namespace Items
         private void Start()
         {
             InvokeRepeating("UpdateTarget", 0f, 0.5f);
+            InvokeRepeating("ShootLaser", 0f, 1f * LaserDamageUpdateRate);
         }
 
         // Update is called once per frame
@@ -41,6 +44,7 @@ namespace Items
                 if (!UseLaser || !LineRenderer.enabled) return;
                 LineRenderer.enabled = false;
                 ImpactEffect.Stop();
+                ImpactEffect.enableEmission = false;
                 ImpactLight.enabled = false;
 
                 return;
@@ -57,7 +61,7 @@ namespace Items
                 // Shoot at target
                 if (_fireCountdown <= 0f)
                 {
-                    Shoot();
+                    ShootBullet();
                     _fireCountdown = 1f / FireRate;
                 }
 
@@ -81,6 +85,34 @@ namespace Items
 
             ImpactEffect.transform.position = _currentTarget.position + direction.normalized * 0.5f;
             ImpactEffect.transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        private void ShootLaser()
+        {
+            if (!UseLaser || _currentTarget == null) return;
+            
+            float damage = 0f;
+
+            EnemyBehaviour enemy = _currentTarget.GetComponent<EnemyBehaviour>();
+            Debug.Log(enemy);
+            if (enemy == null) return;
+
+            if (enemy.Color.B != Color.B) damage += LaserDamageBasePerSecond;
+            if (enemy.Color.G != Color.G) damage += LaserDamageBasePerSecond;
+            if (enemy.Color.R != Color.R) damage += LaserDamageBasePerSecond;
+
+            damage *= LaserDamageUpdateRate;
+
+            int damageInt = (int) damage;
+                        
+            enemy.Life -= damageInt;
+            
+            Debug.Log(string.Format("{0} laser hit a {1} enemy causing {2} damage ({3} remaining)",
+                Color.GetName(),
+                enemy.Color.GetName(),
+                damage,
+                enemy.Life
+            ));
         }
 
         private void LockOnTarget()
@@ -118,7 +150,7 @@ namespace Items
             }
         }
 
-        private void Shoot()
+        private void ShootBullet()
         {
             var bullet = Instantiate(BulletPrefab, FirePoint.position, FirePoint.rotation);
             Bullet bulletComponent = bullet.GetComponent<Bullet>();

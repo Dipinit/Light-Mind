@@ -83,11 +83,6 @@ namespace Behaviors
                 damage,
                 enemyBehaviour.Life
             ));
-
-            if (enemyBehaviour.Life <= 0)
-            {
-                Destroy(enemy.gameObject);
-            }
         }
 
         private int CalculateDamage(RayColor enemyColor)

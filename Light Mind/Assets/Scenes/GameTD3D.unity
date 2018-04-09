@@ -671,26 +671,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
-        type: 2}
-      propertyPath: ItemsContainer
-      value: 
-      objectReference: {fileID: 1430244399}
-    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
-        type: 2}
-      propertyPath: Inventory
-      value: 
-      objectReference: {fileID: 1761380327}
-    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
-        type: 2}
-      propertyPath: ColorPicker
-      value: 
-      objectReference: {fileID: 1761380326}
-    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
-        type: 2}
-      propertyPath: WinScreen
-      value: 
-      objectReference: {fileID: 920409373}
     - target: {fileID: 114926697728628188, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
         type: 2}
       propertyPath: Board
@@ -711,6 +691,26 @@ Prefab:
       propertyPath: WaveText
       value: 
       objectReference: {fileID: 139991429}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: ItemsContainer
+      value: 
+      objectReference: {fileID: 1430244399}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: Inventory
+      value: 
+      objectReference: {fileID: 1761380327}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: ColorPicker
+      value: 
+      objectReference: {fileID: 1761380326}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: WinScreen
+      value: 
+      objectReference: {fileID: 920409373}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b, type: 2}
   m_IsPrefabParent: 0

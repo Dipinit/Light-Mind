@@ -1,5 +1,5 @@
 {
-  "Name": "Level 1",
+  "Name": "Level 1 TD",
   "Number": 0,
   "Board": {
     "Size": {
@@ -58,6 +58,15 @@
       "Type": "Filter",
       "X": 2,
       "Y": 2,
+      "Red": true,
+      "Green": false,
+      "Blue": true,
+      "Draggable": true
+    },
+    {
+      "Type": "Obstacle",
+      "X": 6,
+      "Y": 6,
       "Red": true,
       "Green": false,
       "Blue": true,

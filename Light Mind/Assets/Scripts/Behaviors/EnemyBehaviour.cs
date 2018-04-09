@@ -29,11 +29,23 @@ namespace Behaviors
             _navigationAgent.SetDestination(_end.position);
         }
 
+        private void Update()
+        {
+            if (Life <= 0)
+            {
+                Destroy(this);
+            }
+        }
+
         private void OnDestroy()
         {
             if (EnemyDestroyCallback != null)
             {
                 EnemyDestroyCallback(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
             }
         }
     }

@@ -92,6 +92,7 @@ public class BoardManager : MonoBehaviour
                 CellToWorldPosition(EndPoint.y));
 
         // Build navigation using NavMesh
+        Debug.Log(GameManager.Instance.NavigationSurface);
         GameManager.Instance.NavigationSurface.BuildNavMesh();
 
         AdjustCamera();
@@ -178,11 +179,12 @@ public class BoardManager : MonoBehaviour
 
     public BoardCell GetCellAt(Vector2Int position)
     {
+        var targetPosition = new Vector3(CellToWorldPosition(position.x), 1.0f, CellToWorldPosition(position.y));
         foreach (Transform cell in Board.transform)
         {
             if (!cell.CompareTag("Grid Cell")) continue;
 
-            var targetPosition = new Vector3(CellToWorldPosition(position.x), 1.0f, CellToWorldPosition(position.y));
+            
 
             if (cell.position.Equals(targetPosition))
             {

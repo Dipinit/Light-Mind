@@ -102,8 +102,6 @@ MonoBehaviour:
   EnderPrefab: {fileID: 1955502430799006, guid: 396766a44f811c6479c5700df5ee0258,
     type: 2}
   PathPrefab: {fileID: 1563610250728318, guid: 5be939b2ed2cb7d4483a9772f802c242, type: 2}
-  PathWaypointPrefab: {fileID: 1554856314379480, guid: 71e8b99c5ef322d458f35170da439b21,
-    type: 2}
   NavigationSurface: {fileID: 114457739937711970}
 --- !u!114 &114457739937711970
 MonoBehaviour:
@@ -174,5 +172,3 @@ MonoBehaviour:
     type: 2}
   SpawnPoint: {x: 0, y: 0}
   EndPoint: {x: 0, y: 0}
-  OccupiedPositions: []
-  Waypoints: []
