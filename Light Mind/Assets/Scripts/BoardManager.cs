@@ -23,6 +23,9 @@ public class BoardManager : MonoBehaviour
     private Vector2Int _lastBoardSize;
     private int _lastCellOffset;
 
+    [Header("Mode")]
+    public bool EditorMode = false;
+
     private void Start()
     {
         _lastBoardSize = BoardSize;
@@ -32,7 +35,7 @@ public class BoardManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (_lastBoardSize == BoardSize && _lastCellOffset == CellOffset) return;
+        if (EditorMode || (_lastBoardSize == BoardSize && _lastCellOffset == CellOffset)) return;
 
         _lastBoardSize = BoardSize;
         _lastCellOffset = CellOffset;
@@ -41,10 +44,19 @@ public class BoardManager : MonoBehaviour
 
     public void CreateBoard()
     {
+        CreateBoardCells();
+        CreateBoardSpawner();
+        CreateBoardEnemyPaths();
+        CreateBoardEnder();
+        CreateBoardEnemyNavigation();
+        AdjustCamera();
+    }
+
+    public void CreateBoardCells()
+    {
         if (!Board)
         {
             Debug.Log("Could not find Board game object, creating one.");
-
             Board = new GameObject {name = "Board"};
         }
 
@@ -60,14 +72,32 @@ public class BoardManager : MonoBehaviour
                 cell.GetComponent<Renderer>().material = CellDefaultMaterial;
             }
         }
+    }
 
+    public void CreateBoardSpawner()
+    {
         // Create spawner
-        var spawner = Instantiate(GameManager.Instance.SpawnerPrefab, Board.transform);
+        GameObject prefab = EditorMode ? LevelEditorTD.Instance.SpawnerPrefab : GameManager.Instance.SpawnerPrefab;
+        var spawner = Instantiate(prefab, Board.transform);
         spawner.transform.position =
             new Vector3(CellToWorldPosition(SpawnPoint.x), 1.5f + spawner.transform.localScale.y / 2,
                 CellToWorldPosition(SpawnPoint.y));
+    }
 
+    public void CreateBoardEnder()
+    {
+        // Create ender
+        GameObject prefab = EditorMode ? LevelEditorTD.Instance.EnderPrefab : GameManager.Instance.EnderPrefab;
+        var ender = Instantiate(prefab, Board.transform);
+        ender.transform.position =
+            new Vector3(CellToWorldPosition(EndPoint.x), 1.5f + ender.transform.localScale.y / 2,
+                CellToWorldPosition(EndPoint.y));
+    }
+
+    public void CreateBoardEnemyPaths()
+    {
         // Create enemy walkable paths
+        GameObject prefab = EditorMode ? LevelEditorTD.Instance.PathPrefab : GameManager.Instance.PathPrefab;
         foreach (var pathData in Paths)
         {
             // Delete board cells above path
@@ -80,22 +110,17 @@ public class BoardManager : MonoBehaviour
             }
 
             // Instantiate path
-            var path = Instantiate(GameManager.Instance.PathPrefab, Board.transform);
+            var path = Instantiate(prefab, Board.transform);
             path.transform.localScale = pathData.GetPathScale(CellSize, CellOffset);
             path.transform.position = pathData.GetPathPosition(CellSize, CellOffset);
         }
+    }
 
-        // Create ender
-        var ender = Instantiate(GameManager.Instance.EnderPrefab, Board.transform);
-        ender.transform.position =
-            new Vector3(CellToWorldPosition(EndPoint.x), 1.5f + ender.transform.localScale.y / 2,
-                CellToWorldPosition(EndPoint.y));
-
+    public void CreateBoardEnemyNavigation()
+    {
         // Build navigation using NavMesh
         Debug.Log(GameManager.Instance.NavigationSurface);
         GameManager.Instance.NavigationSurface.BuildNavMesh();
-
-        AdjustCamera();
     }
 
     public bool AddItem(GameObject item, Vector2Int position)
@@ -159,7 +184,7 @@ public class BoardManager : MonoBehaviour
         CreateBoard();
     }
 
-    private void AdjustCamera()
+    public void AdjustCamera()
     {
         Camera.main.orthographicSize = CellToWorldPosition(Math.Max(BoardSize.x, BoardSize.y));
         Camera.main.transform.position =
@@ -203,8 +228,12 @@ public class BoardManager : MonoBehaviour
 
     public int WorldToCellPosition(float worldCoordinate)
     {
+        
+        
         var coordinate = Mathf.RoundToInt(worldCoordinate);
-        return coordinate == 0 ? 0 : coordinate / (CellSize + CellOffset);
+        coordinate = coordinate == 0 ? 0 : coordinate / (CellSize + CellOffset);
+        
+        return coordinate;
     }
 
     public float CellToWorldPosition(int coordinate)

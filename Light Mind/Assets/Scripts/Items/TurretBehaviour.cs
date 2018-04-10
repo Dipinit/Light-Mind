@@ -196,6 +196,33 @@ namespace Items
                 Color = RayColor.NONE;
                 Enabled = false;
             }
+
+            if (Color != RayColor.NONE && UseLaser && LineRenderer != null)
+            {
+                SetLineRendererColor(Color);
+            }
+        }
+        
+                
+        private void SetLineRendererColor(RayColor color)
+        {
+            // Set a gradient with the same color at the beginning and the end (we have to use a Gradient...)
+            var gradient = new Gradient();
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(color.GetColor(), 0.0f), new GradientColorKey(color.GetColor(), 1.0f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(color.Alpha, 0.0f), new GradientAlphaKey(color.Alpha, 1.0f)
+                }
+            );
+            
+            Debug.Log(gradient);
+
+            // Apply the gradient
+            LineRenderer.colorGradient = gradient;
         }
     }
 }
