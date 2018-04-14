@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    public static BoardManager Instance;
+    
     [Header("Board")] public GameObject Board;
     public Vector2Int BoardSize = new Vector2Int(8, 8);
 
@@ -25,6 +27,14 @@ public class BoardManager : MonoBehaviour
 
     [Header("Mode")]
     public bool EditorMode = false;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Destroy(gameObject);
+    }
 
     private void Start()
     {
@@ -208,8 +218,6 @@ public class BoardManager : MonoBehaviour
         foreach (Transform cell in Board.transform)
         {
             if (!cell.CompareTag("Grid Cell")) continue;
-
-            
 
             if (cell.position.Equals(targetPosition))
             {

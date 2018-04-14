@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Assets.Scripts.Utilities;
+using Items;
+using Models;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -57,7 +59,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public GameObject Step10;
 	public GameObject Step20;
 	public GameObject Step21;
-	public GameObject Step22;
+	public GameObject Step220;
+	public GameObject Step221;
 	public GameObject Step30;
 	public GameObject Step40;
 	public GameObject Step50;
@@ -66,13 +69,14 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	[Header("Debug")] 
 	public int _currentLevelHeight;
 	public int _currentLevelWidth;
-	public Vector2Int[] _currentEnemyPath;
-	public List<Vector2Int[]> _enemyPaths;
+	public BoardPath _currentEnemyPath;
+	public List<BoardPath> _enemyPaths;
 	public Vector2Int _spawnPoint;
 	public Vector2Int _endPoint;
 	public string _currentWave;
 	public List<string> _waves;
 	public int _currentStep;
+	public BoardCell _selectedCell;
 	
 	private JSONObject _levelData;
 	
@@ -130,8 +134,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		// Private variables initialization
 		_currentStep = 10;
 		Step10.SetActive(true);
-		_enemyPaths = new List<Vector2Int[]>();
-		_currentEnemyPath = new Vector2Int[2];
+		_enemyPaths = new List<BoardPath>();
+		_currentEnemyPath = new BoardPath(0, 0, 0, 0);
 		_currentWave = "";
 		_waves = new List<string>();
 	}
@@ -175,50 +179,38 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	public void ValideStep20()
 	{
-		_levelData["Board"]["SpawnPoint"]["X"].i = _spawnPoint[0];
-		_levelData["Board"]["SpawnPoint"]["Y"].i = _spawnPoint[1];
+		if (_selectedCell == null) return;
 		
-		BoardManager.SpawnPoint.x = _spawnPoint[0];
-		BoardManager.SpawnPoint.y = _spawnPoint[1];
+		_levelData["Board"]["SpawnPoint"]["X"].i = _selectedCell.GetPosition().x;
+		_levelData["Board"]["SpawnPoint"]["Y"].i = _selectedCell.GetPosition().y;
+		
+		BoardManager.SpawnPoint = _selectedCell.GetPosition();
+		ResetSelectedCell();
 		
 		BoardManager.CreateBoardSpawner();
 		
 		Step20.SetActive(false);		
 		Step21.SetActive(true);
+		
+		
 		_currentStep = 21;
 	}
 
-	public void AddSpawnPoint(Vector3 clickPosition)
-	{
-		_spawnPoint = new Vector2Int(
-			BoardManager.WorldToCellPosition(clickPosition.x),
-			BoardManager.WorldToCellPosition(clickPosition.z)
-		);		
-	}
-	
 	/* Step 21 */
 
 	public void ValideStep21()
 	{
-		_levelData["Board"]["EndPoint"]["X"].i = _endPoint[0];
-		_levelData["Board"]["EndPoint"]["Y"].i = _endPoint[1];
+		_levelData["Board"]["EndPoint"]["X"].i = _selectedCell.GetPosition().x;
+		_levelData["Board"]["EndPoint"]["Y"].i = _selectedCell.GetPosition().y;
 		
-		BoardManager.EndPoint.x = _endPoint[0];
-		BoardManager.EndPoint.y = _endPoint[1];
+		BoardManager.EndPoint = _selectedCell.GetPosition();
+		ResetSelectedCell();
 		
 		BoardManager.CreateBoardEnder();
 		
 		Step21.SetActive(false);		
-		//Step22.SetActive(true);
-		_currentStep = 22;
-	}
-
-	public void AddEndPoint(Vector3 clickPosition)
-	{
-		_endPoint = new Vector2Int(
-			BoardManager.WorldToCellPosition(clickPosition.x),
-			BoardManager.WorldToCellPosition(clickPosition.z)
-		);		
+		Step220.SetActive(true);
+		_currentStep = 220;
 	}
 	
 	/* Step 22 */
@@ -228,32 +220,52 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		foreach (var enemyPath in _enemyPaths)
 		{
 			JSONObject jsonPath = new JSONObject();
-			jsonPath.AddField("X1", enemyPath[0][0]);
-			jsonPath.AddField("Y1", enemyPath[0][1]);
-			jsonPath.AddField("X2", enemyPath[1][0]);
-			jsonPath.AddField("Y2", enemyPath[1][1]);
+			jsonPath.AddField("X1", enemyPath.Start.x);
+			jsonPath.AddField("Y1", enemyPath.Start.y);
+			jsonPath.AddField("X2", enemyPath.End.x);
+			jsonPath.AddField("Y2" ,enemyPath.End.y);
 
 			_levelData["Board"]["Paths"].Add(jsonPath);
 		}
+		
+		Step220.SetActive(false);
+		Step221.SetActive(false);
+		Step30.SetActive(true);
+		_currentStep = 30;
 	}
 
-	public void AddPathStart(Vector3 clickPosition)
+	public void ValidateStep220()
 	{
-		Vector2Int cellPosition = new Vector2Int(
-			BoardManager.WorldToCellPosition(clickPosition.x),
-			BoardManager.WorldToCellPosition(clickPosition.y)
-			);
-		_currentEnemyPath[0] = cellPosition;
+		_currentEnemyPath.Start = _selectedCell.GetPosition();
+		ResetSelectedCell();
+		
+		Debug.Log("Validating Step 220");
+		Step220.SetActive(false);
+		Step221.SetActive(true);
+		_currentStep = 221;
 	}
 	
-	public void AddPathEnd(Vector3 clickPosition)
+	public void ValidateStep221()
 	{
-		Vector2Int cellPosition = new Vector2Int(
-			BoardManager.WorldToCellPosition(clickPosition.x),
-			BoardManager.WorldToCellPosition(clickPosition.y)
-		);
-		_currentEnemyPath[1] = cellPosition;
-		_enemyPaths.Add((Vector2Int[]) _currentEnemyPath.Clone());
+		_currentEnemyPath.End = _selectedCell.GetPosition();
+		ResetSelectedCell();
+		
+		Debug.Log("Validating Step 221");
+		BoardPath clone = (BoardPath) _currentEnemyPath.Clone();
+		
+		BoardManager.Paths.Add(clone);
+		BoardManager.CreateBoardEnemyPaths();
+		
+		_enemyPaths.Add(clone);
+
+		foreach (BoardPath boardPath in BoardManager.Paths)
+		{
+			Debug.Log(boardPath);
+		}
+		
+		Step220.SetActive(true);
+		Step221.SetActive(false);
+		_currentStep = 220;
 	}
 	
 	/* Step 30 */
@@ -266,6 +278,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 			jsonWave.AddField("Enemies", wave);
 			_levelData["Waves"].Add(jsonWave);
 		}
+		
+		//Step40.SetActive(true);
+		Step30.SetActive(false);
+		_currentStep = 40;
 	}
 
 	public void AddEnemyToWave(string enemyCode)
@@ -281,18 +297,45 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
+		SelectCell(eventData);
+	}
+
+	private void SelectCell(PointerEventData eventData)
+	{
 		Debug.Log("click");
-		if (_currentStep == 20)
+		Vector3 screenPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		screenPoint.y = 2.0f;
+		
+		Vector2Int cellPosition = new Vector2Int(
+			BoardManager.WorldToCellPosition(screenPoint.x),
+			BoardManager.WorldToCellPosition(screenPoint.z)
+		);
+
+		BoardCell boardCell = BoardManager.GetCellAt(cellPosition);
+		if (boardCell != null)
 		{
-			Vector3 screenPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			screenPoint.y = 2.0f;
-			AddSpawnPoint(screenPoint);
+			if (_selectedCell != null) _selectedCell.ResetCellColor();
+			_selectedCell = boardCell;
+			_selectedCell.HighlightCell();
 		}
-		if (_currentStep == 21)
-		{
-			Vector3 screenPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			screenPoint.y = 2.0f;
-			AddEndPoint(screenPoint);
-		}
+		
+		Debug.Log(_selectedCell);
+	}
+
+	private void ResetSelectedCell()
+	{
+		_selectedCell.ResetCellColor();
+		_selectedCell = null;
+		Debug.Log(_selectedCell);
+	}
+
+	private Vector2Int WorldVector3ToCellVector2(Vector3 worldVector)
+	{
+		Vector2Int cellVector = new Vector2Int(
+			BoardManager.WorldToCellPosition(worldVector.x),
+			BoardManager.WorldToCellPosition(worldVector.z)
+		);
+
+		return cellVector;
 	}
 }

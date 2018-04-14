@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Items
 {
@@ -26,12 +27,12 @@ namespace Items
 
         public void HighlightCell()
         {
-            _renderer.material = GameManager.Instance.BoardManager.CellHighlightMaterial;
+            _renderer.material = BoardManager.Instance.CellHighlightMaterial;
         }
 
         public void ResetCellColor()
         {
-            _renderer.material = GameManager.Instance.BoardManager.CellDefaultMaterial;
+            _renderer.material = BoardManager.Instance.CellDefaultMaterial;
         }
 
         public bool IsOccupied()
@@ -41,9 +42,13 @@ namespace Items
 
         public Vector2Int GetPosition()
         {
-            var boardManager = GameManager.Instance.BoardManager;
-            return new Vector2Int(boardManager.WorldToCellPosition(transform.position.x),
-                boardManager.WorldToCellPosition(transform.position.z));
+            return new Vector2Int(BoardManager.Instance.WorldToCellPosition(transform.position.x),
+                BoardManager.Instance.WorldToCellPosition(transform.position.z));
+        }
+
+        public override String ToString()
+        {
+            return String.Format("Board Cell - X:{0} Y:{1}", GetPosition().x, GetPosition().y);
         }
     }
 }
