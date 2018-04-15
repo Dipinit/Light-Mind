@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection.Emit;
+using System.Runtime.Serialization.Formatters.Binary;
 using Assets.Scripts.Utilities;
+using Behaviors;
 using Items;
 using Models;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -77,6 +81,16 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public List<string> _waves;
 	public int _currentStep;
 	public BoardCell _selectedCell;
+	public int _currentFilterCount;
+	public int _currentMirrorCount;
+	public int _currentPrismCount;
+	public int _currentFilterMirrorCount;
+	public int _currentStandardTurretCount;
+	public int _currentMissileTurretCount;
+	public int _currentLaserTurretCount;
+	public string _currentLevelName;
+	public int _currentLives;
+	public int _currentSpawnInterval;
 	
 	private JSONObject _levelData;
 	
@@ -133,6 +147,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		
 		// Private variables initialization
 		_currentStep = 10;
+		
 		Step10.SetActive(true);
 		_enemyPaths = new List<BoardPath>();
 		_currentEnemyPath = new BoardPath(0, 0, 0, 0);
@@ -279,8 +294,11 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 			_levelData["Waves"].Add(jsonWave);
 		}
 		
-		//Step40.SetActive(true);
+		Step40.SetActive(true);
 		Step30.SetActive(false);
+
+		PrepareStep40();
+		
 		_currentStep = 40;
 	}
 
@@ -338,4 +356,213 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 		return cellVector;
 	}
+
+	public void PrepareStep40()
+	{
+		LoadFullInventory();
+		Inventory.SetActive(true);
+	}
+	
+	public void ValidateStep40()
+	{
+		Step50.SetActive(true);
+		Step40.SetActive(false);
+		SaveItems();
+		_currentStep = 50;
+	}
+	
+	// Load player inventory
+	private void LoadFullInventory()
+	{
+		CreateInventoryItem(MirrorInventoryItemPrefab, "mirror", 99);
+		CreateInventoryItem(FilterMirrorInventoryItemPrefab, "mirror-filter", 99);
+		CreateInventoryItem(PrismInventoryItemPrefab, "prism", 99);
+		CreateInventoryItem(FilterInventoryItemPrefab, "filter", 99);
+		CreateInventoryItem(StandardTurretInventoryItemPrefab, "standard-turret", 99);
+		CreateInventoryItem(MissileTurretInventoryItemPrefab, "missile-turret", 99);
+		CreateInventoryItem(LaserTurretInventoryItemPrefab, "laser-turret", 99);
+	}
+	
+	private void CreateInventoryItem(GameObject itemPrefab, string itemCode, int count)
+	{
+		GameObject itemGameObject = Instantiate(itemPrefab, Inventory.transform);
+		InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+		inventoryItem.ItemQuantity = count;
+		inventoryItem.ItemCode = itemCode;
+	}
+
+	private void SaveItems()
+	{
+		foreach (Transform item in ItemsContainer.transform)
+		{
+			RaySensitive raySensitive = item.GetComponent<RaySensitive>();
+			Debug.Log(raySensitive.ItemCode);
+			SaveItem(item);
+		}
+		
+		Debug.Log(_levelData.ToString());
+	}
+
+	private void SaveItem(Transform item)
+	{
+		JSONObject jsonObject = new JSONObject();
+
+		jsonObject.AddField("X", BoardManager.WorldToCellPosition(item.position.x));
+		jsonObject.AddField("Y", BoardManager.WorldToCellPosition(item.position.z));
+		jsonObject.AddField("Draggable", false);
+		
+		RaySensitive raySensitive = item.GetComponent<RaySensitive>();
+		Debug.Log(raySensitive.ItemCode);
+		if (raySensitive.ItemCode == "mirror") SaveMirrorItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "filter") SaveFilterItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "prism") SavePrismItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "filter-mirror") SaveFilterMirrorItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "obstacle") SaveObstacleItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "standard-turret") SaveStandardTurretItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "missile-turret") SaveMissileTurretItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "laser-turret") SaveLaserTurretItem(item, jsonObject);
+		else if (raySensitive.ItemCode == "light-source") SaveLightSourceItem(item, jsonObject);
+		
+		_levelData["Entities"].Add(jsonObject);
+	}
+
+	private void SaveMirrorItem(Transform item, JSONObject jsonObject)
+	{
+		Mirror mirror = item.GetComponent<Mirror>();
+		jsonObject.AddField("Type", "Mirror");
+		jsonObject.AddField("Orientation", (int) mirror.Orientation);		
+	}
+	
+	private void SaveFilterItem(Transform item, JSONObject jsonObject)
+	{
+		Filter filter = item.GetComponent<Filter>();
+		jsonObject.AddField("Type", "Filter");
+		SaveItemColor(jsonObject, filter.Color);
+	}
+
+	private void SavePrismItem(Transform item, JSONObject jsonObject)
+	{
+		Prism prism = item.GetComponent<Prism>();
+		jsonObject.AddField("Type", "Prism");
+		SaveItemColor(jsonObject, prism.Color);
+	}
+	private void SaveFilterMirrorItem(Transform item, JSONObject jsonObject)
+	{
+		FilterMirror filterMirror = item.GetComponent<FilterMirror>();
+		jsonObject.AddField("Type", "Filter Mirror");
+		SaveItemColor(jsonObject, filterMirror.Color);
+		jsonObject.AddField("Orientation", (int) filterMirror.Orientation);
+	}
+
+	private void SaveObstacleItem(Transform item, JSONObject jsonObject)
+	{
+		jsonObject.AddField("Type", "Obstacle");
+	}
+	
+	private void SaveStandardTurretItem(Transform item, JSONObject jsonObject)
+	{
+		jsonObject.AddField("Type", "Standard Turret");
+	}
+	
+	private void SaveMissileTurretItem(Transform item, JSONObject jsonObject)
+	{
+		jsonObject.AddField("Type", "Missile Turret");
+	}
+	
+	private void SaveLaserTurretItem(Transform item, JSONObject jsonObject)
+	{
+		jsonObject.AddField("Type", "Laser Turret");
+	}
+
+	private void SaveLightSourceItem(Transform item, JSONObject jsonObject)
+	{
+		
+	}
+
+	private void SaveItemColor(JSONObject jsonObject, RayColor color)
+	{
+		jsonObject.AddField("Red", color.R);
+		jsonObject.AddField("Green", color.G);
+		jsonObject.AddField("Blue", color.B);
+	}
+	
+	public void ValidateStep50()
+	{
+		_levelData["Inventory"]["Mirrors"].i = _currentMirrorCount;
+		_levelData["Inventory"]["Filters"].i = _currentFilterCount;
+		_levelData["Inventory"]["Prisms"].i = _currentPrismCount;
+		_levelData["Inventory"]["MirrorFilters"].i = _currentFilterMirrorCount;
+		_levelData["Inventory"]["StandardTurret"].i = _currentStandardTurretCount;
+		_levelData["Inventory"]["MissileTurret"].i = _currentMissileTurretCount;
+		_levelData["Inventory"]["LaserTurret"].i = _currentLaserTurretCount;
+		
+		Step60.SetActive(true);
+		Step50.SetActive(false);
+		_currentStep = 60;
+		
+		Debug.Log(_levelData.ToString());
+	}
+
+	public void UpdateMirrorCount(string input)
+	{
+		bool result = int.TryParse(input, out _currentMirrorCount);
+	}
+
+	public void UpdateFilterCount(string input)
+	{
+		bool result = int.TryParse(input, out _currentFilterCount);
+	}
+
+	public void UpdatePrismCount(string input)
+	{
+		bool result = int.TryParse(input, out _currentPrismCount);
+	}
+
+	public void UpdateFilterMirrorCount(string input)
+	{
+		bool result = int.TryParse(input, out _currentFilterMirrorCount);
+	}
+
+	public void UpdateStandardTurretCount(string input)
+	{
+		bool result = int.TryParse(input, out _currentStandardTurretCount);
+	}
+
+	public void UpdateMissileTurretCount(string input)
+	{
+		bool result = int.TryParse(input, out _currentMissileTurretCount);
+	}
+
+	public void UpdateLaserTurretCount(string input)
+	{
+		bool result = int.TryParse(input, out _currentLaserTurretCount);
+	}
+
+	public void ValidateStep60()
+	{
+		_levelData["Name"].str = _currentLevelName;
+		_levelData["Info"]["Lives"].i = _currentLives;
+		_levelData["Info"]["SpawnInterval"].i = _currentSpawnInterval;
+		string levelName = _levelData["Name"].str;
+		LevelManager.SaveLevel(_levelData, levelName);
+		JSONObject level = LevelManager.LoadLevel(levelName);
+		Debug.Log(LevelManager.GetCustomLevels().ToString());
+		Step60.SetActive(false);
+	}
+	
+	public void UpdateLevelName(string input)
+	{
+		_currentLevelName = input;
+	}
+
+	public void UpdateLives(string input)
+	{
+		bool result = int.TryParse(input, out _currentLives);
+	}
+
+	public void UpdateSpawnInterval(string input)
+	{
+		bool result = int.TryParse(input, out _currentSpawnInterval);
+	}
+
 }

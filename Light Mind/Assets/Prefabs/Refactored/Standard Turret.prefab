@@ -364,10 +364,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfb87aaa9d0e6240bdcabc3518e5d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemCode: standard-turret
+  AudioSources: []
+  ParticleSystem: {fileID: 0}
+  ColliderEnabled: 0
+  IsOrientable: 0
+  Orientation: 0
+  IsColorable: 0
+  Color:
+    R: 1
+    G: 1
+    B: 1
+    Alpha: 0.9
+  DoubleClickTime: 0.25
+  Enabled: 0
   Range: 15
-  FireRate: 1
-  PartToRotate: {fileID: 4811975112276350}
-  RotateSpeed: 10
   BulletPrefab: {fileID: 1716949523026110, guid: 76fa1ce8b413bb147832fc398cd4c7e3,
     type: 2}
+  FireRate: 1
+  UseLaser: 0
+  LaserDamageBasePerSecond: 30
+  LineRenderer: {fileID: 0}
+  ImpactEffect: {fileID: 0}
+  ImpactLight: {fileID: 0}
+  PartToRotate: {fileID: 4811975112276350}
+  RotateSpeed: 10
   FirePoint: {fileID: 4132033118635848}

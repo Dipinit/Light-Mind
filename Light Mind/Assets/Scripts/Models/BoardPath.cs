@@ -26,9 +26,9 @@ namespace Models
 
             if (GameManager.Instance != null)
             {
-                pathPosition.x = (pathPosition.x - cellSize) / 2.0f + GameManager.Instance.BoardManager.CellToWorldPosition(Start.x);
+                pathPosition.x = (pathPosition.x - cellSize) / 2.0f + BoardManager.Instance.CellToWorldPosition(Start.x);
                 pathPosition.y = 1.0f;
-                pathPosition.z = (pathPosition.z - cellSize) / 2.0f + GameManager.Instance.BoardManager.CellToWorldPosition(Start.y);
+                pathPosition.z = (pathPosition.z - cellSize) / 2.0f + BoardManager.Instance.CellToWorldPosition(Start.y);
             }
             else
             {

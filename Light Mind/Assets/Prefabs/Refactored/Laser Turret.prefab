@@ -493,6 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfb87aaa9d0e6240bdcabc3518e5d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemCode: laser-turret
   AudioSources: []
   ParticleSystem: {fileID: 0}
   ColliderEnabled: 0

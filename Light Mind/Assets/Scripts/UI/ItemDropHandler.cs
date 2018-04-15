@@ -31,11 +31,16 @@ namespace UI
 
             Debug.Log("Found board cell to drop on!");
 
+            GameObject itemsContainer =
+                BoardManager.Instance.EditorMode
+                    ? LevelEditorTD.Instance.ItemsContainer
+                    : GameManager.Instance.ItemsContainer;
+            
             var itemPrefab = GetComponentInParent<InventoryItem>().ItemPrefab;
-            var droppedItem = Instantiate(itemPrefab, GameManager.Instance.ItemsContainer.transform);
+            var droppedItem = Instantiate(itemPrefab, itemsContainer.transform);
             var dropPosition = boardCell.GetPosition();
 
-            if (!GameManager.Instance.BoardManager.AddItem(droppedItem, dropPosition))
+            if (!BoardManager.Instance.AddItem(droppedItem, dropPosition))
             {
                 Debug.Log("Could not drop item on this cell, replacing in inventory.");
                 Destroy(droppedItem);

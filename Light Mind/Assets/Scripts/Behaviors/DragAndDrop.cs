@@ -23,7 +23,7 @@ namespace Behaviors
 
         private void Awake()
         {
-            _board = GameManager.Instance.BoardManager;
+            _board = BoardManager.Instance;
             _audioSources = GetComponents<AudioSource>();
             _raySensitive = GetComponent<RaySensitive>();
         }
@@ -37,7 +37,7 @@ namespace Behaviors
             _lastPosition = transform.position;
             var gridPosition = new Vector2Int(_board.WorldToCellPosition(_lastPosition.x),
                 _board.WorldToCellPosition(_lastPosition.z));
-            GameManager.Instance.BoardManager.RemoveItemAt(gridPosition);
+            BoardManager.Instance.RemoveItemAt(gridPosition);
 
             UpdateDraggedPosition();
             if (_raySensitive != null)
@@ -120,7 +120,6 @@ namespace Behaviors
                     Debug.LogWarning(itemType);
                 }
 
-
                 GameObject.Find("Inventory").GetComponent<AudioSource>().Play();
             }
             else
@@ -130,7 +129,7 @@ namespace Behaviors
                 transform.position = cellPosition;
 
                 var gridPosition = new Vector2Int(_board.WorldToCellPosition(cellPosition.x), _board.WorldToCellPosition(cellPosition.z));
-                GameManager.Instance.BoardManager.AddItem(gameObject, gridPosition);
+                BoardManager.Instance.AddItem(gameObject, gridPosition);
 
                 _audioSources[0].Play();
             }

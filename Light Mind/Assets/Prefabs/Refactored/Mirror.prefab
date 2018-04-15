@@ -465,6 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803c535648f242ef994a487016733700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemCode: mirror
   AudioSources: []
   ParticleSystem: {fileID: 0}
   ColliderEnabled: 0
@@ -476,7 +477,6 @@ MonoBehaviour:
     G: 1
     B: 1
     Alpha: 0.9
-    Name: White
   DoubleClickTime: 0.25
 --- !u!114 &114686699903765382
 MonoBehaviour:

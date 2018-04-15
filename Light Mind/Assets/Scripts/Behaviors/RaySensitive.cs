@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Assets.Scripts.Utilities;
 using UnityEngine;
 using Ray = Items.Ray;
@@ -7,6 +8,8 @@ namespace Behaviors
 {
     public class RaySensitive : MonoBehaviour
     {
+        public string ItemCode;
+        
         public List<Ray> ReceveidRays;
         public List<Ray> EmittedRays;
         protected MeshCollider _meshCollider;
@@ -31,6 +34,11 @@ namespace Behaviors
         public virtual void Update ()
         {
             if (_meshCollider) _meshCollider.convex = ColliderEnabled;
+         
+            if (EmittedRays == null)
+                EmittedRays = new List<Ray>();
+            if (ReceveidRays == null)
+                ReceveidRays = new List<Ray>();
             
             for (int i = 0; i < EmittedRays.Count; i++)
             {

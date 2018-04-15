@@ -138,55 +138,27 @@ public class GameManager : MonoBehaviour
 
         // Load player inventory
         if (dataAsJson["Inventory"]["Mirrors"].i > 0)
-        {
-            GameObject itemGameObject = Instantiate(MirrorInventoryItemPrefab, Inventory.transform);
-            InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-            inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Mirrors"].i;
-        }
+            CreateInventoryItem(MirrorInventoryItemPrefab, "mirror", (int) dataAsJson["Inventory"]["Mirrors"].i);
 
         if (dataAsJson["Inventory"]["MirrorFilters"].i > 0)
-        {
-            GameObject itemGameObject = Instantiate(FilterMirrorInventoryItemPrefab, Inventory.transform);
-            InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-            inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["MirrorFilters"].i;
-        }
+            CreateInventoryItem(FilterMirrorInventoryItemPrefab, "mirror-filter", (int) dataAsJson["Inventory"]["MirrorFilters"].i);
 
         if (dataAsJson["Inventory"]["Prisms"].i > 0)
-        {
-            GameObject itemGameObject = Instantiate(PrismInventoryItemPrefab, Inventory.transform);
-            InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-            inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Prisms"].i;
-        }
+            CreateInventoryItem(PrismInventoryItemPrefab, "prism", (int) dataAsJson["Inventory"]["Prisms"].i);
 
         if (dataAsJson["Inventory"]["Filters"].i > 0)
-        {
-            GameObject itemGameObject = Instantiate(FilterInventoryItemPrefab, Inventory.transform);
-            InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-            inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["Filters"].i;
-        }
+            CreateInventoryItem(FilterInventoryItemPrefab, "filter", (int) dataAsJson["Inventory"]["Filters"].i);
 
         if (IsTd)
         {
             if (dataAsJson["Inventory"]["StandardTurret"].i > 0)
-            {
-                var itemGameObject = Instantiate(StandardTurretInventoryItemPrefab, Inventory.transform);
-                var inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["StandardTurret"].i;
-            }
+                CreateInventoryItem(StandardTurretInventoryItemPrefab, "standard-turret", (int) dataAsJson["Inventory"]["StandardTurret"].i);
 
             if (dataAsJson["Inventory"]["MissileTurret"].i > 0)
-            {
-                var itemGameObject = Instantiate(MissileTurretInventoryItemPrefab, Inventory.transform);
-                var inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["MissileTurret"].i;
-            }
+                CreateInventoryItem(MissileTurretInventoryItemPrefab, "missile-turret", (int) dataAsJson["Inventory"]["MissileTurret"].i);
 
             if (dataAsJson["Inventory"]["LaserTurret"].i > 0)
-            {
-                var itemGameObject = Instantiate(LaserTurretInventoryItemPrefab, Inventory.transform);
-                var inventoryItem = itemGameObject.GetComponent<InventoryItem>();
-                inventoryItem.ItemQuantity = (int) dataAsJson["Inventory"]["LaserTurret"].i;
-            }
+                CreateInventoryItem(LaserTurretInventoryItemPrefab, "laser-turret", (int) dataAsJson["Inventory"]["LaserTurret"].i);
         }
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
@@ -305,6 +277,14 @@ public class GameManager : MonoBehaviour
         {
             TdManager.SetUpWaves(dataAsJson);
         }
+    }
+
+    private void CreateInventoryItem(GameObject itemPrefab, string itemCode, int count)
+    {
+        GameObject itemGameObject = Instantiate(itemPrefab, Inventory.transform);
+        InventoryItem inventoryItem = itemGameObject.GetComponent<InventoryItem>();
+        inventoryItem.ItemQuantity = count;
+        inventoryItem.ItemCode = itemCode;
     }
 
     // Find the parent GameObject of all Quad Objects and get all objectives references
