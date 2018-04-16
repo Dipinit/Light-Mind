@@ -6,7 +6,7 @@ public class ColorItem : MonoBehaviour
 {
     public RayColor Color;
 
-    public void OnMouseDown()
+    public void ChangeColor()
     {
         Debug.LogWarning(Color.GetName());
         GameManager.Instance.SetSelectedItemColor(Color);
