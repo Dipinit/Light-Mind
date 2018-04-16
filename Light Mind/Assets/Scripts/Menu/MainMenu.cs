@@ -5,29 +5,30 @@ namespace Menu
 {
     public class MainMenu : MonoBehaviour
     {
-		public void PlayClassicGame()
-		{
-			SceneManager.LoadScene(1);
-		}
 
-		public void PlayTDGame()
-		{
-			SceneManager.LoadScene("Scenes/GameTD");
-		}
+  		public void PlayTDGame()
+  		{
+  			Application.LoadLevel("Scenes/GameTD3D");
+  		}
 
         public void ReturnToMenu()
         {
-            SceneManager.LoadScene("Scenes/MenuScene");
+            Application.LoadLevel("Scenes/MenuScene");
         }
 
         public void LevelEditor()
         {
-            SceneManager.LoadScene("Scenes/JulesEditor");
+            Application.LoadLevel("Scenes/EditorTD");
         }
 
         public void QuitGame()
         {
             Application.Quit();
         }
+        public void Select(string levelName)
+        {
+            PlayerPrefs.SetString("currentLevel", levelName);
+            SceneManager.LoadScene("Scenes/GameTD3D");
+        }
     }
-} 
+}
