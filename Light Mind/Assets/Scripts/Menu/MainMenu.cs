@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
 namespace Menu
 {
     public class MainMenu : MonoBehaviour
@@ -24,11 +23,6 @@ namespace Menu
         public void QuitGame()
         {
             Application.Quit();
-        }
-        public void Select(string levelName)
-        {
-            PlayerPrefs.SetString("currentLevel", levelName);
-            SceneManager.LoadScene("Scenes/GameTD3D");
         }
     }
 }
