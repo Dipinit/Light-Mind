@@ -11,7 +11,15 @@ namespace UI
         {
             var inventoryPanel = transform as RectTransform;
 
+            // Check if item is not still in inventory canvas
             if (RectTransformUtility.RectangleContainsScreenPoint(inventoryPanel, Input.mousePosition)) return;
+
+            // Check item quantity
+            if (GetComponentInParent<InventoryItem>().ItemQuantity <= 0)
+            {
+                Debug.Log("Not enough quantity to drop item.");
+                return;
+            }
 
             // Trying to drop item on board cell
             Debug.Log("Trying to drop an item from inventory...");
@@ -31,11 +39,11 @@ namespace UI
 
             Debug.Log("Found board cell to drop on!");
 
-            GameObject itemsContainer =
+            var itemsContainer =
                 BoardManager.Instance.EditorMode
                     ? LevelEditorTD.Instance.ItemsContainer
                     : GameManager.Instance.ItemsContainer;
-            
+
             var itemPrefab = GetComponentInParent<InventoryItem>().ItemPrefab;
             var droppedItem = Instantiate(itemPrefab, itemsContainer.transform);
             var dropPosition = boardCell.GetPosition();
@@ -49,6 +57,9 @@ namespace UI
 
                 return;
             }
+
+            // Decrease item quantity
+            GetComponentInParent<InventoryItem>().ItemQuantity--;
 
             Debug.Log(string.Format("Dropped {0} on board at position {1}", droppedItem, dropPosition));
         }
