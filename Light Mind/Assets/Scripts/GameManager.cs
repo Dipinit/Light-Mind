@@ -86,28 +86,32 @@ public class GameManager : MonoBehaviour
         if (IsTd) TdManager.StartGame();
     }
 
+    public static string LoadFile(string level) {
+      var fileName = string.Format("{0}_TD.json", level);
+      string jsonText;
+      var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
+      // Read JSON data from file
+      if (Application.platform == RuntimePlatform.Android)
+      {
+          var www = new WWW(filePath);
+          while (!www.isDone)
+          {
+          }
+
+          jsonText = www.text;
+      }
+      else
+      {
+          jsonText = File.ReadAllText(filePath);
+      }
+
+      return jsonText;
+    }
     public void LoadLevel(string level)
     {
-        var fileName = string.Format(IsTd ? "{0}_TD.json" : "{0}.json", level);
-        string jsonText;
-        var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
-        // Read JSON data from file
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            var www = new WWW(filePath);
-            while (!www.isDone)
-            {
-            }
-
-            jsonText = www.text;
-        }
-        else
-        {
-            jsonText = File.ReadAllText(filePath);
-        }
-
+        string jsonText = LoadFile(level);
         Debug.Log(jsonText);
 
         JSONObject dataAsJson = new JSONObject(jsonText);

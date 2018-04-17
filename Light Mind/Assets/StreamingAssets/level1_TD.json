@@ -1,5 +1,6 @@
 {
   "Name": "Level 1",
+  "FunFact": "Tous les humains ont la capacité de voir la lumière ultraviolette, mais il est passivement filtré par la lentille de l'œil. Les patients qui subissent une intervention chirurgicale pour enlever la lentille peuvent détecter la lumière ultraviolette.",
   "Number": 1,
   "Inventory":
     {
@@ -17,8 +18,8 @@
       {"Type": "Prism", "X": 1, "Y": 3, "Red": true, "Green": true, "Blue": false, "Draggable": false},
       {"Type": "Filter Mirror", "X": 3, "Y": 1, "Red": false, "Green": false, "Blue": true, "Orientation": 135, "Draggable": false},
       {"Type": "Spawner", "X": 0, "Y": 0, "Draggable": false},
-	  {"Type": "Path", 
-		"Paths": 
+	  {"Type": "Path",
+		"Paths":
 		[
 				{"X": 7, "Y": 0}
 
