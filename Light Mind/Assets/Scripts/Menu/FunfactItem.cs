@@ -2,21 +2,23 @@ using Assets.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelItem : MonoBehaviour
+public class FunfactItem : MonoBehaviour
 {
     public string name;
     public string filename;
     public bool isInteractable = false;
+    public GameObject ScrollFunFact;
+  	public GameObject ScrollFunFactDetail;
 
     public void Select()
     {
-      Debug.LogWarning("isInteractable");
-      Debug.LogWarning(isInteractable);
-      if (!isInteractable) {
-        return;
-      }
-			PlayerPrefs.SetString("currentLevel", this.filename);
-			Application.LoadLevel("Scenes/GameTD3D");
+      string jsonText = GameManager.LoadFile(filename);
+      JSONObject dataAsJson = new JSONObject(jsonText);
+      PlayerPrefs.SetString("FunFact", dataAsJson["FunFact"].str);
+      Debug.Log(dataAsJson["FunFact"].str);
+      Debug.Log(filename);
+      ScrollFunFact.SetActive(false);
+      ScrollFunFactDetail.SetActive(true);
     }
 
     public void SetName(string name)

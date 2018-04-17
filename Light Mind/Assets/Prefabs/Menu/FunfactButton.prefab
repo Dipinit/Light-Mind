@@ -40,9 +40,9 @@ GameObject:
   - component: {fileID: 114512780297303546}
   - component: {fileID: 114513548228550276}
   - component: {fileID: 114986398651145526}
-  - component: {fileID: 114915092455256370}
+  - component: {fileID: 114991948590718474}
   m_Layer: 5
-  m_Name: LevelButton
+  m_Name: FunfactButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114915092455256370}
+      - m_Target: {fileID: 114991948590718474}
         m_MethodName: Select
         m_Mode: 1
         m_Arguments:
@@ -122,7 +122,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: level4
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -160,20 +160,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 2
---- !u!114 &114915092455256370
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1873365188209752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 394391152941043aab51945bcdb4a72a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
-  filename: 
-  isInteractable: 0
 --- !u!114 &114986398651145526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,6 +174,22 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.191}
   m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 0
+--- !u!114 &114991948590718474
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1873365188209752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67970049fa5b54075bf78c132404f343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  filename: 
+  isInteractable: 0
+  ScrollFunFact: {fileID: 0}
+  ScrollFunFactDetail: {fileID: 0}
 --- !u!222 &222036202741041278
 CanvasRenderer:
   m_ObjectHideFlags: 1
