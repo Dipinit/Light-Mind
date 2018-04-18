@@ -137,31 +137,12 @@
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Blue"
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Yellow"
-					},
-				]
-    },
-    {
-      "Enemies": [
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Red"
+						"Color" : "Green"
 					},
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
 						"Color" : "Red"
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Yellow"
 					},
 				]
     },
@@ -175,6 +156,25 @@
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
+						"Color" : "Blue"
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Yellow"
+					},
+				]
+    },
+    {
+      "Enemies": [
+					{
+						"Hitpoints" : 150,
+						"Speed" : 15,
+						"Color" : "Blue"
+					},
+					{
+						"Hitpoints" : 75,
+						"Speed" : 20,
 						"Color" : "Yellow"
 					},
 				]
