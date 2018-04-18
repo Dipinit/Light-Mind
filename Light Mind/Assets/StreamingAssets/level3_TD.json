@@ -75,7 +75,7 @@
         {
           "Direction": 0,
           "Enabled": true,
-          "Red": false,
+          "Red": true,
           "Green": true,
           "Blue": true
         },
@@ -102,10 +102,10 @@
         },
         {
           "Direction": 180,
-          "Enabled": false,
+          "Enabled": true,
           "Red": false,
-          "Green": false,
-          "Blue": false
+          "Green": true,
+          "Blue": true
         },
         {
           "Direction": 225,
@@ -116,8 +116,8 @@
         },
         {
           "Direction": 270,
-          "Enabled": true,
-          "Red": true,
+          "Enabled": false,
+          "Red": false,
           "Green": false,
           "Blue": false
         },
