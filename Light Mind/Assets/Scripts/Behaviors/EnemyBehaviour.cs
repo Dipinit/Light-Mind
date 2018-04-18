@@ -50,6 +50,7 @@ namespace Behaviors
 
         private void OnDestroy()
         {
+            GameManager.Instance.TdManager.UpdateDeath (this.Color);
             if (EnemyDestroyCallback != null)
             {
                 EnemyDestroyCallback(gameObject);

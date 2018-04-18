@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -544,6 +544,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1423048030}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &704328129 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1621822307}
+  m_Script: {fileID: 11500000, guid: 07ddae598091b482a80cf76d92faff71, type: 3}
 --- !u!1 &920378298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,6 +1193,16 @@ Prefab:
       propertyPath: LoseScreen
       value: 
       objectReference: {fileID: 37993219}
+    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: Inventory
+      value: 
+      objectReference: {fileID: 1761380327}
+    - target: {fileID: 114553513558107608, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: GameManager
+      value: 
+      objectReference: {fileID: 704328129}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b, type: 2}
   m_IsPrefabParent: 0
@@ -1871,8 +1887,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d128fe1a53fa4cb4ea6011bfeae52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeTimer: 2
-  shakeAmount: 0.1
 --- !u!1 &2063791563
 GameObject:
   m_ObjectHideFlags: 0

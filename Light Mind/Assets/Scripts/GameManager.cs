@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
             LoadLevel(currentLevel);
         }
 
-        TdManager.StartGame(this);
+        TdManager.StartGame();
     }
 
     public static string LoadFile(string level)
