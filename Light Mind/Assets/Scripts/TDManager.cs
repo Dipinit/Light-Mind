@@ -183,63 +183,25 @@ public class TDManager : MonoBehaviour
         foreach (var enemy in wave)
         {
             RayColor color = enemy.Color;
-            if (color == RayColor.RED)
-            {
-                red++;
-                continue;
-            }
-
-            if (color == RayColor.WHITE)
-            {
-                white++;
-                continue;
-            }
-
-            if (color == RayColor.BLUE)
-            {
-                blue++;
-                continue;
-            }
-
-            if (color == RayColor.YELLOW)
-            {
-                yellow++;
-                continue;
-            }
-
-            if (color == RayColor.GREEN)
-            {
-                green++;
-                continue;
-            }
-
-            if (color == RayColor.CYAN)
-            {
-                cyan++;
-                continue;
-            }
-
-            if (color == RayColor.MAGENTA)
-            {
-                magenta++;
-                continue;
-            }
-
-            if (color == RayColor.NONE)
-            {
-                none++;
-            }
+            if (color == RayColor.RED) { red++; continue; }
+            if (color == RayColor.WHITE) { white++; continue; }
+            if (color == RayColor.BLUE) { blue++; continue; }
+            if (color == RayColor.YELLOW) { yellow++; continue; }
+            if (color == RayColor.GREEN) { green++; continue; }
+            if (color == RayColor.CYAN) { cyan++; continue; }
+            if (color == RayColor.MAGENTA) { magenta++; continue; }
+            if (color == RayColor.NONE) { none++; }
         }
 
         StringBuilder sb = new StringBuilder();
-        if (red > 0) sb.Append("RED x").Append(red).Append(Environment.NewLine);
-        if (blue > 0) sb.Append("BLUE x").Append(blue).Append(Environment.NewLine);
-        if (yellow > 0) sb.Append("YELLOW x").Append(yellow).Append(Environment.NewLine);
-        if (cyan > 0) sb.Append("CYAN x").Append(cyan).Append(Environment.NewLine);
-        if (green > 0) sb.Append("GREEN x").Append(green).Append(Environment.NewLine);
-        if (white > 0) sb.Append("WHITE x").Append(white).Append(Environment.NewLine);
-        if (magenta > 0) sb.Append("MAGENTA x").Append(magenta).Append(Environment.NewLine);
-        if (none > 0) sb.Append("COLOR-IMMUNE x").Append(none).Append(Environment.NewLine);
+        if (red > 0) sb.Append("<size=30><color=red>●</color></size> x").Append(red).Append(Environment.NewLine);
+        if (blue > 0) sb.Append("<size=30><color=blue>●</color></size> x").Append(blue).Append(Environment.NewLine);
+        if (yellow > 0) sb.Append("<size=30><color=yellow>●</color></size> x").Append(yellow).Append(Environment.NewLine);
+        if (cyan > 0) sb.Append("<size=30><color=cyan>●</color></size> x").Append(cyan).Append(Environment.NewLine);
+        if (green > 0) sb.Append("<size=30><color=green>●</color></size> x").Append(green).Append(Environment.NewLine);
+        if (white > 0) sb.Append("<size=30><color=white>●</color></size> x").Append(white).Append(Environment.NewLine);
+        if (magenta > 0) sb.Append("<size=30><color=magenta>●</color></size> x").Append(magenta).Append(Environment.NewLine);
+        if (none > 0) sb.Append("<size=30><color=black>●</color></size> x").Append(none).Append(Environment.NewLine);
         Debug.Log(sb);
         return sb.ToString();
     }
