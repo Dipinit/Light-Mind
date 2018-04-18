@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public GameObject ColorPicker;
     public GameObject WinScreen;
     public GameObject LoseScreen;
+    public GameObject PauseScreen;
 
     [Header("Tower Defense")] public GameObject EnemyPrefab;
 
@@ -83,7 +84,7 @@ public class GameManager : MonoBehaviour
             LoadLevel(currentLevel);
         }
 
-        TdManager.StartGame(this);
+        TdManager.StartGame();
     }
 
     public static string LoadFile(string level)
@@ -351,5 +352,14 @@ public class GameManager : MonoBehaviour
     public void LoseLevel()
     {
         LoseScreen.SetActive(true);
+    }
+
+    public void PauseLevel()
+    {
+        if (PauseScreen.activeSelf) {
+            PauseScreen.SetActive (false);
+        } else {
+            PauseScreen.SetActive (true);   
+        }
     }
 }

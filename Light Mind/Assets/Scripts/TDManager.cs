@@ -36,6 +36,7 @@ public class TDManager : MonoBehaviour
     private List<List<Enemy>> _enemyWaves = new List<List<Enemy>>();
     private int _enemiesSpawned;
 
+    // Default Values
     private float _defaultSpawnInterval;
     private int _defaultHitpoints;
     private float _defaultSpeed;
@@ -46,11 +47,12 @@ public class TDManager : MonoBehaviour
     public Text LivesText;
     public Text WaveText;
 
-    public void StartGame(GameManager gameManager)
+    // Color Tracking
+    private Dictionary<RayColor, int> _dicoEnemyColors;
+
+    public void StartGame()
     {
         GameState = State.NotStartedYet;
-        Inventory = GameObject.Find("Inventory");
-        GameManager = gameManager;
         CallNextPhase();
     }
 
@@ -69,9 +71,7 @@ public class TDManager : MonoBehaviour
         foreach (var enemies in data["Waves"].list)
         {
             List<Enemy> currentWave = new List<Enemy> ();
-            Debug.Log(enemies);
             foreach (JSONObject enemy in enemies["Enemies"].list) {
-                Debug.Log (enemy.GetType () + " : " + enemy);
                 currentWave.Add (CreateEnemyFromJSON (enemy));
             }
             _enemyWaves.Add (currentWave);
@@ -113,7 +113,7 @@ public class TDManager : MonoBehaviour
         Inventory.SetActive (false);
         GoButton.gameObject.SetActive(false);
 
-        WaveText.text = string.Format("Wave : {0}/{1}", CurrentWave, WavesTotal);
+        WaveText.text = string.Format("Wave : {0}/{1}{2}{3}", CurrentWave, WavesTotal, Environment.NewLine, GetNextWaveColors());
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
 
         StartWave(_enemyWaves[CurrentWave - 1]);
@@ -128,16 +128,18 @@ public class TDManager : MonoBehaviour
         Inventory.SetActive (true);
 
         CurrentWave++;
+        SetUpEnemyColorDico (_enemyWaves [CurrentWave - 1]);
 
         GameState = State.Pause;
-        WaveText.text = string.Format("Next Wave: {0}{1}", Environment.NewLine,
-            GetNextWaveColors(_enemyWaves[CurrentWave - 1]));
+        WaveText.text = string.Format("Next Wave: {0}{1}", Environment.NewLine, GetNextWaveColors());
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
     }
 
     public void DecreaseLives()
     {
         LivesLeft--;
+        CameraShake.shakeAmount = 0.3f;
+        CameraShake.shakeTimer = 0.5f;
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
 
         if (LivesLeft > 0) return;
@@ -145,6 +147,7 @@ public class TDManager : MonoBehaviour
         Debug.Log("Player loses the game!");
         LivesLeft = 0;
         GameState = State.Lose;
+        CallNextPhase ();
     }
 
     public void StartWave(List<Enemy> wave)
@@ -154,8 +157,11 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            GameManager.PauseLevel ();
+        }
         // TODO: Fixes a bug, sometimes the inventory popups after a drag and drop
-        if ((GameState == State.Playing || GameState == State.Spawning) && Inventory.active) {
+        if ((GameState == State.Playing || GameState == State.Spawning) && Inventory.activeSelf) {
             Inventory.SetActive (false);
         }
 
@@ -171,74 +177,56 @@ public class TDManager : MonoBehaviour
     }
 
     /**
+     * Removes an enemy from the local tracking enemy color dictionary.
+     * Should be called every time an enemy is destroyed (killed or reached end of TD)
+     **/
+    public void UpdateDeath(RayColor color) {
+        _dicoEnemyColors [color] -= 1;
+        WaveText.text = string.Format("Wave : {0}/{1}{2}{3}", CurrentWave, WavesTotal, Environment.NewLine, GetNextWaveColors());
+    }
+
+    private void ResetEnemyColorDico() {
+        _dicoEnemyColors = new Dictionary<RayColor, int> ();
+        _dicoEnemyColors.Add (RayColor.RED, 0);
+        _dicoEnemyColors.Add (RayColor.WHITE, 0);
+        _dicoEnemyColors.Add (RayColor.BLUE, 0);
+        _dicoEnemyColors.Add (RayColor.YELLOW, 0);
+        _dicoEnemyColors.Add (RayColor.GREEN, 0);
+        _dicoEnemyColors.Add (RayColor.CYAN, 0);
+        _dicoEnemyColors.Add (RayColor.MAGENTA, 0);
+        _dicoEnemyColors.Add (RayColor.NONE, 0);
+    }
+
+    /**
      * Determines how many enemies of each colors are in the given wave.
      * Returns a String to be when displaying the next wave message.
      **/
-    private string GetNextWaveColors(IEnumerable<Enemy> wave)
+    private void SetUpEnemyColorDico(IEnumerable<Enemy> wave)
     {
-        int red, white, blue, yellow, green, cyan, magenta, none;
-        red = white = blue = yellow = green = cyan = magenta = none = 0;
+        ResetEnemyColorDico ();
+
         foreach (var enemy in wave)
         {
             RayColor color = enemy.Color;
-            if (color == RayColor.RED)
-            {
-                red++;
-                continue;
-            }
-
-            if (color == RayColor.WHITE)
-            {
-                white++;
-                continue;
-            }
-
-            if (color == RayColor.BLUE)
-            {
-                blue++;
-                continue;
-            }
-
-            if (color == RayColor.YELLOW)
-            {
-                yellow++;
-                continue;
-            }
-
-            if (color == RayColor.GREEN)
-            {
-                green++;
-                continue;
-            }
-
-            if (color == RayColor.CYAN)
-            {
-                cyan++;
-                continue;
-            }
-
-            if (color == RayColor.MAGENTA)
-            {
-                magenta++;
-                continue;
-            }
-
-            if (color == RayColor.NONE)
-            {
-                none++;
-            }
+            _dicoEnemyColors [color] += 1;
         }
+    }
+
+    /**
+     * Produces the "Next Wave: ..." string. Reads all the info from the local _dictionary
+     **/
+    private string GetNextWaveColors() {
+        int red, white, blue, yellow, green, cyan, magenta, none;
 
         StringBuilder sb = new StringBuilder();
-        if (red > 0) sb.Append("RED x").Append(red).Append(Environment.NewLine);
-        if (blue > 0) sb.Append("BLUE x").Append(blue).Append(Environment.NewLine);
-        if (yellow > 0) sb.Append("YELLOW x").Append(yellow).Append(Environment.NewLine);
-        if (cyan > 0) sb.Append("CYAN x").Append(cyan).Append(Environment.NewLine);
-        if (green > 0) sb.Append("GREEN x").Append(green).Append(Environment.NewLine);
-        if (white > 0) sb.Append("WHITE x").Append(white).Append(Environment.NewLine);
-        if (magenta > 0) sb.Append("MAGENTA x").Append(magenta).Append(Environment.NewLine);
-        if (none > 0) sb.Append("COLOR-IMMUNE x").Append(none).Append(Environment.NewLine);
-        Debug.Log(sb);
+        if ((red =_dicoEnemyColors[RayColor.RED]) > 0) sb.Append("<size=30><color=red>●</color></size> x").Append(red).Append(Environment.NewLine);
+        if ((blue = _dicoEnemyColors[RayColor.BLUE]) > 0) sb.Append("<size=30><color=blue>●</color></size> x").Append(blue).Append(Environment.NewLine);
+        if ((yellow = _dicoEnemyColors[RayColor.YELLOW]) > 0) sb.Append("<size=30><color=yellow>●</color></size> x").Append(yellow).Append(Environment.NewLine);
+        if ((cyan = _dicoEnemyColors[RayColor.CYAN]) > 0) sb.Append("<size=30><color=cyan>●</color></size> x").Append(cyan).Append(Environment.NewLine);
+        if ((green = _dicoEnemyColors[RayColor.GREEN]) > 0) sb.Append("<size=30><color=green>●</color></size> x").Append(green).Append(Environment.NewLine);
+        if ((white =_dicoEnemyColors[RayColor.WHITE]) > 0) sb.Append("<size=30><color=white>●</color></size> x").Append(white).Append(Environment.NewLine);
+        if ((magenta = _dicoEnemyColors[RayColor.MAGENTA]) > 0) sb.Append("<size=30><color=magenta>●</color></size> x").Append(magenta).Append(Environment.NewLine);
+        if ((none = _dicoEnemyColors[RayColor.NONE]) > 0) sb.Append("<size=30><color=black>●</color></size> x").Append(none).Append(Environment.NewLine);
         return sb.ToString();
     }
         
@@ -258,17 +246,27 @@ public class TDManager : MonoBehaviour
                 StartPlayingPhase();
                 break;
             case State.Lose:
-                // TODO: Add Lost menu?
+                GameManager.LoseLevel ();
                 break;
             case State.Win:
-                var levelReached = PlayerPrefs.HasKey("levelReached") ? PlayerPrefs.GetInt("levelReached") : 0;
-                levelReached++;
-                PlayerPrefs.SetInt("levelReached", levelReached);
-                //TODO: Add Win menu?
+                HandleLevelProgression ();
                 GameManager.WinLevel ();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    /**
+     * Handles level being replayed.
+     * Will crash if trying to "continue" on the last level. Easily handled by adding a variable maxLevel.
+     **/
+    private void HandleLevelProgression() {
+        var levelReached = PlayerPrefs.HasKey ("levelReached") ? PlayerPrefs.GetInt ("levelReached") : 0;
+        var currentLevel = Int32.Parse (PlayerPrefs.GetString ("currentLevel").Substring (5));
+        if (currentLevel >= levelReached) {
+            levelReached++;
+            PlayerPrefs.SetInt ("levelReached", levelReached);
         }
     }
 

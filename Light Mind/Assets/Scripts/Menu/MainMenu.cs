@@ -16,6 +16,8 @@ namespace Menu
   		}
   		public void NextLevel()
   		{
+            var nextLevel = Int32.Parse(PlayerPrefs.GetString ("currentLevel").Substring (5)) + 1;
+            PlayerPrefs.SetString("currentLevel", String.Format("level{0}", nextLevel));
   			SceneManager.LoadScene("Scenes/Game");
   		}
 
@@ -42,6 +44,11 @@ namespace Menu
         public void OnClick()
         {
             source.PlayOneShot(click);
+        }
+
+        public void Resume()
+        {
+            GameManager.Instance.PauseLevel ();
         }
     }
 }
