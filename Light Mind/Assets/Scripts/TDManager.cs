@@ -157,6 +157,9 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            GameManager.PauseLevel ();
+        }
         // TODO: Fixes a bug, sometimes the inventory popups after a drag and drop
         if ((GameState == State.Playing || GameState == State.Spawning) && Inventory.activeSelf) {
             Inventory.SetActive (false);

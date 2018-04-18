@@ -45,5 +45,10 @@ namespace Menu
         {
             source.PlayOneShot(click);
         }
+
+        public void Resume()
+        {
+            GameManager.Instance.PauseLevel ();
+        }
     }
 }
