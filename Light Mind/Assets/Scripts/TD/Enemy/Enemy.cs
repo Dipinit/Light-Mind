@@ -31,8 +31,8 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         /* @THOMAS
-         * Les enemies arrivent pas au milieu mais vienne juste touche le checkpoint donc des fois ils vont en diagonale
-         * Soit faut faire des map bien rectangulaires et tout, soit faut fixsi ca t'intéresses.
+         * Les enemies arrivent pas au milieu mais viennent juste toucher le checkpoint donc des fois ils vont en diagonale
+         * Soit faut faire des map bien rectangulaires et tout, soit faut fix si ca t'intéresses.
          **/
         if (_paths != null && _paths.Count > 0 && _currPath < _paths.Count) {
             Vector3 nextPath = _paths [_currPath];
