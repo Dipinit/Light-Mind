@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [Header("UI")] public GameObject Inventory;
     public GameObject ColorPicker;
     public GameObject WinScreen;
+    public GameObject LoseScreen;
 
     [Header("Tower Defense")] public GameObject EnemyPrefab;
 
@@ -107,7 +108,7 @@ public class GameManager : MonoBehaviour
 
         return jsonText;
     }
-    
+
     public void LoadLevel(string level)
     {
         string jsonText;
@@ -343,5 +344,11 @@ public class GameManager : MonoBehaviour
     public void WinLevel()
     {
         WinScreen.SetActive(true);
+    }
+
+
+    public void LoseLevel()
+    {
+        LoseScreen.SetActive(true);
     }
 }
