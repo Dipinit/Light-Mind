@@ -12,6 +12,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 {
@@ -77,8 +78,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public List<BoardPath> _enemyPaths;
 	public Vector2Int _spawnPoint;
 	public Vector2Int _endPoint;
-	public string _currentWave;
-	public List<string> _waves;
+	public JSONObject _currentWave;
+	public JSONObject _waves;
 	public int _currentStep;
 	public BoardCell _selectedCell;
 	public int _currentFilterCount;
@@ -90,7 +91,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public int _currentLaserTurretCount;
 	public string _currentLevelName;
 	public int _currentLives;
-	public int _currentSpawnInterval;
+	public float _currentDefaultSpawnInterval;
+	public int _currentDefaultHitpoints;
+	public float _currentDefaultSpeed;
+	public string _currentDefaultColor;
 	
 	private JSONObject _levelData;
 	
@@ -108,6 +112,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		// Level data
 		_levelData = new JSONObject();
 		_levelData.AddField("Name", "");
+		_levelData.AddField("FunFact", "");
 		
 		// Board
 		_levelData.AddField("Board", new JSONObject());
@@ -143,6 +148,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		// Info
 		_levelData.AddField("Info", new JSONObject());
 		_levelData["Info"].AddField("Lives", 10);
+		_levelData["Info"].AddField("DefaultSpawnInterval", 5.0f);
+		_levelData["Info"].AddField("DefaultHitpoints", 100);
+		_levelData["Info"].AddField("DefaultSpeed", 10.0f);
+		_levelData["Info"].AddField("DefaultColor", "white");
 		_levelData["Info"].AddField("SpawnInterval", 5);
 		
 		// Private variables initialization
@@ -151,8 +160,9 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Step10.SetActive(true);
 		_enemyPaths = new List<BoardPath>();
 		_currentEnemyPath = new BoardPath(0, 0, 0, 0);
-		_currentWave = "";
-		_waves = new List<string>();
+		_currentWave = new JSONObject();
+		_currentWave.AddField("Enemies", new JSONObject(JSONObject.Type.ARRAY));
+		_waves = new JSONObject(JSONObject.Type.ARRAY);
 	}
 	
 	/* Step 10 */
@@ -176,8 +186,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 		BoardManager.AdjustCamera();
 		
-		Step20.SetActive(true);
-		_currentStep = 20;
+		Step60.SetActive(true);
+		_currentStep = 60;
 	}
 
 	public void UpdateBoardHeight(string input)
@@ -242,6 +252,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 			_levelData["Board"]["Paths"].Add(jsonPath);
 		}
+		BoardManager.CreateBoardEnemyPaths();
 		
 		Step220.SetActive(false);
 		Step221.SetActive(false);
@@ -269,7 +280,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		BoardPath clone = (BoardPath) _currentEnemyPath.Clone();
 		
 		BoardManager.Paths.Add(clone);
-		BoardManager.CreateBoardEnemyPaths();
+		colorSelectedCellOnPath(clone);
+		//BoardManager.CreateBoardEnemyPaths();
 		
 		_enemyPaths.Add(clone);
 
@@ -282,17 +294,30 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Step221.SetActive(false);
 		_currentStep = 220;
 	}
+
+	public void colorSelectedCellOnPath(BoardPath boardPath)
+	{
+		for (int x = boardPath.Start.x; x <= boardPath.End.x; x++)
+		{
+			for (int y = boardPath.Start.y; y <= boardPath.End.y; y++)
+			{
+				BoardCell cell = BoardManager.GetCellAt(new Vector2Int(x, y));
+				Debug.Log(cell);
+				if (cell != null)
+				{
+					Debug.Log("mdr");
+					Debug.Log(cell);
+					cell.SelectCell();
+				}
+			}
+		}
+	}
 	
 	/* Step 30 */
 
 	public void ValidateStep30()
 	{
-		foreach (var wave in _waves)
-		{
-			JSONObject jsonWave = new JSONObject();
-			jsonWave.AddField("Enemies", wave);
-			_levelData["Waves"].Add(jsonWave);
-		}
+		_levelData["Waves"] = _waves;
 		
 		Step40.SetActive(true);
 		Step30.SetActive(false);
@@ -304,13 +329,22 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	public void AddEnemyToWave(string enemyCode)
 	{
-		_currentWave = String.Concat(_currentWave, enemyCode);
+		JSONObject enemy = new JSONObject();
+		enemy.AddField("Hitpoints", _currentDefaultHitpoints);
+		enemy.AddField("Speed", _currentDefaultSpeed);
+		enemy.AddField("Color", enemyCode);
+		_currentWave["Enemies"].Add(enemy);
 	}
 
 	public void AddWave()
 	{
-		_waves.Add((string) _currentWave.Clone());
-		_currentWave = "";
+		string waveString = _currentWave.ToString();
+		Debug.Log(waveString);
+		JSONObject waveCopy = new JSONObject(waveString);
+		Debug.Log(waveCopy);
+		_waves.Add(waveCopy);
+		_currentWave = new JSONObject();
+		_currentWave.AddField("Enemies", new JSONObject(JSONObject.Type.ARRAY));
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
@@ -422,7 +456,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		else if (raySensitive.ItemCode == "missile-turret") SaveMissileTurretItem(item, jsonObject);
 		else if (raySensitive.ItemCode == "laser-turret") SaveLaserTurretItem(item, jsonObject);
 		else if (raySensitive.ItemCode == "light-source") SaveLightSourceItem(item, jsonObject);
-		
+		else
+			return;
 		_levelData["Entities"].Add(jsonObject);
 	}
 
@@ -496,9 +531,9 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_levelData["Inventory"]["MissileTurret"].i = _currentMissileTurretCount;
 		_levelData["Inventory"]["LaserTurret"].i = _currentLaserTurretCount;
 		
-		Step60.SetActive(true);
-		Step50.SetActive(false);
-		_currentStep = 60;
+		Step50.SetActive(false);	
+		_currentStep = 70;
+		ValidateStep70();
 		
 		Debug.Log(_levelData.ToString());
 	}
@@ -541,13 +576,16 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public void ValidateStep60()
 	{
 		_levelData["Name"].str = _currentLevelName;
+		_levelData["FunFact"].str = "Savez-vous que lorsque vous créez un niveau via l'éditeur, vous ne pourrez plus jamais le modifier, ni le supprimer ?";
 		_levelData["Info"]["Lives"].i = _currentLives;
-		_levelData["Info"]["SpawnInterval"].i = _currentSpawnInterval;
-		string levelName = _levelData["Name"].str;
-		LevelManager.SaveLevel(_levelData, levelName);
-		JSONObject level = LevelManager.LoadLevel(levelName);
-		Debug.Log(LevelManager.GetCustomLevels().ToString());
+		_levelData["Info"]["DefaultSpawnInterval"].n = _currentDefaultSpawnInterval;
+		_levelData["Info"]["DefaultHitpoints"].i = _currentDefaultHitpoints;
+		_levelData["Info"]["DefaultSpeed"].n = _currentDefaultSpeed;
+		_levelData["Info"]["DefaultColor"].str = "White";
+	
 		Step60.SetActive(false);
+		Step20.SetActive(true);
+
 	}
 	
 	public void UpdateLevelName(string input)
@@ -560,9 +598,33 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		bool result = int.TryParse(input, out _currentLives);
 	}
 
-	public void UpdateSpawnInterval(string input)
+	public void UpdateDefaultSpawnInterval(string input)
 	{
-		bool result = int.TryParse(input, out _currentSpawnInterval);
+		int spawnInterval = 0;
+		bool result = int.TryParse(input, out spawnInterval);
+		_currentDefaultSpawnInterval = (float) spawnInterval;
+	}
+	
+	public void UpdateDefaultHitpoints(string input)
+	{
+		bool result = int.TryParse(input, out _currentDefaultHitpoints);
+	}
+	
+	public void UpdateDefaultSpeed(string input)
+	{
+		int spawnInterval = 0;
+		bool result = int.TryParse(input, out spawnInterval);
+		_currentDefaultSpeed = (float) spawnInterval;
 	}
 
+	public void ValidateStep70()
+	{
+		string levelName = _levelData["Name"].str;
+		LevelManager.SaveLevel(_levelData, levelName);
+		JSONObject level = LevelManager.LoadLevel(levelName);
+		Debug.Log(LevelManager.GetCustomLevels().ToString());
+
+		SceneManager.LoadScene("Scenes/Menu/MainMenu");
+	}
+	
 }

@@ -71,6 +71,7 @@ public class TDManager : MonoBehaviour
         foreach (var enemies in data["Waves"].list)
         {
             List<Enemy> currentWave = new List<Enemy> ();
+            Debug.Log(enemies);
             foreach (JSONObject enemy in enemies["Enemies"].list) {
                 Debug.Log (enemy.GetType () + " : " + enemy);
                 currentWave.Add (CreateEnemyFromJSON (enemy));

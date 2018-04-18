@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4973a2d4e43b4a54b03683ca37daa52d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemCode: 
+  ItemCode: filter
   AudioSources: []
   ParticleSystem: {fileID: 0}
   ColliderEnabled: 0

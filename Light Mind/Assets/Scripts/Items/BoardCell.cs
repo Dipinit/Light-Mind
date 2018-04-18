@@ -30,6 +30,11 @@ namespace Items
             _renderer.material = BoardManager.Instance.CellHighlightMaterial;
         }
 
+        public void SelectCell()
+        {
+            _renderer.material = BoardManager.Instance.CellSelectMaterial;
+        }
+
         public void ResetCellColor()
         {
             _renderer.material = BoardManager.Instance.CellDefaultMaterial;

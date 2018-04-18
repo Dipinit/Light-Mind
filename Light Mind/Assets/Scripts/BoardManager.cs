@@ -17,6 +17,7 @@ public class BoardManager : MonoBehaviour
     public int CellOffset = 1;
     public Material CellDefaultMaterial;
     public Material CellHighlightMaterial;
+    public Material CellSelectMaterial;
 
     [Header("Path")] public Vector2Int SpawnPoint;
     public List<BoardPath> Paths = new List<BoardPath>();
