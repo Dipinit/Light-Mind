@@ -24,11 +24,14 @@ public class TDManager : MonoBehaviour
     public int CurrentWave;
     public Dictionary<char, RayColor> WavesDico;
 
-    public float SpawnInterval;
-
     private GameObject _spawnPoint;
     private List<List<Enemy>> _enemyWaves = new List<List<Enemy>>();
     private int _enemiesSpawned;
+
+    private float _defaultSpawnInterval;
+    private int _defaultHitpoints;
+    private float _defaultSpeed;
+    private RayColor _defaultColor;
 
     // GUI
     public GameObject GoButton;
@@ -37,9 +40,8 @@ public class TDManager : MonoBehaviour
 
     public void SetUpGame(JSONObject data)
     {
-        SetUpWaves (data);
-
         SetUpGameInfo (data);
+        SetUpWaves (data);
     }
 
     /**
@@ -57,23 +59,30 @@ public class TDManager : MonoBehaviour
             }
             _enemyWaves.Add (currentWave);
         }
+
+        WavesTotal = _enemyWaves.Count;
     }
 
     private Enemy CreateEnemyFromJSON(JSONObject enemy) {
-        int hitpoints = (int) enemy ["Hitpoints"].n;
-        float speed = (float) enemy ["Speed"].n;
-        RayColor color = RayColor.Parse (enemy ["Color"].str);
+        int hitpoints = enemy ["Hitpoints"] != null ? (int) enemy ["Hitpoints"].n : _defaultHitpoints;
+        float speed = enemy ["Speed"] != null ? enemy ["Speed"].n : _defaultSpeed;
+        RayColor color = enemy ["Color"] != null ? RayColor.Parse (enemy ["Color"].str) : _defaultColor;
+        float spawnTime = enemy ["SpawnTime"] != null ? enemy ["SpawnTime"].n : _defaultSpawnInterval;
 
-        return new Enemy (hitpoints, speed, color);
+        return new Enemy (hitpoints, speed, color, spawnTime);
     }
 
     /**
      * Sets up specific settings (Players Lives, Spawn Interval, ...)
      **/
     private void SetUpGameInfo(JSONObject data) {
+        // Default values
+        _defaultSpawnInterval = data["Info"].GetField("DefaultSpawnInterval").n;
+        _defaultHitpoints = (int) data["Info"].GetField("DefaultHitpoints").i;
+        _defaultSpeed = data["Info"].GetField("DefaultSpeed").n;
+        _defaultColor = RayColor.Parse(data["Info"].GetField("DefaultColor").str);
+
         LivesLeft = (int) data["Info"].GetField("Lives").i;
-        SpawnInterval = data["Info"].GetField("SpawnInterval").n;
-        WavesTotal = _enemyWaves.Count;
         _spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point");
 
         // Set listener to wave launcher button
@@ -263,7 +272,7 @@ public class TDManager : MonoBehaviour
             _enemiesSpawned++;
             Debug.Log("Spawned Enemy [" + currentEnemy.toString () + "]");
 
-            yield return new WaitForSeconds(SpawnInterval);
+            yield return new WaitForSeconds(currentEnemy.SpawnTime);
         }
 
         StopAllCoroutines();

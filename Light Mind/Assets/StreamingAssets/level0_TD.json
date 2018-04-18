@@ -199,13 +199,33 @@
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Blue"
+						"Color" : "Blue",
+						"SpawnTime" : 3
 					},
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Yellow"
+						"Color" : "Green",
+						"SpawnTime" : 1
 					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Green",
+						"SpawnTime" : 1
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Red",
+						"SpawnTime" : 5
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 50,
+						"Color" : "Yellow",
+						"SpawnTime" : 1
+					}
 				]
     },
     {
@@ -213,18 +233,21 @@
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Red"
+						"Color" : "Red",
+						"SpawnTime" : 1
 					},
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Red"
+						"Color" : "Red",
+						"SpawnTime" : 1
 					},
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Yellow"
-					},
+						"Color" : "Yellow",
+						"SpawnTime" : 1
+					}
 				]
     },
     {
@@ -232,18 +255,35 @@
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Blue"
+						"Color" : "Blue",
+						"SpawnTime" : 0.5
 					},
 					{
 						"Hitpoints" : 100,
 						"Speed" : 10,
-						"Color" : "Yellow"
+						"Color" : "Yellow",
+						"SpawnTime" : 0.5
 					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Yellow",
+						"SpawnTime" : 0.5
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Yellow",
+						"SpawnTime" : 0.5
+					}
 				]
     }
   ],
   "Info": {
     "Lives": 10,
-    "SpawnInterval": 3
+    "DefaultSpawnInterval": 3,
+    "DefaultHitpoints": 100,
+	"DefaultSpeed": 10,
+	"DefaultColor": "None"
   }
 }
