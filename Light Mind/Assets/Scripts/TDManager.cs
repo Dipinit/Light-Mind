@@ -145,6 +145,7 @@ public class TDManager : MonoBehaviour
         Debug.Log("Player loses the game!");
         LivesLeft = 0;
         GameState = State.Lose;
+        CallNextPhase ();
     }
 
     public void StartWave(List<Enemy> wave)
@@ -258,13 +259,12 @@ public class TDManager : MonoBehaviour
                 StartPlayingPhase();
                 break;
             case State.Lose:
-                // TODO: Add Lost menu?
+                GameManager.LoseLevel ();
                 break;
             case State.Win:
                 var levelReached = PlayerPrefs.HasKey("levelReached") ? PlayerPrefs.GetInt("levelReached") : 0;
                 levelReached++;
                 PlayerPrefs.SetInt("levelReached", levelReached);
-                //TODO: Add Win menu?
                 GameManager.WinLevel ();
                 break;
             default:
