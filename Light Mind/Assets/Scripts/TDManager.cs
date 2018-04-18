@@ -50,14 +50,12 @@ public class TDManager : MonoBehaviour
     {
         GameState = State.NotStartedYet;
         Inventory = GameObject.Find("Inventory");
-        Debug.Log ("Invetory? " + Inventory);
         GameManager = gameManager;
         CallNextPhase();
     }
 
     public void SetUpGame(JSONObject data)
     {
-        Debug.Log ("called");
         SetUpGameInfo (data);
         SetUpWaves (data);
     }
