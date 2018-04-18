@@ -182,6 +182,9 @@
   ],
   "Info": {
     "Lives": 10,
-    "SpawnInterval": 3
+    "DefaultSpawnInterval": 3,
+    "DefaultHitpoints": 100,
+	"DefaultSpeed": 10,
+	"DefaultColor": "None"
   }
 }
