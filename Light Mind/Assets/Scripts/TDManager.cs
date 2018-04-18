@@ -69,7 +69,6 @@ public class TDManager : MonoBehaviour
         foreach (var enemies in data["Waves"].list)
         {
             List<Enemy> currentWave = new List<Enemy> ();
-            Debug.Log(enemies);
             foreach (JSONObject enemy in enemies["Enemies"].list) {
                 Debug.Log (enemy.GetType () + " : " + enemy);
                 currentWave.Add (CreateEnemyFromJSON (enemy));
@@ -156,7 +155,7 @@ public class TDManager : MonoBehaviour
     private void Update()
     {
         // TODO: Fixes a bug, sometimes the inventory popups after a drag and drop
-        if ((GameState == State.Playing || GameState == State.Spawning) && Inventory.active) {
+        if ((GameState == State.Playing || GameState == State.Spawning) && Inventory.activeSelf) {
             Inventory.SetActive (false);
         }
 
@@ -262,13 +261,24 @@ public class TDManager : MonoBehaviour
                 GameManager.LoseLevel ();
                 break;
             case State.Win:
-                var levelReached = PlayerPrefs.HasKey("levelReached") ? PlayerPrefs.GetInt("levelReached") : 0;
-                levelReached++;
-                PlayerPrefs.SetInt("levelReached", levelReached);
+                HandleLevelProgression ();
                 GameManager.WinLevel ();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    /**
+     * Handles level being replayed.
+     * Will crash if trying to "continue" on the last level. Easily handled by adding a variable maxLevel.
+     **/
+    private void HandleLevelProgression() {
+        var levelReached = PlayerPrefs.HasKey ("levelReached") ? PlayerPrefs.GetInt ("levelReached") : 0;
+        var currentLevel = Int32.Parse (PlayerPrefs.GetString ("currentLevel").Substring (5));
+        if (currentLevel >= levelReached) {
+            levelReached++;
+            PlayerPrefs.SetInt ("levelReached", levelReached);
         }
     }
 
