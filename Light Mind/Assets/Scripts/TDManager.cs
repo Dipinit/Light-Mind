@@ -6,7 +6,7 @@ using Assets.Scripts.Utilities;
 using Behaviors;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
+// using UnityEditor;
 using UnityEngine.Analytics;
 
 public class TDManager : MonoBehaviour
