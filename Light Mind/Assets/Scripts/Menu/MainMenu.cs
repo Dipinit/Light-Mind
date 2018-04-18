@@ -5,6 +5,10 @@ namespace Menu
 {
     public class MainMenu : MonoBehaviour
     {
+        public AudioSource source;
+        public AudioClip click;
+        public AudioClip hover;
+
   		public void Play()
   		{
 		    if (!PlayerPrefs.HasKey("levelReached")) PlayerPrefs.SetInt("levelReached", 0);
@@ -26,6 +30,11 @@ namespace Menu
         public void QuitGame()
         {
             Application.Quit();
+        }
+
+        public void OnClick()
+        {
+            source.PlayOneShot(click);
         }
     }
 }
