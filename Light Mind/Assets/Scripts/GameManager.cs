@@ -86,14 +86,26 @@ public class GameManager : MonoBehaviour
 
     public static string LoadFile(string level)
     {
-        var fileName = string.Format("/{0}_TD.json", level);
-        if (BetterStreamingAssets.FileExists(fileName))
+        var fileName = string.Format("{0}_TD.json", level);
+        string jsonText;
+        var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
+
+        // Read JSON data from file
+        if (Application.platform == RuntimePlatform.Android)
         {
-            string jsonText = BetterStreamingAssets.ReadAllText(fileName);
-            return jsonText;
+            var www = new WWW(filePath);
+            while (!www.isDone)
+            {
+            }
+
+            jsonText = www.text;
+        }
+        else
+        {
+            jsonText = File.ReadAllText(filePath);
         }
 
-        return null;
+        return jsonText;
     }
     
     public void LoadLevel(string level)
