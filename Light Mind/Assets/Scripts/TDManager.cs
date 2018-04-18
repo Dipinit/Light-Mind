@@ -6,8 +6,6 @@ using Assets.Scripts.Utilities;
 using Behaviors;
 using UnityEngine;
 using UnityEngine.UI;
-// using UnityEditor;
-using UnityEngine.Analytics;
 
 public class TDManager : MonoBehaviour
 {
@@ -254,7 +252,9 @@ public class TDManager : MonoBehaviour
                 // TODO: Add Lost menu?
                 break;
             case State.Win:
-                PlayerPrefs.SetString ("levelReached", Convert.ToString (Int32.Parse (PlayerPrefs.GetString ("levelReached")) + 1));
+                var levelReached = PlayerPrefs.HasKey("levelReached") ? PlayerPrefs.GetInt("levelReached") : 0;
+                levelReached++;
+                PlayerPrefs.SetInt("levelReached", levelReached);
                 //TODO: Add Win menu?
                 GameManager.WinLevel ();
                 break;
