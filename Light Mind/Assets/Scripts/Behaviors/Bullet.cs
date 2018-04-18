@@ -15,6 +15,14 @@ namespace Behaviors
 
         private Transform _target;
 
+        public AudioClip shootSound;
+        private AudioSource source;
+
+        void Awake()
+        {
+            source = GetComponent<AudioSource>();
+        }
+
         public void Seek(Transform target)
         {
             _target = target;
