@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         var currentLevel = PlayerPrefs.GetString("currentLevel");
+
         if (!string.IsNullOrEmpty(currentLevel))
         {
             LoadLevel(currentLevel);
@@ -122,7 +123,7 @@ public class GameManager : MonoBehaviour
         {
             jsonText = LoadFile(level);
         }
-
+        
         JSONObject dataAsJson = new JSONObject(jsonText);
 
         // Create board from file

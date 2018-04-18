@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -89,7 +89,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: ebd87d463603cb0479f433b627f9fe0a,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -10911,24 +10912,24 @@ MonoBehaviour:
   Step45: {fileID: 0}
   Step50: {fileID: 1601373874}
   Step60: {fileID: 1823790634}
-  _currentLevelHeight: 0
-  _currentLevelWidth: 7
+  _levelHeight: {fileID: 0}
+  _levelWidth: {fileID: 0}
   _spawnPoint: {x: 0, y: 0}
   _endPoint: {x: 0, y: 0}
   _currentStep: 10
   _selectedCell: {fileID: 0}
-  _currentFilterCount: 0
-  _currentMirrorCount: 0
-  _currentPrismCount: 0
-  _currentFilterMirrorCount: 0
-  _currentStandardTurretCount: 0
-  _currentMissileTurretCount: 0
-  _currentLaserTurretCount: 0
+  _Filter: {fileID: 0}
+  _Mirror: {fileID: 0}
+  _Prism: {fileID: 0}
+  _FilterMirror: {fileID: 0}
+  _StandardTurret: {fileID: 0}
+  _MissileTurret: {fileID: 0}
+  _LaserTurret: {fileID: 0}
   _currentLevelName: 
-  _currentLives: 0
-  _currentDefaultSpawnInterval: 0
-  _currentDefaultHitpoints: 0
-  _currentDefaultSpeed: 0
+  _currentLives: {fileID: 0}
+  _defaultSpawnInterval: {fileID: 0}
+  _defaultHitpoints: {fileID: 0}
+  _defaultSpeed: {fileID: 0}
   _currentDefaultColor: 
   _currentLightEastColor:
     R: 0
