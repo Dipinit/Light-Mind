@@ -46,7 +46,10 @@ namespace Items
         // Mouse up event
         private void OnMouseUpAsButton()
         {
-            GameManager.Instance.SelectItem(this.gameObject);
+            if (GameManager.Instance != null)
+                GameManager.Instance.SelectItem(this.gameObject);
+            else if (LevelEditorTD.Instance != null)
+                LevelEditorTD.Instance.SelectItem(this.gameObject);
 
             // Detect double click
             if (Time.time - _lastClickTime < DoubleClickTime)

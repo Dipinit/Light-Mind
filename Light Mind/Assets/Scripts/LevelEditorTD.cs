@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 {
@@ -68,12 +69,13 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public GameObject Step221;
 	public GameObject Step30;
 	public GameObject Step40;
+	public GameObject Step45;
 	public GameObject Step50;
 	public GameObject Step60;
 
 	[Header("Debug")] 
-	public int _currentLevelHeight;
-	public int _currentLevelWidth;
+	public GameObject _levelHeight;
+	public GameObject _levelWidth;
 	public BoardPath _currentEnemyPath;
 	public List<BoardPath> _enemyPaths;
 	public Vector2Int _spawnPoint;
@@ -82,19 +84,29 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public JSONObject _waves;
 	public int _currentStep;
 	public BoardCell _selectedCell;
-	public int _currentFilterCount;
-	public int _currentMirrorCount;
-	public int _currentPrismCount;
-	public int _currentFilterMirrorCount;
-	public int _currentStandardTurretCount;
-	public int _currentMissileTurretCount;
-	public int _currentLaserTurretCount;
+	public GameObject _Filter;
+	public GameObject _Mirror;
+	public GameObject _Prism;
+	public GameObject _FilterMirror;
+	public GameObject _StandardTurret;
+	public GameObject _MissileTurret;
+	public GameObject _LaserTurret;
 	public string _currentLevelName;
-	public int _currentLives;
-	public float _currentDefaultSpawnInterval;
-	public int _currentDefaultHitpoints;
-	public float _currentDefaultSpeed;
+	public GameObject _currentLives;
+	public GameObject _defaultSpawnInterval;
+	public GameObject _defaultHitpoints;
+	public GameObject _defaultSpeed;
 	public string _currentDefaultColor;
+	public RayColor _currentLightEastColor;
+	public RayColor _currentLightNorthEastColor;
+	public RayColor _currentLightNorthColor;
+	public RayColor _currentLightNorthWestColor;
+	public RayColor _currentLightWestColor;
+	public RayColor _currentLightSouthWestColor;
+	public RayColor _currentLightSouthColor;
+	public RayColor _currentLightSouthEastColor;
+	public RayColor[] _colorOptions;
+	private GameObject _selectedItem;
 	
 	private JSONObject _levelData;
 	
@@ -163,19 +175,42 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentWave = new JSONObject();
 		_currentWave.AddField("Enemies", new JSONObject(JSONObject.Type.ARRAY));
 		_waves = new JSONObject(JSONObject.Type.ARRAY);
+		_colorOptions = new RayColor[8];
+		_colorOptions[0] = RayColor.NONE;
+		_colorOptions[1] = RayColor.WHITE;
+		_colorOptions[2] = RayColor.BLUE;
+		_colorOptions[3] = RayColor.GREEN;
+		_colorOptions[4] = RayColor.RED;
+		_colorOptions[5] = RayColor.YELLOW;
+		_colorOptions[6] = RayColor.CYAN;
+		_colorOptions[7] = RayColor.MAGENTA;
+
+		UpdateBoardHeight();
+		UpdateBoardWidth();
+		UpdateLives();
+		UpdateDefaultSpawnInterval();
+		UpdateDefaultHitpoints();
+		UpdateDefaultSpeed();
+		UpdateMirror();
+		UpdatePrism();
+		UpdateFilterMirror();
+		UpdateStandardTurret();
+		UpdateMissileTurret();
+		UpdateLaserTurret();
+
 	}
 	
 	/* Step 10 */
 
 	public void ValidateStep10()
 	{
-		_levelData["Board"]["Size"]["X"].i = _currentLevelWidth;
-		_levelData["Board"]["Size"]["Y"].i = _currentLevelHeight;
+		_levelData["Board"]["Size"]["X"].i = (int) _levelWidth.GetComponentInChildren<Slider>().value;
+		_levelData["Board"]["Size"]["Y"].i = (int) _levelHeight.GetComponentInChildren<Slider>().value;
 		_levelData["Board"]["CellSize"].i = 4;
 		_levelData["Board"]["CellOffset"].i = 1;
 		
-		BoardManager.BoardSize.x = _currentLevelWidth;
-		BoardManager.BoardSize.y = _currentLevelHeight;
+		BoardManager.BoardSize.x = (int) _levelWidth.GetComponentInChildren<Slider>().value;
+		BoardManager.BoardSize.y = (int) _levelHeight.GetComponentInChildren<Slider>().value;
 
 		BoardManager.CellSize = (int) _levelData["Board"]["CellSize"].i;
 		BoardManager.CellOffset = (int) _levelData["Board"]["CellOffset"].i;
@@ -190,14 +225,14 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentStep = 60;
 	}
 
-	public void UpdateBoardHeight(string input)
+	public void UpdateBoardHeight()
 	{
-		bool result = int.TryParse(input, out _currentLevelHeight);
+		_levelHeight.GetComponentInChildren<Text>().text = String.Format("Height: {0}", _levelHeight.GetComponentInChildren<Slider>().value);
 	}
 	
-	public void UpdateBoardWidth(string input)
+	public void UpdateBoardWidth()
 	{
-		bool result = int.TryParse(input, out _currentLevelWidth);
+		_levelWidth.GetComponentInChildren<Text>().text = String.Format("Width: {0}", _levelWidth.GetComponentInChildren<Slider>().value);
 	}
 	
 	/* Step 20 */
@@ -330,8 +365,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public void AddEnemyToWave(string enemyCode)
 	{
 		JSONObject enemy = new JSONObject();
-		enemy.AddField("Hitpoints", _currentDefaultHitpoints);
-		enemy.AddField("Speed", _currentDefaultSpeed);
+		enemy.AddField("Hitpoints", (int) _defaultHitpoints.GetComponentInChildren<Slider>().value);
+		enemy.AddField("Speed", _defaultSpeed.GetComponentInChildren<Slider>().value);
 		enemy.AddField("Color", enemyCode);
 		_currentWave["Enemies"].Add(enemy);
 	}
@@ -403,6 +438,94 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Step40.SetActive(false);
 		SaveItems();
 		_currentStep = 50;
+	}
+	
+	public void GoToStep45()
+	{
+		Step45.SetActive(true);
+		Step40.SetActive(false);
+	}
+
+	public void ValidateStep45()
+	{
+		BoardCell cell = FindAvailableCell();
+		if (cell != null)
+		{
+			GameObject laserGameObject = Instantiate(LightSourcePrefab, ItemsContainer.transform);
+			cell.AddItem(laserGameObject);
+			Laser laser = laserGameObject.GetComponent<Laser>();
+			laser.IsColorable = false;
+			laser.IsOrientable = false;
+			AddRayToLightSource(laser, _currentLightEastColor, Direction.East);
+			AddRayToLightSource(laser, _currentLightNorthEastColor, Direction.NorthEast);
+			AddRayToLightSource(laser, _currentLightNorthColor, Direction.North);
+			AddRayToLightSource(laser, _currentLightNorthWestColor, Direction.NorthWest);
+			AddRayToLightSource(laser, _currentLightWestColor, Direction.West);
+			AddRayToLightSource(laser, _currentLightSouthWestColor, Direction.SouthWest);
+			AddRayToLightSource(laser, _currentLightSouthColor, Direction.South);
+			AddRayToLightSource(laser, _currentLightSouthEastColor, Direction.SouthEast);
+			
+			DragAndDrop dragAndDrop = laserGameObject.GetComponent<DragAndDrop>();
+			dragAndDrop.IsDraggable = true;
+		}
+
+		Step45.SetActive(false);
+		Step40.SetActive(true);
+	}
+
+	private void AddRayToLightSource(Laser laser, RayColor color, Direction direction)
+	{
+		laser.AddSource(new RaySource(direction, color != RayColor.NONE, color));
+	}
+
+	public BoardCell FindAvailableCell()
+	{
+		foreach (BoardCell boardCell in BoardManager.Board.GetComponentsInChildren<BoardCell>())
+		{
+			if (!boardCell.IsOccupied()) return boardCell;
+		}
+
+		return null;
+	}
+
+	public void UpdateLightEastColor(Int32 value)
+	{
+		_currentLightEastColor = _colorOptions[value];
+	}
+	
+	public void UpdateLightNorthEastColor(Int32 value)
+	{
+		_currentLightNorthEastColor = _colorOptions[value];
+	}
+	
+	public void UpdateLightNorthColor(Int32 value)
+	{
+		_currentLightNorthColor = _colorOptions[value];
+	}
+	
+	public void UpdateLightNorthWestColor(Int32 value)
+	{
+		_currentLightNorthWestColor = _colorOptions[value];
+	}
+	
+	public void UpdateLightWestColor(Int32 value)
+	{
+		_currentLightWestColor = _colorOptions[value];
+	}
+	
+	public void UpdateLightSouthWestColor(Int32 value)
+	{
+		_currentLightSouthWestColor = _colorOptions[value];
+	}
+	
+	public void UpdateLightSouthColor(Int32 value)
+	{
+		_currentLightSouthColor = _colorOptions[value];
+	}
+	
+	public void UpdateLightSouthEastColor(Int32 value)
+	{
+		_currentLightSouthEastColor = _colorOptions[value];
 	}
 	
 	// Load player inventory
@@ -511,7 +634,19 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	private void SaveLightSourceItem(Transform item, JSONObject jsonObject)
 	{
-		
+		Laser laser = item.GetComponent<Laser>();
+		jsonObject.AddField("Type", "Light Source");
+		jsonObject.AddField("Rays", new JSONObject(JSONObject.Type.ARRAY));
+		foreach (RaySource source in laser.Sources)
+		{
+			JSONObject ray = new JSONObject();
+			ray.AddField("Direction", (int) source.Direction);
+			ray.AddField("Enabled", source.Enabled);
+			ray.AddField("Red", source.Color.R);
+			ray.AddField("Blue", source.Color.B);
+			ray.AddField("Green", source.Color.G);
+			jsonObject["Rays"].Add(ray);
+		}
 	}
 
 	private void SaveItemColor(JSONObject jsonObject, RayColor color)
@@ -523,13 +658,13 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	
 	public void ValidateStep50()
 	{
-		_levelData["Inventory"]["Mirrors"].i = _currentMirrorCount;
-		_levelData["Inventory"]["Filters"].i = _currentFilterCount;
-		_levelData["Inventory"]["Prisms"].i = _currentPrismCount;
-		_levelData["Inventory"]["MirrorFilters"].i = _currentFilterMirrorCount;
-		_levelData["Inventory"]["StandardTurret"].i = _currentStandardTurretCount;
-		_levelData["Inventory"]["MissileTurret"].i = _currentMissileTurretCount;
-		_levelData["Inventory"]["LaserTurret"].i = _currentLaserTurretCount;
+		_levelData["Inventory"]["Mirrors"].i = (int) _Mirror.GetComponentInChildren<Slider>().value;
+		_levelData["Inventory"]["Filters"].i = (int) _Filter.GetComponentInChildren<Slider>().value;
+		_levelData["Inventory"]["Prisms"].i = (int) _Prism.GetComponentInChildren<Slider>().value;
+		_levelData["Inventory"]["MirrorFilters"].i = (int) _FilterMirror.GetComponentInChildren<Slider>().value;
+		_levelData["Inventory"]["StandardTurret"].i = (int) _StandardTurret.GetComponentInChildren<Slider>().value;
+		_levelData["Inventory"]["MissileTurret"].i = (int) _MissileTurret.GetComponentInChildren<Slider>().value;
+		_levelData["Inventory"]["LaserTurret"].i = (int) _LaserTurret.GetComponentInChildren<Slider>().value;
 		
 		Step50.SetActive(false);	
 		_currentStep = 70;
@@ -538,49 +673,49 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Debug.Log(_levelData.ToString());
 	}
 
-	public void UpdateMirrorCount(string input)
+	public void UpdateMirror()
 	{
-		bool result = int.TryParse(input, out _currentMirrorCount);
+		_Mirror.GetComponentInChildren<Text>().text = String.Format("Mirrors: {0}", _Mirror.GetComponentInChildren<Slider>().value);
 	}
 
-	public void UpdateFilterCount(string input)
+	public void UpdateFilter()
 	{
-		bool result = int.TryParse(input, out _currentFilterCount);
+		_Filter.GetComponentInChildren<Text>().text = String.Format("Filters: {0}", _Filter.GetComponentInChildren<Slider>().value);
 	}
 
-	public void UpdatePrismCount(string input)
+	public void UpdatePrism()
 	{
-		bool result = int.TryParse(input, out _currentPrismCount);
+		_Prism.GetComponentInChildren<Text>().text = String.Format("Prisms: {0}", _Prism.GetComponentInChildren<Slider>().value);
 	}
 
-	public void UpdateFilterMirrorCount(string input)
+	public void UpdateFilterMirror()
 	{
-		bool result = int.TryParse(input, out _currentFilterMirrorCount);
+		_FilterMirror.GetComponentInChildren<Text>().text = String.Format("Filter-mirrors: {0}", _FilterMirror.GetComponentInChildren<Slider>().value);
 	}
 
-	public void UpdateStandardTurretCount(string input)
+	public void UpdateStandardTurret()
 	{
-		bool result = int.TryParse(input, out _currentStandardTurretCount);
+		_StandardTurret.GetComponentInChildren<Text>().text = String.Format("Standard turrets: {0}", _StandardTurret.GetComponentInChildren<Slider>().value);
 	}
 
-	public void UpdateMissileTurretCount(string input)
+	public void UpdateMissileTurret()
 	{
-		bool result = int.TryParse(input, out _currentMissileTurretCount);
+		_MissileTurret.GetComponentInChildren<Text>().text = String.Format("Missile turrets: {0}", _MissileTurret.GetComponentInChildren<Slider>().value);
 	}
 
-	public void UpdateLaserTurretCount(string input)
+	public void UpdateLaserTurret()
 	{
-		bool result = int.TryParse(input, out _currentLaserTurretCount);
+		_LaserTurret.GetComponentInChildren<Text>().text = String.Format("Laser turrets: {0}", _LaserTurret.GetComponentInChildren<Slider>().value);
 	}
 
 	public void ValidateStep60()
 	{
 		_levelData["Name"].str = _currentLevelName;
 		_levelData["FunFact"].str = "Savez-vous que lorsque vous créez un niveau via l'éditeur, vous ne pourrez plus jamais le modifier, ni le supprimer ?";
-		_levelData["Info"]["Lives"].i = _currentLives;
-		_levelData["Info"]["DefaultSpawnInterval"].n = _currentDefaultSpawnInterval;
-		_levelData["Info"]["DefaultHitpoints"].i = _currentDefaultHitpoints;
-		_levelData["Info"]["DefaultSpeed"].n = _currentDefaultSpeed;
+		_levelData["Info"]["Lives"].i = (int) _currentLives.GetComponentInChildren<Slider>().value;
+		_levelData["Info"]["DefaultSpawnInterval"].n = _defaultSpawnInterval.GetComponentInChildren<Slider>().value;
+		_levelData["Info"]["DefaultHitpoints"].i = (int) _defaultHitpoints.GetComponentInChildren<Slider>().value;
+		_levelData["Info"]["DefaultSpeed"].n = _defaultSpeed.GetComponentInChildren<Slider>().value;
 		_levelData["Info"]["DefaultColor"].str = "White";
 	
 		Step60.SetActive(false);
@@ -593,28 +728,24 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentLevelName = input;
 	}
 
-	public void UpdateLives(string input)
+	public void UpdateLives()
 	{
-		bool result = int.TryParse(input, out _currentLives);
+		_currentLives.GetComponentInChildren<Text>().text = String.Format("Lives: {0}", _currentLives.GetComponentInChildren<Slider>().value);
 	}
 
-	public void UpdateDefaultSpawnInterval(string input)
+	public void UpdateDefaultSpawnInterval()
 	{
-		int spawnInterval = 0;
-		bool result = int.TryParse(input, out spawnInterval);
-		_currentDefaultSpawnInterval = (float) spawnInterval;
+		_defaultSpawnInterval.GetComponentInChildren<Text>().text = String.Format("Spawn interval: {0}", _defaultSpawnInterval.GetComponentInChildren<Slider>().value);
 	}
 	
-	public void UpdateDefaultHitpoints(string input)
+	public void UpdateDefaultHitpoints()
 	{
-		bool result = int.TryParse(input, out _currentDefaultHitpoints);
+		_defaultHitpoints.GetComponentInChildren<Text>().text = String.Format("Enemies life: {0}", _defaultHitpoints.GetComponentInChildren<Slider>().value);
 	}
 	
-	public void UpdateDefaultSpeed(string input)
+	public void UpdateDefaultSpeed()
 	{
-		int spawnInterval = 0;
-		bool result = int.TryParse(input, out spawnInterval);
-		_currentDefaultSpeed = (float) spawnInterval;
+		_defaultSpeed.GetComponentInChildren<Text>().text = String.Format("Enemies speed: {0}", _defaultSpeed.GetComponentInChildren<Slider>().value);
 	}
 
 	public void ValidateStep70()
@@ -625,6 +756,44 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Debug.Log(LevelManager.GetCustomLevels().ToString());
 
 		SceneManager.LoadScene("Scenes/Menu/MainMenu");
+	}
+	
+	public void SelectItem(GameObject item)
+	{
+		if (_selectedItem != null && (item.GetInstanceID() == _selectedItem.GetInstanceID())) return;
+
+		_selectedItem = item;
+
+		var ib = _selectedItem.GetComponent<ItemBase>();
+
+		if (ib == null) return;
+
+		if (ib.IsColorable) ShowColorPanel();
+		else HideColorPanel();
+	}
+
+	private void ShowColorPanel()
+	{
+		Inventory.SetActive(false);
+		ColorPicker.SetActive(true);
+	}
+
+	public void HideColorPanel()
+	{
+		ColorPicker.SetActive(false);
+		Inventory.SetActive(true);
+	}
+
+	public void SetSelectedItemColor(RayColor rayColor)
+	{
+		var ib = _selectedItem.GetComponent<ItemBase>();
+
+		if (ib != null)
+		{
+			ib.SetColor(rayColor);
+		}
+
+		_selectedItem = null;
 	}
 	
 }
