@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection.Emit;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using Assets.Scripts.Utilities;
 using Behaviors;
 using Items;
@@ -82,6 +83,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public Vector2Int _endPoint;
 	public JSONObject _currentWave;
 	public JSONObject _waves;
+	public Text _currentWaveText;
+	public Text _totalWavesText;
 	public int _currentStep;
 	public BoardCell _selectedCell;
 	public GameObject _Filter;
@@ -260,6 +263,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	public void ValideStep21()
 	{
+		if (_selectedCell == null) return;
+		
 		_levelData["Board"]["EndPoint"]["X"].i = _selectedCell.GetPosition().x;
 		_levelData["Board"]["EndPoint"]["Y"].i = _selectedCell.GetPosition().y;
 		
@@ -297,6 +302,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	public void ValidateStep220()
 	{
+		if (_selectedCell == null) return;
+		
 		_currentEnemyPath.Start = _selectedCell.GetPosition();
 		ResetSelectedCell();
 		
@@ -308,8 +315,20 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	
 	public void ValidateStep221()
 	{
+		if (_selectedCell == null) return;
+		
 		_currentEnemyPath.End = _selectedCell.GetPosition();
 		ResetSelectedCell();
+
+		if (_currentEnemyPath.Start.x >= _currentEnemyPath.End.x
+		    && _currentEnemyPath.Start.y >= _currentEnemyPath.End.y)
+		{
+			Vector2Int buf = new Vector2Int(_currentEnemyPath.Start.x, _currentEnemyPath.Start.y);
+			_currentEnemyPath.Start.x = _currentEnemyPath.End.x;
+			_currentEnemyPath.Start.y = _currentEnemyPath.End.y;
+			_currentEnemyPath.End.x = buf.x;
+			_currentEnemyPath.End.y = buf.y;
+		}
 		
 		Debug.Log("Validating Step 221");
 		BoardPath clone = (BoardPath) _currentEnemyPath.Clone();
@@ -352,6 +371,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	public void ValidateStep30()
 	{
+		if (_waves.Count <= 0) return;
+		
 		_levelData["Waves"] = _waves;
 		
 		Step40.SetActive(true);
@@ -369,8 +390,49 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		enemy.AddField("Speed", _defaultSpeed.GetComponentInChildren<Slider>().value);
 		enemy.AddField("Color", enemyCode);
 		_currentWave["Enemies"].Add(enemy);
+		UpdateCurrentWaveText();
 	}
 
+	private void UpdateCurrentWaveText()
+	{
+		int red = 0;
+		int blue = 0;
+		int yellow = 0;
+		int cyan = 0;
+		int green = 0;
+		int white = 0;
+		int magenta = 0;
+		int none = 0;
+
+		foreach (JSONObject enemy in _currentWave["Enemies"].list)
+		{
+			if (enemy["Color"].str == "Red") red++;
+			if (enemy["Color"].str == "Blue") blue++;
+			if (enemy["Color"].str == "Yellow") yellow++;
+			if (enemy["Color"].str == "Cyan") cyan++;
+			if (enemy["Color"].str == "Green") green++;
+			if (enemy["Color"].str == "White") white++;
+			if (enemy["Color"].str == "Magenta") magenta++;
+			if (enemy["Color"].str == "None") none++;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		if (red > 0) sb.Append("<size=30><color=red>●</color></size> x").Append(red).Append(Environment.NewLine);
+		if (blue > 0) sb.Append("<size=30><color=blue>●</color></size> x").Append(blue).Append(Environment.NewLine);
+		if (yellow > 0) sb.Append("<size=30><color=yellow>●</color></size> x").Append(yellow).Append(Environment.NewLine);
+		if (cyan > 0) sb.Append("<size=30><color=cyan>●</color></size> x").Append(cyan).Append(Environment.NewLine);
+		if (green > 0) sb.Append("<size=30><color=green>●</color></size> x").Append(green).Append(Environment.NewLine);
+		if (white > 0) sb.Append("<size=30><color=white>●</color></size> x").Append(white).Append(Environment.NewLine);
+		if (magenta > 0) sb.Append("<size=30><color=magenta>●</color></size> x").Append(magenta).Append(Environment.NewLine);
+		if (none > 0) sb.Append("<size=30><color=black>●</color></size> x").Append(none).Append(Environment.NewLine);
+		_currentWaveText.text = String.Format("Current wave:{0}{1}", Environment.NewLine, sb.ToString());
+	}
+
+	private void UpdateTotalWavesText()
+	{
+		_totalWavesText.text = String.Format("Total: {0} wave(s)", _waves.Count);
+	}
+	
 	public void AddWave()
 	{
 		string waveString = _currentWave.ToString();
@@ -380,6 +442,8 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_waves.Add(waveCopy);
 		_currentWave = new JSONObject();
 		_currentWave.AddField("Enemies", new JSONObject(JSONObject.Type.ARRAY));
+		UpdateTotalWavesText();
+		UpdateCurrentWaveText();
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
@@ -449,7 +513,16 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public void ValidateStep45()
 	{
 		BoardCell cell = FindAvailableCell();
-		if (cell != null)
+		if (cell != null
+		    && (_currentLightEastColor != RayColor.NONE
+		        || _currentLightNorthEastColor != RayColor.NONE
+		        || _currentLightNorthColor != RayColor.NONE
+		        || _currentLightNorthWestColor != RayColor.NONE
+		        || _currentLightWestColor != RayColor.NONE
+		        || _currentLightSouthWestColor != RayColor.NONE
+		        || _currentLightSouthColor != RayColor.NONE
+		        || _currentLightSouthEastColor != RayColor.NONE
+		    ))
 		{
 			GameObject laserGameObject = Instantiate(LightSourcePrefab, ItemsContainer.transform);
 			cell.AddItem(laserGameObject);
@@ -750,6 +823,9 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	public void ValidateStep70()
 	{
+		LevelManager.ResetLevels();
+		if (_levelData["Name"].str.Length <= 0) return;
+		
 		string levelName = _levelData["Name"].str;
 		LevelManager.SaveLevel(_levelData, levelName);
 		JSONObject level = LevelManager.LoadLevel(levelName);
