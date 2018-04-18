@@ -171,9 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394391152941043aab51945bcdb4a72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
-  filename: 
-  isInteractable: 0
+  Filename: 
+  IsInteractable: 0
+  IsCustom: 0
 --- !u!114 &114986398651145526
 MonoBehaviour:
   m_ObjectHideFlags: 1
