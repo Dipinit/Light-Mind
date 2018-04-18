@@ -15,10 +15,11 @@ namespace Items
 
         [Header("Use Laser")] public bool UseLaser;
         public int LaserDamageBasePerSecond = 30;
-        private float LaserDamageUpdateRate = 0.2f;
         public LineRenderer LineRenderer;
         public ParticleSystem ImpactEffect;
         public Light ImpactLight;
+
+        private const float LaserDamageUpdateRate = 0.2f;
 
         [Header("Unity Setup Fields")] public Transform PartToRotate;
         public float RotateSpeed = 10f;
@@ -44,7 +45,6 @@ namespace Items
                 if (!UseLaser || !LineRenderer.enabled) return;
                 LineRenderer.enabled = false;
                 ImpactEffect.Stop();
-                ImpactEffect.enableEmission = false;
                 ImpactLight.enabled = false;
 
                 return;
@@ -89,11 +89,11 @@ namespace Items
 
         private void ShootLaser()
         {
-            if (!UseLaser || _currentTarget == null) return;
+            if (!Enabled || !UseLaser || _currentTarget == null) return;
             
-            float damage = 0f;
+            var damage = 0f;
 
-            EnemyBehaviour enemy = _currentTarget.GetComponent<EnemyBehaviour>();
+            var enemy = _currentTarget.GetComponent<EnemyBehaviour>();
             Debug.Log(enemy);
             if (enemy == null) return;
 
@@ -103,7 +103,7 @@ namespace Items
 
             damage *= LaserDamageUpdateRate;
 
-            int damageInt = (int) damage;
+            var damageInt = (int) damage;
                         
             enemy.Life -= damageInt;
             

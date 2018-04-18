@@ -499,7 +499,7 @@ MonoBehaviour:
   ColliderEnabled: 0
   IsOrientable: 0
   Orientation: 0
-  IsColorable: 1
+  IsColorable: 0
   Color:
     R: 1
     G: 1
