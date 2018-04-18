@@ -74,15 +74,13 @@ namespace Behaviors
         public void HighlightNearestCell()
         {
             if (_closestCell) _closestCell.GetComponent<Renderer>().material = _board.CellDefaultMaterial;
+            _closestCell = null;
 
             var closestDistance = SnapRange;
             var hitColliders = Physics.OverlapSphere(transform.position, SnapRange);
 
             if (hitColliders.Length == 0)
-            {
-                _closestCell = null;
                 return;
-            }
 
             foreach (var hitCollider in hitColliders)
             {
@@ -112,7 +110,9 @@ namespace Behaviors
             {
                 Debug.Log(string.Format("Destroying {0} because it's not dropped over the board.", gameObject.name));
 
-                // TODO: Replace item in inventory
+                // Replace item in inventory
+                GameManager.Instance.AddItemToInventory(GetComponent<ItemBase>().ItemCode, 1);
+
                 Destroy(gameObject);
                 if (_raySensitive)
                 {
@@ -128,7 +128,8 @@ namespace Behaviors
                 var cellPosition = _closestCell.transform.position;
                 transform.position = cellPosition;
 
-                var gridPosition = new Vector2Int(_board.WorldToCellPosition(cellPosition.x), _board.WorldToCellPosition(cellPosition.z));
+                var gridPosition = new Vector2Int(_board.WorldToCellPosition(cellPosition.x),
+                    _board.WorldToCellPosition(cellPosition.z));
                 BoardManager.Instance.AddItem(gameObject, gridPosition);
 
                 _audioSources[0].Play();

@@ -53,8 +53,6 @@ namespace UI
                 Debug.Log("Could not drop item on this cell, replacing in inventory.");
                 Destroy(droppedItem);
 
-                // TODO: Replace item in inventory
-
                 return;
             }
 
