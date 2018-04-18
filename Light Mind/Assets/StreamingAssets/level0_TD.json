@@ -223,9 +223,39 @@
 					{
 						"Hitpoints" : 100,
 						"Speed" : 50,
-						"Color" : "Yellow",
+						"Color" : "Cyan",
 						"SpawnTime" : 1
-					}
+					},
+					{
+						"Hitpoints" : 20,
+						"Speed" : 120,
+						"Color" : "Cyan",
+						"SpawnTime" : 0.5
+					},
+							{
+						"Hitpoints" : 20,
+						"Speed" : 120,
+						"Color" : "Cyan",
+						"SpawnTime" : 0.5
+					},
+							{
+						"Hitpoints" : 20,
+						"Speed" : 120,
+						"Color" : "Cyan",
+						"SpawnTime" : 0.5
+					},
+							{
+						"Hitpoints" : 20,
+						"Speed" : 120,
+						"Color" : "Cyan",
+						"SpawnTime" : 0.5
+					},
+							{
+						"Hitpoints" : 20,
+						"Speed" : 120,
+						"Color" : "Cyan",
+						"SpawnTime" : 0.5
+					},
 				]
     },
     {

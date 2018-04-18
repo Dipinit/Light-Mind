@@ -7,6 +7,7 @@ using Behaviors;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+using UnityEngine.Analytics;
 
 public class TDManager : MonoBehaviour
 {
@@ -135,6 +136,7 @@ public class TDManager : MonoBehaviour
         // TODO Stop the game and display loss screen
         Debug.Log("Player loses the game!");
         LivesLeft = 0;
+        GameState = State.Lose;
     }
 
     public void StartWave(List<Enemy> wave)
@@ -246,7 +248,7 @@ public class TDManager : MonoBehaviour
                 // TODO
                 break;
             case State.Win:
-                // TODO
+                PlayerPrefs.SetString ("levelReached", Convert.ToString(Int32.Parse (PlayerPrefs.GetString("levelReached")) + 1));
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
