@@ -34,8 +34,7 @@ public class GameManager : MonoBehaviour
     public GameObject ColorPicker;
     public GameObject WinScreen;
 
-    [Header("Tower Defense")] public bool IsTd;
-    public GameObject EnemyPrefab;
+    [Header("Tower Defense")] public GameObject EnemyPrefab;
 
     [Header("Turrets")] public GameObject StandardTurretPrefab;
     public GameObject MissileTurretPrefab;
@@ -83,7 +82,7 @@ public class GameManager : MonoBehaviour
             LoadLevel(currentLevel);
         }
 
-        if (IsTd) TdManager.StartGame();
+        TdManager.StartGame();
     }
 
     public static string LoadFile(string level) {
@@ -153,17 +152,14 @@ public class GameManager : MonoBehaviour
         if (dataAsJson["Inventory"]["Filters"].i > 0)
             CreateInventoryItem(FilterInventoryItemPrefab, "filter", (int) dataAsJson["Inventory"]["Filters"].i);
 
-        if (IsTd)
-        {
-            if (dataAsJson["Inventory"]["StandardTurret"].i > 0)
-                CreateInventoryItem(StandardTurretInventoryItemPrefab, "standard-turret", (int) dataAsJson["Inventory"]["StandardTurret"].i);
+        if (dataAsJson["Inventory"]["StandardTurret"].i > 0)
+            CreateInventoryItem(StandardTurretInventoryItemPrefab, "standard-turret", (int) dataAsJson["Inventory"]["StandardTurret"].i);
 
-            if (dataAsJson["Inventory"]["MissileTurret"].i > 0)
-                CreateInventoryItem(MissileTurretInventoryItemPrefab, "missile-turret", (int) dataAsJson["Inventory"]["MissileTurret"].i);
+        if (dataAsJson["Inventory"]["MissileTurret"].i > 0)
+            CreateInventoryItem(MissileTurretInventoryItemPrefab, "missile-turret", (int) dataAsJson["Inventory"]["MissileTurret"].i);
 
-            if (dataAsJson["Inventory"]["LaserTurret"].i > 0)
-                CreateInventoryItem(LaserTurretInventoryItemPrefab, "laser-turret", (int) dataAsJson["Inventory"]["LaserTurret"].i);
-        }
+        if (dataAsJson["Inventory"]["LaserTurret"].i > 0)
+            CreateInventoryItem(LaserTurretInventoryItemPrefab, "laser-turret", (int) dataAsJson["Inventory"]["LaserTurret"].i);
 
         foreach (var jsonEntity in dataAsJson["Entities"].list)
         {
@@ -277,9 +273,9 @@ public class GameManager : MonoBehaviour
             if (raySensitive) raySensitive.ColliderEnabled = true;
         }
 
-        if (IsTd && dataAsJson != null)
+        if (dataAsJson != null)
         {
-            TdManager.SetUpWaves(dataAsJson);
+            TdManager.SetUpGame(dataAsJson);
         }
     }
 

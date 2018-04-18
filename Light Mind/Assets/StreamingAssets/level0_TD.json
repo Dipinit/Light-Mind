@@ -195,13 +195,51 @@
   ],
   "Waves": [
     {
-      "Enemies": "GRB2RB2Y"
+      "Enemies": [
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Blue"
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Yellow"
+					},
+				]
     },
     {
-      "Enemies": "B2Y5R8B2"
+      "Enemies": [
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Red"
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Red"
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Yellow"
+					},
+				]
     },
     {
-      "Enemies": "C15"
+      "Enemies": [
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Blue"
+					},
+					{
+						"Hitpoints" : 100,
+						"Speed" : 10,
+						"Color" : "Yellow"
+					},
+				]
     }
   ],
   "Info": {

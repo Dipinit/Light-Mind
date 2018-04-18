@@ -3,55 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Utilities;
 
-public class Enemy : MonoBehaviour {
+/**
+ * Contains basic information for Enemy creations.
+ **/
+public class Enemy {
+    public RayColor Color;
+    public float Speed;
+    public int Hitpoints;
 
-    public delegate void EnemyDelegate(GameObject enemy);
-    public EnemyDelegate enemyDelegate;
-
-    private List<Vector3> _paths = new List<Vector3>();
-    private int _currPath = 0;
-    private float _speed = 1.2f;
-
-    public RayColor EnemyColor;
-
-	// Use this for initialization
-	void Start () {
-        Vector3 destination = GameObject.FindObjectOfType<DiamontBehaviour> ().transform.position;
-        _paths.Add (destination);
-	}
-
-    public void Init(List<Vector3> paths, RayColor color) {
-        _currPath = 0;
-        _paths = paths;
-        EnemyColor = color;
-        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        renderer.color = color.GetColor ();
+    public Enemy (int hitpoints, float speed, RayColor color) {
+        this.Hitpoints = hitpoints;
+        this.Speed = speed;
+        this.Color = color;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        /* @THOMAS
-         * Les enemies arrivent pas au milieu mais viennent juste toucher le checkpoint donc des fois ils vont en diagonale
-         * Soit faut faire des map bien rectangulaires et tout, soit faut fix si ca t'intéresse.
-         **/
-        if (_paths != null && _paths.Count > 0 && _currPath < _paths.Count) {
-            Vector3 nextPath = _paths [_currPath];
-            nextPath.z = -1;
-           if (Vector3.Distance (transform.position,nextPath) > 0.01) {
-                transform.position += (nextPath-transform.position).normalized*Time.deltaTime*_speed;
-            } else {
-                _currPath++;
-            }
-        } else {
-            // CHECK COLLIDER
-        }
-	}
 
-    void OnDestroy()
-    {
-        if (enemyDelegate != null)
-        {
-            enemyDelegate(gameObject);
-        }
+    public string toString() {
+        return "Hitpoints: " + this.Hitpoints + ", Speed: " + this.Speed + ", Color: " + this.Color.GetName ();
     }
 }

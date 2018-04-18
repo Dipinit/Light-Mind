@@ -80,7 +80,7 @@ public class ShootingScript : MonoBehaviour {
         {
             enemiesInRange.Add(other.gameObject);
             Enemy del = other.gameObject.GetComponent<Enemy>();
-            del.enemyDelegate += OnEnemyDestroy;
+            //del.enemyDelegate += OnEnemyDestroy;
         }
     }
 
@@ -90,7 +90,7 @@ public class ShootingScript : MonoBehaviour {
         {
             enemiesInRange.Remove(other.gameObject);
             Enemy del = other.gameObject.GetComponent<Enemy>();
-            del.enemyDelegate -= OnEnemyDestroy;
+            //del.enemyDelegate -= OnEnemyDestroy;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Behaviors
 
         public EnemyDelegate EnemyDestroyCallback;
         public int Life = 100;
+        public float Speed = 10;
 
         // Enemy movement AI
         [Header("Navigation")] [SerializeField]
@@ -27,6 +28,10 @@ namespace Behaviors
             // Navigate enemy to the end
             _end = GameObject.FindGameObjectWithTag("Finish").transform;
             _navigationAgent.SetDestination(_end.position);
+        }
+
+        public void UpdateNavigationAgent() {
+            _navigationAgent.speed = Speed;
         }
 
         private void Update()

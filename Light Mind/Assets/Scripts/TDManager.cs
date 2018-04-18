@@ -6,10 +6,10 @@ using Assets.Scripts.Utilities;
 using Behaviors;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class TDManager : MonoBehaviour
 {
-    // Not used yet, might delete
     public enum State
     {
         Playing,
@@ -27,7 +27,7 @@ public class TDManager : MonoBehaviour
     public float SpawnInterval;
 
     private GameObject _spawnPoint;
-    private List<List<RayColor>> _enemyWaves = new List<List<RayColor>>();
+    private List<List<Enemy>> _enemyWaves = new List<List<Enemy>>();
     private int _enemiesSpawned;
 
     // GUI
@@ -35,23 +35,49 @@ public class TDManager : MonoBehaviour
     public Text LivesText;
     public Text WaveText;
 
-    public void SetUpWaves(JSONObject data)
+    public void SetUpGame(JSONObject data)
     {
-        // Init the dictionary with all char and corresponding colors
-        InitializeWavesDico();
+        SetUpWaves (data);
 
-        // Set listener to wave launcher button
-        GoButton.GetComponent<Button>().onClick.AddListener(OnGoButtonClick);
+        SetUpGameInfo (data);
+    }
 
-        foreach (var jsonEntity in data["Waves"].list)
+    /**
+     * Parses the given JSON Object to fill the EnemyWaves.
+     **/
+    private void SetUpWaves(JSONObject data) {
+        
+        // JSON Structure is as followed: Waves > (Multiple) Enemies > (Array) OBJECT (HP, SPEED, COLOR)
+        foreach (var enemies in data["Waves"].list)
         {
-            DecodeEnemyWaves(jsonEntity["Enemies"].str);
+            List<Enemy> currentWave = new List<Enemy> ();
+            foreach (JSONObject enemy in enemies["Enemies"].list) {
+                Debug.Log (enemy.GetType () + " : " + enemy);
+                currentWave.Add (CreateEnemyFromJSON (enemy));
+            }
+            _enemyWaves.Add (currentWave);
         }
+    }
 
+    private Enemy CreateEnemyFromJSON(JSONObject enemy) {
+        int hitpoints = (int) enemy ["Hitpoints"].n;
+        float speed = (float) enemy ["Speed"].n;
+        RayColor color = RayColor.Parse (enemy ["Color"].str);
+
+        return new Enemy (hitpoints, speed, color);
+    }
+
+    /**
+     * Sets up specific settings (Players Lives, Spawn Interval, ...)
+     **/
+    private void SetUpGameInfo(JSONObject data) {
         LivesLeft = (int) data["Info"].GetField("Lives").i;
         SpawnInterval = data["Info"].GetField("SpawnInterval").n;
         WavesTotal = _enemyWaves.Count;
         _spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point");
+
+        // Set listener to wave launcher button
+        GoButton.GetComponent<Button>().onClick.AddListener(StartPlayingPhase);
     }
 
     public void StartGame()
@@ -83,7 +109,7 @@ public class TDManager : MonoBehaviour
         GameState = State.Pause;
         // Display next wave
         WaveText.text = string.Format("Next Wave: {0}{1}", Environment.NewLine,
-            ShowNextWave(_enemyWaves[CurrentWave - 1]));
+            GetNextWaveColors(_enemyWaves[CurrentWave - 1]));
         // Show lives left
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
         // Show button Go
@@ -102,7 +128,7 @@ public class TDManager : MonoBehaviour
         LivesLeft = 0;
     }
 
-    public void StartWave(List<RayColor> wave)
+    public void StartWave(List<Enemy> wave)
     {
         StartCoroutine(SpawnEnemies(wave));
     }
@@ -118,12 +144,17 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    private string ShowNextWave(IEnumerable<RayColor> wave)
+    /**
+     * Determines how many enemies of each colors are in the given wave.
+     * Returns a String to be when displaying the next wave message.
+     **/
+    private string GetNextWaveColors(IEnumerable<Enemy> wave)
     {
         int red, white, blue, yellow, green, cyan, magenta, none;
         red = white = blue = yellow = green = cyan = magenta = none = 0;
-        foreach (var color in wave)
+        foreach (var enemy in wave)
         {
+            RayColor color = enemy.Color;
             if (color == RayColor.RED)
             {
                 red++;
@@ -213,78 +244,25 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    private void InitializeWavesDico()
-    {
-        WavesDico = new Dictionary<char, RayColor>
-        {
-            {'R', RayColor.RED},
-            {'B', RayColor.BLUE},
-            {'W', RayColor.WHITE},
-            {'C', RayColor.CYAN},
-            {'G', RayColor.GREEN},
-            {'M', RayColor.MAGENTA},
-            {'Y', RayColor.YELLOW},
-            {'N', RayColor.NONE}
-        };
-    }
-
-    private void DecodeEnemyWaves(string encodedWave)
-    {
-        List<RayColor> waveColors = new List<RayColor>();
-        RayColor previousColor = RayColor.NONE;
-
-        for (int i = 0; i < encodedWave.Length; i++)
-        {
-            char currChar = encodedWave[i];
-            if (WavesDico.ContainsKey(currChar))
-            {
-                WavesDico.TryGetValue(currChar, out previousColor);
-                waveColors.Add(previousColor);
-            }
-            else
-            {
-                string countStr = "";
-                while (i < encodedWave.Length && !WavesDico.ContainsKey(encodedWave[i]))
-                {
-                    countStr += currChar;
-                    if (++i < encodedWave.Length)
-                    {
-                        currChar = encodedWave[i];
-                    }
-                }
-
-                i--;
-                int count = 0;
-                if (countStr.Length > 0) count = Int32.Parse(countStr);
-                while (count > 1)
-                {
-                    //R2 = R + R since we already added R before, only go to > 1
-                    waveColors.Add(previousColor);
-                    count--;
-                }
-            }
-        }
-
-        _enemyWaves.Add(waveColors);
-    }
-
-    private void OnGoButtonClick()
-    {
-        // Go to next state
-        StartPlayingPhase();
-    }
-
-    private IEnumerator SpawnEnemies(IList<RayColor> wave)
+    private IEnumerator SpawnEnemies(IList<Enemy> wave)
     {
         _enemiesSpawned = 0;
         Debug.Log(string.Format("Wave Count: {0}", wave.Count));
-        while (_enemiesSpawned < wave.Count)
+        while (_enemiesSpawned < wave.Count && State.Lose != this.GameState)
         {
+            Enemy currentEnemy = wave [_enemiesSpawned];
             var enemyGo = Instantiate(GameManager.Instance.EnemyPrefab, _spawnPoint.transform.position,
                 Quaternion.identity);
-            Debug.Log("Spawned");
-            enemyGo.GetComponent<EnemyBehaviour>().Color = wave[_enemiesSpawned];
+
+            EnemyBehaviour currentEnemyBehaviour = enemyGo.GetComponent<EnemyBehaviour> ();
+            currentEnemyBehaviour.Color = currentEnemy.Color;
+            currentEnemyBehaviour.Life = currentEnemy.Hitpoints;
+            currentEnemyBehaviour.Speed = currentEnemy.Speed;
+            currentEnemyBehaviour.UpdateNavigationAgent ();
+
             _enemiesSpawned++;
+            Debug.Log("Spawned Enemy [" + currentEnemy.toString () + "]");
+
             yield return new WaitForSeconds(SpawnInterval);
         }
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
+using Assets.Scripts.Utilities;
 
 namespace Assets.Scripts.Utilities
 {
@@ -68,6 +70,32 @@ namespace Assets.Scripts.Utilities
         public static RayColor Substract(RayColor x, RayColor y)
         {
             return new RayColor(x.R && !y.R, x.G && !y.G, x.B && !y.B, (x.Alpha + y.Alpha) / 2);
+        }
+
+        public static RayColor Parse(string color) {
+            if (color != null && color.Length > 0) {
+                switch (color.ToLower ())
+                {
+                    case "white":
+                        return RayColor.WHITE;
+                    case "blue":
+                        return RayColor.BLUE;
+                    case "green":
+                        return RayColor.GREEN;
+                    case "red":
+                        return RayColor.RED;
+                    case "yellow":
+                        return RayColor.YELLOW;
+                    case "cyan":
+                        return RayColor.CYAN;
+                    case "magenta":
+                        return RayColor.MAGENTA;
+                    default:
+                        return RayColor.NONE;
+                } 
+            }
+            Debug.Log ("RayColor.Parse() - Looks like color is null or empty, couldn't convert it!");
+            return RayColor.NONE;
         }
     }
 }
