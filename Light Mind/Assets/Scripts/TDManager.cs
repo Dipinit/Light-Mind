@@ -27,7 +27,7 @@ public class TDManager : MonoBehaviour
     public State GameState;
     public int WavesTotal;
     public int LivesLeft;
-    public int CurrentWave;
+    public int CurrentWave = 0;
 
     public GameManager GameManager;
     public GameObject Inventory;
@@ -66,7 +66,7 @@ public class TDManager : MonoBehaviour
      * Parses the given JSON Object to fill the EnemyWaves.
      **/
     private void SetUpWaves(JSONObject data) {
-        
+        Debug.Log(data["Waves"].Count);
         // JSON Structure is as followed: Waves > (Multiple) Enemies > (Array) OBJECT (HP, SPEED, COLOR)
         foreach (var enemies in data["Waves"].list)
         {
@@ -102,6 +102,11 @@ public class TDManager : MonoBehaviour
         _spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point");
 
         GoButton.GetComponent<Button>().onClick.AddListener(CallNextPhase);
+    }
+
+    private GameObject GetSpawnPoint()
+    {
+        return _spawnPoint != null ? _spawnPoint : GameObject.FindGameObjectWithTag("Spawn Point");
     }
 
     /**
@@ -263,10 +268,14 @@ public class TDManager : MonoBehaviour
      **/
     private void HandleLevelProgression() {
         var levelReached = PlayerPrefs.HasKey ("levelReached") ? PlayerPrefs.GetInt ("levelReached") : 0;
-        var currentLevel = Int32.Parse (PlayerPrefs.GetString ("currentLevel").Substring (5));
-        if (currentLevel >= levelReached) {
-            levelReached++;
-            PlayerPrefs.SetInt ("levelReached", levelReached);
+        if (PlayerPrefs.GetInt("currentLevelIsCustom", 1) == 0)
+        {
+            var currentLevel = Int32.Parse(PlayerPrefs.GetString("currentLevel").Substring(5));
+            if (currentLevel >= levelReached)
+            {
+                levelReached++;
+                PlayerPrefs.SetInt("levelReached", levelReached);
+            }
         }
     }
 
@@ -282,7 +291,7 @@ public class TDManager : MonoBehaviour
         while (_enemiesSpawned < wave.Count && State.Lose != this.GameState)
         {
             Enemy currentEnemy = wave [_enemiesSpawned];
-            var enemyGo = Instantiate(GameManager.Instance.EnemyPrefab, _spawnPoint.transform.position,
+            var enemyGo = Instantiate(GameManager.Instance.EnemyPrefab, GetSpawnPoint().transform.position,
                 Quaternion.identity);
 
             EnemyBehaviour currentEnemyBehaviour = enemyGo.GetComponent<EnemyBehaviour> ();

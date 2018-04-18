@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -89,7 +89,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: f0b196613dfd46443bd47e3c6914137a,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -2472,6 +2473,7 @@ GameObject:
   - component: {fileID: 1983977317}
   - component: {fileID: 1983977321}
   - component: {fileID: 1983977322}
+  - component: {fileID: 1983977323}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2568,6 +2570,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d128fe1a53fa4cb4ea6011bfeae52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1983977323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1983977316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a164bfbe0f4e4f18b5df242a17fb2584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PanSpeed: 20
+  ZoomSpeedTouch: 5
+  ZoomSpeedMouse: 10
+  PanFingersDistance: 1
+  XMin: -5
+  XMax: 10
+  YMin: -5
+  YMax: 10
+  ZoomMin: 10
+  ZoomMax: 40
+  OverlapRadius: 1
 --- !u!1 &2063791563
 GameObject:
   m_ObjectHideFlags: 0

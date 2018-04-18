@@ -9,8 +9,16 @@ public class ColorItem : MonoBehaviour
     public void ChangeColor()
     {
         Debug.LogWarning(Color.GetName());
-        GameManager.Instance.SetSelectedItemColor(Color);
-        GameManager.Instance.HideColorPanel();
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetSelectedItemColor(Color);
+            GameManager.Instance.HideColorPanel();
+        }
+        else if (LevelEditorTD.Instance != null)
+        {
+            LevelEditorTD.Instance.SetSelectedItemColor(Color);
+            LevelEditorTD.Instance.HideColorPanel();
+        }
     }
 
     public void SetColor(RayColor color)

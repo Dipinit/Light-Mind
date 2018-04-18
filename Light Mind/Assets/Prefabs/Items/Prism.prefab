@@ -257,8 +257,8 @@ MonoBehaviour:
   Orientation: 90
   IsColorable: 0
   Color:
-    R: 1
-    G: 1
+    R: 0
+    G: 0
     B: 1
     Alpha: 0.9
   DoubleClickTime: 0.25
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDraggable: 1
-  SnapRange: 50
+  SnapRange: 5
 --- !u!198 &198929682991936138
 ParticleSystem:
   m_ObjectHideFlags: 1
