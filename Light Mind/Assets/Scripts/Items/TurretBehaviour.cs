@@ -9,6 +9,8 @@ namespace Items
         [Header("General")] public bool Enabled;
         public float Range = 15f;
 
+        [Header("Feedbacks")] public ParticleSystem LaserEffect;
+
         [Header("Use Bullets (default)")] public GameObject BulletPrefab;
         public float FireRate = 1f;
         private float _fireCountdown;
@@ -90,7 +92,7 @@ namespace Items
         private void ShootLaser()
         {
             if (!Enabled || !UseLaser || _currentTarget == null) return;
-            
+
             var damage = 0f;
 
             var enemy = _currentTarget.GetComponent<EnemyBehaviour>();
@@ -104,9 +106,9 @@ namespace Items
             damage *= LaserDamageUpdateRate;
 
             var damageInt = (int) damage;
-                        
+
             enemy.Life -= damageInt;
-            
+
             Debug.Log(string.Format("{0} laser hit a {1} enemy causing {2} damage ({3} remaining)",
                 Color.GetName(),
                 enemy.Color.GetName(),
@@ -170,12 +172,38 @@ namespace Items
         {
             base.HitEnter(ray);
             CalculateColor();
+
+            if (Color == RayColor.NONE) return;
+            
+            var effectColorGradient = new Gradient();
+            effectColorGradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(Color.GetColor(), 0.0f),
+                    new GradientColorKey(Color.GetColor(), 1.0f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(1f, 0.0f),
+                    new GradientAlphaKey(0.666f, 0.5f),
+                    new GradientAlphaKey(0.333f, 0.85f),
+                    new GradientAlphaKey(0f, 1.0f)
+                }
+            );
+            var laserEffectColor = LaserEffect.colorOverLifetime;
+            laserEffectColor.color = new ParticleSystem.MinMaxGradient(effectColorGradient);
+            LaserEffect.Play();
         }
 
         public override void HitExit(Ray ray)
         {
             base.HitExit(ray);
             CalculateColor();
+
+            if (LaserEffect.isPlaying)
+            {
+                LaserEffect.Stop();
+            }
         }
 
         private void CalculateColor()
@@ -202,8 +230,7 @@ namespace Items
                 SetLineRendererColor(Color);
             }
         }
-        
-                
+
         private void SetLineRendererColor(RayColor color)
         {
             // Set a gradient with the same color at the beginning and the end (we have to use a Gradient...)
@@ -218,7 +245,7 @@ namespace Items
                     new GradientAlphaKey(color.Alpha, 0.0f), new GradientAlphaKey(color.Alpha, 1.0f)
                 }
             );
-            
+
             Debug.Log(gradient);
 
             // Apply the gradient
