@@ -13,17 +13,19 @@ public class TDManager : MonoBehaviour
 {
     public enum State
     {
+        NotStartedYet,
         Playing,
+        Spawning,
         Pause,
         Win,
         Lose
     }
-
+        
     public State GameState;
     public int WavesTotal;
     public int LivesLeft;
     public int CurrentWave;
-    public Dictionary<char, RayColor> WavesDico;
+    public GameManager GameManager;
 
     private GameObject _spawnPoint;
     private List<List<Enemy>> _enemyWaves = new List<List<Enemy>>();
@@ -38,6 +40,13 @@ public class TDManager : MonoBehaviour
     public GameObject GoButton;
     public Text LivesText;
     public Text WaveText;
+
+    public void StartGame(GameManager gameManager)
+    {
+        GameState = State.NotStartedYet;
+        GameManager = gameManager;
+        CallNextPhase();
+    }
 
     public void SetUpGame(JSONObject data)
     {
@@ -87,18 +96,11 @@ public class TDManager : MonoBehaviour
         _spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point");
 
         // Set listener to wave launcher button
-        GoButton.GetComponent<Button>().onClick.AddListener(StartPlayingPhase);
-    }
-
-    public void StartGame()
-    {
-        StartPausedPhase();
+        GoButton.GetComponent<Button>().onClick.AddListener(CallNextPhase);
     }
 
     private void StartPlayingPhase()
     {
-        // Change state
-        GameState = State.Playing;
         // Hide go button
         GoButton.gameObject.SetActive(false);
         // Update current wave
@@ -106,7 +108,7 @@ public class TDManager : MonoBehaviour
         // Lives
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
         // Call spawner
-        StartNextWave();
+        StartWave(_enemyWaves[CurrentWave - 1]);
         // Check if enemies are all dead or player is
         // THIS SHOULD BE CHECKED WHEN A TOWER FIRES AND WHEN AN ENEMY TAKES A LIFE POINT OFF
         // Call CallNextPhase or StartPausePhase
@@ -146,12 +148,14 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
-        if (_enemiesSpawned <= 0 || GameState != State.Playing) return;
-
-        var enemies = GameObject.FindGameObjectsWithTag("enemy");
-        if (enemies.Length == 0)
-        {
-            CallNextPhase();
+        if (_enemiesSpawned > 0 && GameState == State.Playing) {
+            var enemies = GameObject.FindGameObjectsWithTag ("enemy");
+            if (enemies.Length == 0) {
+                if (CurrentWave == _enemyWaves.Count) {
+                    GameState = State.Win;
+                }
+                CallNextPhase ();
+            }
         }
     }
 
@@ -239,16 +243,20 @@ public class TDManager : MonoBehaviour
         switch (GameState)
         {
             case State.Playing:
-                StartPausedPhase();
+            case State.Spawning:
+            case State.NotStartedYet:
+                StartPausedPhase ();
                 break;
             case State.Pause:
                 StartPlayingPhase();
                 break;
             case State.Lose:
-                // TODO
+                // TODO: Add Lost menu?
                 break;
             case State.Win:
-                PlayerPrefs.SetString ("levelReached", Convert.ToString(Int32.Parse (PlayerPrefs.GetString("levelReached")) + 1));
+                PlayerPrefs.SetString ("levelReached", Convert.ToString (Int32.Parse (PlayerPrefs.GetString ("levelReached")) + 1));
+                //TODO: Add Win menu?
+                GameManager.WinLevel ();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -257,6 +265,7 @@ public class TDManager : MonoBehaviour
 
     private IEnumerator SpawnEnemies(IList<Enemy> wave)
     {
+        GameState = State.Spawning;
         _enemiesSpawned = 0;
         Debug.Log(string.Format("Wave Count: {0}", wave.Count));
         while (_enemiesSpawned < wave.Count && State.Lose != this.GameState)
@@ -278,5 +287,6 @@ public class TDManager : MonoBehaviour
         }
 
         StopAllCoroutines();
+        GameState = State.Playing;
     }
 }
