@@ -1,39 +1,41 @@
-using Assets.Scripts.Utilities;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LevelItem : MonoBehaviour
+namespace Menu
 {
-    public string name;
-    public string filename;
-    public bool isInteractable = false;
-
-    public void Select()
+    public class LevelItem : MonoBehaviour
     {
-      Debug.LogWarning("isInteractable");
-      Debug.LogWarning(isInteractable);
-      if (!isInteractable) {
-        return;
-      }
-			PlayerPrefs.SetString("currentLevel", this.filename);
-			Application.LoadLevel("Scenes/GameTD3D");
-    }
+        public string Filename;
+        public bool IsInteractable;
 
-    public void SetName(string name)
-    {
-        var _text = this.GetComponentInChildren<Text>();
-        _text.text = name;
-    }
+        public void Select()
+        {
+            Debug.LogWarning(string.Format("Is interactable: {0}", IsInteractable));
+            if (!IsInteractable)
+            {
+                return;
+            }
 
-    public void SetFilename(string filename)
-    {
-        this.filename = filename;
-    }
+            PlayerPrefs.SetString("currentLevel", Filename);
+            SceneManager.LoadScene("Scenes/Game");
+        }
 
-    public void SetInteractable(bool interactable)
-    {
-        var _button = this.GetComponentInChildren<Button>();
-        this.isInteractable = interactable;
-        _button.interactable = this.isInteractable;
+        public void SetName(string levelName)
+        {
+            GetComponentInChildren<Text>().text = levelName;
+        }
+
+        public void SetFilename(string filename)
+        {
+            Filename = filename;
+        }
+
+        public void SetInteractable(bool interactable)
+        {
+            var button = GetComponentInChildren<Button>();
+            IsInteractable = interactable;
+            button.interactable = IsInteractable;
+        }
     }
 }

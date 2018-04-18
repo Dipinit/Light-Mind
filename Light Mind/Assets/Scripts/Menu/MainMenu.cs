@@ -4,20 +4,19 @@ namespace Menu
 {
     public class MainMenu : MonoBehaviour
     {
-
-  		public void PlayTDGame()
+  		public void Play()
   		{
-  			Application.LoadLevel("Scenes/GameTD3D");
+  			SceneManager.LoadScene("Scenes/Game");
   		}
 
         public void ReturnToMenu()
         {
-            Application.LoadLevel("Scenes/MenuScene");
+            SceneManager.LoadScene("Scenes/Menu/MainMenu");
         }
 
         public void LevelEditor()
         {
-            Application.LoadLevel("Scenes/EditorTD");
+            SceneManager.LoadScene("Scenes/Editor");
         }
 
         public void QuitGame()

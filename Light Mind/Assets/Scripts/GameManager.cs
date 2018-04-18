@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Items")] public GameObject MirrorPrefab;
     public GameObject FilterPrefab;
-    public GameObject ObjectivePrefab;
     public GameObject ObstaclePrefab;
     public GameObject FilterMirrorPrefab;
     public GameObject LightSourcePrefab;
@@ -178,18 +177,6 @@ public class GameManager : MonoBehaviour
                     objectInstance = Instantiate(FilterPrefab, ItemsContainer.transform);
                     Filter filter = objectInstance.GetComponentInChildren<Filter>();
                     filter.Color = new RayColor(
-                        jsonEntity["Red"].b,
-                        jsonEntity["Green"].b,
-                        jsonEntity["Blue"].b,
-                        RayColor.DEFAULT_ALPHA);
-                    break;
-
-                case "Objective":
-                    Debug.Log("Instanciating an objective...");
-                    objectInstance = Instantiate(ObjectivePrefab, ItemsContainer.transform);
-                    objectInstance.tag = "objective";
-                    Objective objective = objectInstance.GetComponentInChildren<Objective>();
-                    objective.Color = new RayColor(
                         jsonEntity["Red"].b,
                         jsonEntity["Green"].b,
                         jsonEntity["Blue"].b,

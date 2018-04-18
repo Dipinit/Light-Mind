@@ -74,15 +74,6 @@
       "Draggable": true
     },
     {
-      "Type": "Objective",
-      "X": 4,
-      "Y": 2,
-      "Red": true,
-      "Green": true,
-      "Blue": false,
-      "Draggable": true
-    },
-    {
       "Type": "Prism",
       "X": 1,
       "Y": 3,
