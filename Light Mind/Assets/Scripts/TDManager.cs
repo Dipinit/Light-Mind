@@ -137,6 +137,8 @@ public class TDManager : MonoBehaviour
     public void DecreaseLives()
     {
         LivesLeft--;
+        CameraShake.shakeAmount = 0.3f;
+        CameraShake.shakeTimer = 0.5f;
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
 
         if (LivesLeft > 0) return;
