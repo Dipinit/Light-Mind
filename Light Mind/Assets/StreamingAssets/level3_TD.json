@@ -14,56 +14,55 @@
       "Y": 0
     },
     "Paths": [
-        {
-          "X1": 0,
-          "Y1": 0,
-          "X2": 0,
-          "Y2": 7
-        },
-		{
-          "X1": 0,
-          "Y1": 7,
-          "X2": 2,
-          "Y2": 7
-        },
-		{
-          "X1": 2,
-          "Y1": 0,
-          "X2": 2,
-          "Y2": 7
-        },
-		{
-          "X1": 2,
-          "Y1": 0,
-          "X2": 4,
-          "Y2": 7
-        },
-		{
-          "X1": 4,
-          "Y1": 0,
-          "X2": 4,
-          "Y2": 7
-        },
-		{
-          "X1": 4,
-          "Y1": 7,
-          "X2": 6,
-          "Y2": 7
-        },
-		
-		{
-          "X1": 6,
-          "Y1": 0,
-          "X2": 6,
-          "Y2": 7
-        },
-		{
-          "X1": 6,
-          "Y1": 0,
-          "X2": 7,
-          "Y2": 0
-        }
-      ],
+      {
+        "X1": 0,
+        "Y1": 0,
+        "X2": 0,
+        "Y2": 7
+      },
+      {
+        "X1": 0,
+        "Y1": 7,
+        "X2": 2,
+        "Y2": 7
+      },
+      {
+        "X1": 2,
+        "Y1": 0,
+        "X2": 2,
+        "Y2": 7
+      },
+      {
+        "X1": 2,
+        "Y1": 0,
+        "X2": 4,
+        "Y2": 7
+      },
+      {
+        "X1": 4,
+        "Y1": 0,
+        "X2": 4,
+        "Y2": 7
+      },
+      {
+        "X1": 4,
+        "Y1": 7,
+        "X2": 6,
+        "Y2": 7
+      },
+      {
+        "X1": 6,
+        "Y1": 0,
+        "X2": 6,
+        "Y2": 7
+      },
+      {
+        "X1": 6,
+        "Y1": 0,
+        "X2": 7,
+        "Y2": 0
+      }
+    ],
     "EndPoint": {
       "X": 7,
       "Y": 0
@@ -147,57 +146,57 @@
   "Waves": [
     {
       "Enemies": [
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Green"
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Red"
-					}
-				]
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green"
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Red"
+        }
+      ]
     },
     {
       "Enemies": [
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Blue"
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Blue"
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Yellow"
-					}
-				]
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Blue"
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Blue"
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow"
+        }
+      ]
     },
     {
       "Enemies": [
-					{
-						"Hitpoints" : 150,
-						"Speed" : 15,
-						"Color" : "Blue"
-					},
-					{
-						"Hitpoints" : 75,
-						"Speed" : 20,
-						"Color" : "Yellow"
-					}
-				]
+        {
+          "Hitpoints": 150,
+          "Speed": 15,
+          "Color": "Blue"
+        },
+        {
+          "Hitpoints": 75,
+          "Speed": 20,
+          "Color": "Yellow"
+        }
+      ]
     }
   ],
   "Info": {
     "Lives": 10,
     "DefaultSpawnInterval": 3,
     "DefaultHitpoints": 100,
-	"DefaultSpeed": 10,
-	"DefaultColor": "None"
+    "DefaultSpeed": 10,
+    "DefaultColor": "None"
   }
 }

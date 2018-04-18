@@ -2,53 +2,157 @@
   "Name": "Level 1",
   "FunFact": "Tous les humains ont la capacité de voir la lumière ultraviolette, mais elle est passivement filtrée par la lentille de l'œil. Les patients qui subissent une intervention chirurgicale pour enlever cette lentille peuvent détecter la lumière ultraviolette.",
   "Number": 1,
-  "Inventory":
+  "Inventory": {
+    "Mirrors": 2,
+    "MirrorFilters": 1,
+    "Prisms": 3,
+    "Filters": 1,
+    "Towers": 2
+  },
+  "Entities": [
     {
-      "Mirrors": 2,
-      "MirrorFilters": 1,
-      "Prisms": 3,
-      "Filters": 1,
-      "Towers": 2
+      "Type": "Mirror",
+      "X": 2,
+      "Y": 3,
+      "Orientation": 90,
+      "Draggable": false
     },
-  "Entities":
-    [
-      {"Type": "Mirror", "X": 2, "Y": 3, "Orientation": 90, "Draggable": false},
-      {"Type": "Filter", "X": 2, "Y": 2, "Red": true, "Green": false, "Blue": true, "Draggable": false},
-      {"Type": "Objective", "X": 4, "Y": 2, "Red": true, "Green": true, "Blue": false, "Draggable": false},
-      {"Type": "Prism", "X": 1, "Y": 3, "Red": true, "Green": true, "Blue": false, "Draggable": false},
-      {"Type": "Filter Mirror", "X": 3, "Y": 1, "Red": false, "Green": false, "Blue": true, "Orientation": 135, "Draggable": false},
-      {"Type": "Spawner", "X": 0, "Y": 0, "Draggable": false},
-	  {"Type": "Path",
-		"Paths":
-		[
-				{"X": 7, "Y": 0}
-
-		]
-	  },
-	  {"Type": "Ender", "X": 7, "Y": 7, "Draggable": false},
-      {
-        "Type": "Light Source",
-        "X": 1,
-        "Y": 2,
-        "Draggable": false,
-        "Rays":
-          [
-            {"Direction": 0, "Enabled": true, "Red": false, "Green": true, "Blue": true},
-            {"Direction": 45, "Enabled": false, "Red": false, "Green": false, "Blue": false},
-            {"Direction": 90, "Enabled": true, "Red": false, "Green": true, "Blue": false},
-            {"Direction": 135, "Enabled": true, "Red": false, "Green": false, "Blue": false},
-            {"Direction": 180, "Enabled": false, "Red": false, "Green": false, "Blue": false},
-            {"Direction": 225, "Enabled": false, "Red": false, "Green": false, "Blue": false},
-            {"Direction": 270, "Enabled": true, "Red": true, "Green": false, "Blue": false},
-            {"Direction": 315, "Enabled": false, "Red": false, "Green": false, "Blue": false}
-          ]
-      }
-    ],
-	"Waves":
-	[
-		{"Enemies": "RB2RB2Y"},
-		{"Enemies": "B2Y5R8B2"},
-		{"Enemies": "C15"}
-	],
-	"Info": {"Lives": 10, "SpawnInterval": 3}
+    {
+      "Type": "Filter",
+      "X": 2,
+      "Y": 2,
+      "Red": true,
+      "Green": false,
+      "Blue": true,
+      "Draggable": false
+    },
+    {
+      "Type": "Objective",
+      "X": 4,
+      "Y": 2,
+      "Red": true,
+      "Green": true,
+      "Blue": false,
+      "Draggable": false
+    },
+    {
+      "Type": "Prism",
+      "X": 1,
+      "Y": 3,
+      "Red": true,
+      "Green": true,
+      "Blue": false,
+      "Draggable": false
+    },
+    {
+      "Type": "Filter Mirror",
+      "X": 3,
+      "Y": 1,
+      "Red": false,
+      "Green": false,
+      "Blue": true,
+      "Orientation": 135,
+      "Draggable": false
+    },
+    {
+      "Type": "Spawner",
+      "X": 0,
+      "Y": 0,
+      "Draggable": false
+    },
+    {
+      "Type": "Path",
+      "Paths": [
+        {
+          "X": 7,
+          "Y": 0
+        }
+      ]
+    },
+    {
+      "Type": "Ender",
+      "X": 7,
+      "Y": 7,
+      "Draggable": false
+    },
+    {
+      "Type": "Light Source",
+      "X": 1,
+      "Y": 2,
+      "Draggable": false,
+      "Rays": [
+        {
+          "Direction": 0,
+          "Enabled": true,
+          "Red": false,
+          "Green": true,
+          "Blue": true
+        },
+        {
+          "Direction": 45,
+          "Enabled": false,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 90,
+          "Enabled": true,
+          "Red": false,
+          "Green": true,
+          "Blue": false
+        },
+        {
+          "Direction": 135,
+          "Enabled": true,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 180,
+          "Enabled": false,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 225,
+          "Enabled": false,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 270,
+          "Enabled": true,
+          "Red": true,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 315,
+          "Enabled": false,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        }
+      ]
+    }
+  ],
+  "Waves": [
+    {
+      "Enemies": "RB2RB2Y"
+    },
+    {
+      "Enemies": "B2Y5R8B2"
+    },
+    {
+      "Enemies": "C15"
+    }
+  ],
+  "Info": {
+    "Lives": 10,
+    "SpawnInterval": 3
+  }
 }

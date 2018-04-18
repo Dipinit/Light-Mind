@@ -14,25 +14,25 @@
       "Y": 0
     },
     "Paths": [
-        {
-          "X1": 0,
-          "Y1": 0,
-          "X2": 4,
-          "Y2": 0
-        },
-        {
-          "X1": 4,
-          "Y1": 0,
-          "X2": 4,
-          "Y2": 7
-        },
-        {
-          "X1": 4,
-          "Y1": 7,
-          "X2": 7,
-          "Y2": 7
-        }
-      ],
+      {
+        "X1": 0,
+        "Y1": 0,
+        "X2": 4,
+        "Y2": 0
+      },
+      {
+        "X1": 4,
+        "Y1": 0,
+        "X2": 4,
+        "Y2": 7
+      },
+      {
+        "X1": 4,
+        "Y1": 7,
+        "X2": 7,
+        "Y2": 7
+      }
+    ],
     "EndPoint": {
       "X": 7,
       "Y": 7
@@ -187,124 +187,124 @@
   "Waves": [
     {
       "Enemies": [
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Blue",
-						"SpawnTime" : 3
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Green",
-						"SpawnTime" : 1
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Green",
-						"SpawnTime" : 1
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Red",
-						"SpawnTime" : 5
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 50,
-						"Color" : "Cyan",
-						"SpawnTime" : 1
-					},
-					{
-						"Hitpoints" : 20,
-						"Speed" : 120,
-						"Color" : "Cyan",
-						"SpawnTime" : 0.5
-					},
-							{
-						"Hitpoints" : 20,
-						"Speed" : 120,
-						"Color" : "Cyan",
-						"SpawnTime" : 0.5
-					},
-							{
-						"Hitpoints" : 20,
-						"Speed" : 120,
-						"Color" : "Cyan",
-						"SpawnTime" : 0.5
-					},
-							{
-						"Hitpoints" : 20,
-						"Speed" : 120,
-						"Color" : "Cyan",
-						"SpawnTime" : 0.5
-					},
-							{
-						"Hitpoints" : 20,
-						"Speed" : 120,
-						"Color" : "Cyan",
-						"SpawnTime" : 0.5
-					}
-				]
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Blue",
+          "SpawnTime": 3
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green",
+          "SpawnTime": 1
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green",
+          "SpawnTime": 1
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Red",
+          "SpawnTime": 5
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 50,
+          "Color": "Cyan",
+          "SpawnTime": 1
+        },
+        {
+          "Hitpoints": 20,
+          "Speed": 120,
+          "Color": "Cyan",
+          "SpawnTime": 0.5
+        },
+        {
+          "Hitpoints": 20,
+          "Speed": 120,
+          "Color": "Cyan",
+          "SpawnTime": 0.5
+        },
+        {
+          "Hitpoints": 20,
+          "Speed": 120,
+          "Color": "Cyan",
+          "SpawnTime": 0.5
+        },
+        {
+          "Hitpoints": 20,
+          "Speed": 120,
+          "Color": "Cyan",
+          "SpawnTime": 0.5
+        },
+        {
+          "Hitpoints": 20,
+          "Speed": 120,
+          "Color": "Cyan",
+          "SpawnTime": 0.5
+        }
+      ]
     },
     {
       "Enemies": [
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Red",
-						"SpawnTime" : 1
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Red",
-						"SpawnTime" : 1
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Yellow",
-						"SpawnTime" : 1
-					}
-				]
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Red",
+          "SpawnTime": 1
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Red",
+          "SpawnTime": 1
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow",
+          "SpawnTime": 1
+        }
+      ]
     },
     {
       "Enemies": [
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Blue",
-						"SpawnTime" : 0.5
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Yellow",
-						"SpawnTime" : 0.5
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Yellow",
-						"SpawnTime" : 0.5
-					},
-					{
-						"Hitpoints" : 100,
-						"Speed" : 10,
-						"Color" : "Yellow",
-						"SpawnTime" : 0.5
-					}
-				]
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Blue",
+          "SpawnTime": 0.5
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow",
+          "SpawnTime": 0.5
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow",
+          "SpawnTime": 0.5
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow",
+          "SpawnTime": 0.5
+        }
+      ]
     }
   ],
   "Info": {
     "Lives": 10,
     "DefaultSpawnInterval": 3,
     "DefaultHitpoints": 100,
-	"DefaultSpeed": 10,
-	"DefaultColor": "None"
+    "DefaultSpeed": 10,
+    "DefaultColor": "None"
   }
 }
