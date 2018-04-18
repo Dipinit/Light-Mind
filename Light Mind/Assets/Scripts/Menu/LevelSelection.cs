@@ -13,12 +13,12 @@ namespace Menu
 		// Use this for initialization
 		public void Start()
 		{
-			var levelReached = PlayerPrefs.GetInt("levelReached", 1);
+			var levelReached = PlayerPrefs.GetInt("levelReached", 0);
 			BetterStreamingAssets.Initialize();
 			var paths = BetterStreamingAssets.GetFiles("/", "*TD.json", SearchOption.TopDirectoryOnly);
 			JSONObject customLevels = LevelManager.GetCustomLevels();
 			var i = 0;
-			LevelButtons = new LevelItem[paths.Length + customLevels.Count];
+			LevelButtons = new LevelItem[paths.Length + customLevels.Count + 1];
 			foreach (var path in paths)
 			{
 				var fname = path.Split('_')[0];

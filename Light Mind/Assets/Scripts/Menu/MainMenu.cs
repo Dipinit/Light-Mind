@@ -11,9 +11,16 @@ namespace Menu
 
   		public void Play()
   		{
-		    if (!PlayerPrefs.HasKey("levelReached")) PlayerPrefs.SetInt("levelReached", 0);
-              Debug.Log(PlayerPrefs.GetInt("levelReached"));
-		    PlayerPrefs.SetString("currentLevel", String.Format("level{0}", PlayerPrefs.GetInt("levelReached")));
+		    PlayerPrefs.SetString("currentLevel", String.Format("level{0}", PlayerPrefs.GetInt("levelReached", 0)));
+  			SceneManager.LoadScene("Scenes/Game");
+  		}
+  		public void NextLevel()
+  		{
+  			SceneManager.LoadScene("Scenes/Game");
+  		}
+
+  		public void ReplayLevel()
+  		{
   			SceneManager.LoadScene("Scenes/Game");
   		}
 
