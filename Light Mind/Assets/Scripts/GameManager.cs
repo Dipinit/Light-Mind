@@ -110,9 +110,16 @@ public class GameManager : MonoBehaviour
     
     public void LoadLevel(string level)
     {
+        string jsonText;
 
-        string jsonText = LoadFile(level);
-        Debug.Log(jsonText);
+        if (PlayerPrefs.GetInt("currentLevelIsCustom", 0) == 1)
+        {
+            jsonText = LevelManager.LoadLevel(level).ToString();
+        }
+        else
+        {
+            jsonText = LoadFile(level);
+        }
 
         JSONObject dataAsJson = new JSONObject(jsonText);
 

@@ -8,6 +8,7 @@ namespace Menu
     {
         public string Filename;
         public bool IsInteractable;
+        public bool IsCustom;
 
         public void Select()
         {
@@ -18,6 +19,7 @@ namespace Menu
             }
 
             PlayerPrefs.SetString("currentLevel", Filename);
+            PlayerPrefs.SetInt("currentLevelIsCustom", IsCustom ? 1 : 0);
             SceneManager.LoadScene("Scenes/Game");
         }
 
