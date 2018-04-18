@@ -6,7 +6,12 @@ using Assets.Scripts.Utilities;
 using Behaviors;
 using UnityEngine;
 using UnityEngine.UI;
+using UI;
 
+/**
+ * Handles all mechanics linked with:
+ * Enemy Waves (Parse JSON Instanciation, ...), Waves UI and Game States
+ **/
 public class TDManager : MonoBehaviour
 {
     public enum State
@@ -23,7 +28,9 @@ public class TDManager : MonoBehaviour
     public int WavesTotal;
     public int LivesLeft;
     public int CurrentWave;
+
     public GameManager GameManager;
+    public GameObject Inventory;
 
     private GameObject _spawnPoint;
     private List<List<Enemy>> _enemyWaves = new List<List<Enemy>>();
@@ -42,12 +49,15 @@ public class TDManager : MonoBehaviour
     public void StartGame(GameManager gameManager)
     {
         GameState = State.NotStartedYet;
+        Inventory = GameObject.Find("Inventory");
+        Debug.Log ("Invetory? " + Inventory);
         GameManager = gameManager;
         CallNextPhase();
     }
 
     public void SetUpGame(JSONObject data)
     {
+        Debug.Log ("called");
         SetUpGameInfo (data);
         SetUpWaves (data);
     }
@@ -84,7 +94,6 @@ public class TDManager : MonoBehaviour
      * Sets up specific settings (Players Lives, Spawn Interval, ...)
      **/
     private void SetUpGameInfo(JSONObject data) {
-        // Default values
         _defaultSpawnInterval = data["Info"].GetField("DefaultSpawnInterval").n;
         _defaultHitpoints = (int) data["Info"].GetField("DefaultHitpoints").i;
         _defaultSpeed = data["Info"].GetField("DefaultSpeed").n;
@@ -93,37 +102,38 @@ public class TDManager : MonoBehaviour
         LivesLeft = (int) data["Info"].GetField("Lives").i;
         _spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point");
 
-        // Set listener to wave launcher button
         GoButton.GetComponent<Button>().onClick.AddListener(CallNextPhase);
     }
 
+    /**
+     * Updates GUI for wave-fighting gameplay and calls the Enemy Spawner
+     **/
     private void StartPlayingPhase()
     {
-        // Hide go button
+        //Prevent User from placing tower while State is Spawning/Playing
+        Inventory.SetActive (false);
         GoButton.gameObject.SetActive(false);
-        // Update current wave
+
         WaveText.text = string.Format("Wave : {0}/{1}", CurrentWave, WavesTotal);
-        // Lives
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
-        // Call spawner
+
         StartWave(_enemyWaves[CurrentWave - 1]);
-        // Check if enemies are all dead or player is
-        // THIS SHOULD BE CHECKED WHEN A TOWER FIRES AND WHEN AN ENEMY TAKES A LIFE POINT OFF
-        // Call CallNextPhase or StartPausePhase
     }
 
+    /**
+     * Update GUI for the "Building" phase of that game.
+     **/
     private void StartPausedPhase()
     {
+        GoButton.gameObject.SetActive(true);
+        Inventory.SetActive (true);
+
         CurrentWave++;
-        // Change state
+
         GameState = State.Pause;
-        // Display next wave
         WaveText.text = string.Format("Next Wave: {0}{1}", Environment.NewLine,
             GetNextWaveColors(_enemyWaves[CurrentWave - 1]));
-        // Show lives left
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
-        // Show button Go
-        GoButton.gameObject.SetActive(true);
     }
 
     public void DecreaseLives()
@@ -132,8 +142,7 @@ public class TDManager : MonoBehaviour
         LivesText.text = string.Format("Lives : {0}", LivesLeft);
 
         if (LivesLeft > 0) return;
-        
-        // TODO Stop the game and display loss screen
+
         Debug.Log("Player loses the game!");
         LivesLeft = 0;
         GameState = State.Lose;
@@ -146,6 +155,11 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
+        // TODO: Fixes a bug, sometimes the inventory popups after a drag and drop
+        if ((GameState == State.Playing || GameState == State.Spawning) && Inventory.active) {
+            Inventory.SetActive (false);
+        }
+
         if (_enemiesSpawned > 0 && GameState == State.Playing) {
             var enemies = GameObject.FindGameObjectsWithTag ("enemy");
             if (enemies.Length == 0) {
@@ -228,14 +242,10 @@ public class TDManager : MonoBehaviour
         Debug.Log(sb);
         return sb.ToString();
     }
-
-    private void StartNextWave()
-    {
-        // Might add more things
-        StartWave(_enemyWaves[CurrentWave - 1]);
-    }
-
-    // Might delete if utility is low
+        
+    /**
+     * Determines which method to call depending on current GameState
+     **/
     public void CallNextPhase()
     {
         switch (GameState)
@@ -263,6 +273,10 @@ public class TDManager : MonoBehaviour
         }
     }
 
+    /**
+     * Converts a List of Enemy into EnemyPrefab and instanciate them with specific values.
+     * During the Spawning, the GameState should be State.Spawning, this stops win condition checking.
+     **/
     private IEnumerator SpawnEnemies(IList<Enemy> wave)
     {
         GameState = State.Spawning;
