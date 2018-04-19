@@ -202,6 +202,7 @@ MonoBehaviour:
   Animator: {fileID: 0}
   ItemPrefab: {fileID: 1647604391622872, guid: 269aeb0f9c72cd047819cfc688e7d43c, type: 2}
   ItemQuantity: 5
+  ItemCode: 
 --- !u!222 &222363334639917460
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -240,7 +241,7 @@ RectTransform:
   m_GameObject: {fileID: 1475637844830366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 224428078035293606}
   - {fileID: 224096343812542660}
@@ -250,7 +251,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224428078035293606
 RectTransform:

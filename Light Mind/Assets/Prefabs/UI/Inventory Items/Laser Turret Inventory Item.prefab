@@ -120,6 +120,7 @@ MonoBehaviour:
   Animator: {fileID: 0}
   ItemPrefab: {fileID: 1557098882933092, guid: 5baf7b3f380e7b841851a50eeeb76e42, type: 2}
   ItemQuantity: 5
+  ItemCode: 
 --- !u!114 &114307656830186120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -258,7 +259,7 @@ RectTransform:
   m_GameObject: {fileID: 1718503232950226}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 224266769580847386}
   - {fileID: 224957691259153864}
@@ -268,5 +269,5 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -1683,6 +1683,12 @@ Prefab:
       propertyPath: PauseScreen
       value: 
       objectReference: {fileID: 894847783}
+    - target: {fileID: 114386882692909422, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b,
+        type: 2}
+      propertyPath: ObstacleInventoryItemPrefab
+      value: 
+      objectReference: {fileID: 1361370409527690, guid: abc063d843b7287499598d4d78c0b4d1,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9fda19f65f4d54c5f9dfadf6c383eb4b, type: 2}
   m_IsPrefabParent: 0

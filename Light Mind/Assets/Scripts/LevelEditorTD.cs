@@ -39,6 +39,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public GameObject FilterMirrorInventoryItemPrefab;
 	public GameObject PrismInventoryItemPrefab;
 	public GameObject FilterInventoryItemPrefab;
+	public GameObject ObstacleInventoryItemPrefab;
 	
 	[Header("UI")]
 	public GameObject Inventory;
@@ -94,6 +95,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	public GameObject _StandardTurret;
 	public GameObject _MissileTurret;
 	public GameObject _LaserTurret;
+	public GameObject _Obstacle;
 	public string _currentLevelName;
 	public GameObject _currentLives;
 	public GameObject _defaultSpawnInterval;
@@ -153,6 +155,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_levelData["Inventory"].AddField("StandardTurret", 0);
 		_levelData["Inventory"].AddField("MissileTurret", 0);
 		_levelData["Inventory"].AddField("LaserTurret", 0);
+		_levelData["Inventory"].AddField("Obstacles", 0);
 		
 		// Entities
 		_levelData.AddField("Entities", new JSONObject(JSONObject.Type.ARRAY));
@@ -200,6 +203,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		UpdateStandardTurret();
 		UpdateMissileTurret();
 		UpdateLaserTurret();
+		UpdateObstacle();
 
 	}
 	
@@ -542,6 +546,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 			dragAndDrop.IsDraggable = true;
 		}
 
+		Inventory.SetActive(false);
 		Step45.SetActive(false);
 		Step40.SetActive(true);
 	}
@@ -611,6 +616,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		CreateInventoryItem(StandardTurretInventoryItemPrefab, "standard-turret", 99);
 		CreateInventoryItem(MissileTurretInventoryItemPrefab, "missile-turret", 99);
 		CreateInventoryItem(LaserTurretInventoryItemPrefab, "laser-turret", 99);
+		CreateInventoryItem(ObstacleInventoryItemPrefab, "obstacle", 99);
 	}
 	
 	private void CreateInventoryItem(GameObject itemPrefab, string itemCode, int count)
@@ -738,6 +744,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_levelData["Inventory"]["StandardTurret"].i = (int) _StandardTurret.GetComponentInChildren<Slider>().value;
 		_levelData["Inventory"]["MissileTurret"].i = (int) _MissileTurret.GetComponentInChildren<Slider>().value;
 		_levelData["Inventory"]["LaserTurret"].i = (int) _LaserTurret.GetComponentInChildren<Slider>().value;
+		_levelData["Inventory"]["Obstacles"].i = (int) _Obstacle.GetComponentInChildren<Slider>().value;
 		
 		Step50.SetActive(false);	
 		_currentStep = 70;
@@ -780,9 +787,16 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	{
 		_LaserTurret.GetComponentInChildren<Text>().text = String.Format("Laser turrets: {0}", _LaserTurret.GetComponentInChildren<Slider>().value);
 	}
+	
+	public void UpdateObstacle()
+	{
+		_Obstacle.GetComponentInChildren<Text>().text = String.Format("Ostacles: {0}", _Obstacle.GetComponentInChildren<Slider>().value);
+	}
 
 	public void ValidateStep60()
 	{
+		if (_currentLevelName.Length <= 0) return;
+		
 		_levelData["Name"].str = _currentLevelName;
 		_levelData["FunFact"].str = "Savez-vous que lorsque vous créez un niveau via l'éditeur, vous ne pourrez plus jamais le modifier, ni le supprimer ?";
 		_levelData["Info"]["Lives"].i = (int) _currentLives.GetComponentInChildren<Slider>().value;
@@ -822,10 +836,7 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	}
 
 	public void ValidateStep70()
-	{
-		LevelManager.ResetLevels();
-		if (_levelData["Name"].str.Length <= 0) return;
-		
+	{		
 		string levelName = _levelData["Name"].str;
 		LevelManager.SaveLevel(_levelData, levelName);
 		JSONObject level = LevelManager.LoadLevel(levelName);

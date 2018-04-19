@@ -1,12 +1,15 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Assets.Scripts.Utilities;
 using Behaviors;
 using Items;
+using Menu;
 using Models;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,6 +31,7 @@ public class GameManager : MonoBehaviour
     public GameObject FilterMirrorInventoryItemPrefab;
     public GameObject PrismInventoryItemPrefab;
     public GameObject FilterInventoryItemPrefab;
+    public GameObject ObstacleInventoryItemPrefab;
 
     [Header("UI")] public GameObject Inventory;
     public GameObject ColorPicker;
@@ -82,9 +86,12 @@ public class GameManager : MonoBehaviour
         if (!string.IsNullOrEmpty(currentLevel))
         {
             LoadLevel(currentLevel);
+            TdManager.StartGame();
         }
-
-        TdManager.StartGame();
+        else
+        {
+            MainMenu.ReturnToMenu();
+        }
     }
 
     public static string LoadFile(string level)
@@ -93,22 +100,38 @@ public class GameManager : MonoBehaviour
         string jsonText;
         var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
-        // Read JSON data from file
-        if (Application.platform == RuntimePlatform.Android)
+        try
         {
-            var www = new WWW(filePath);
-            while (!www.isDone)
+
+            // Read JSON data from file
+            if (Application.platform == RuntimePlatform.Android)
             {
+                var www = new WWW(filePath);
+                while (!www.isDone)
+                {
+                }
+
+                jsonText = www.text;
+            }
+            else
+            {
+                jsonText = File.ReadAllText(filePath);
+            }
+            
+            if (jsonText == null || jsonText.Length <= 10)
+            {
+                MainMenu.ReturnToMenu();
             }
 
-            jsonText = www.text;
+            return jsonText;
         }
-        else
+        catch (Exception e)
         {
-            jsonText = File.ReadAllText(filePath);
+            MainMenu.ReturnToMenu();
         }
 
-        return jsonText;
+        return "";
+
     }
 
     public void LoadLevel(string level)
@@ -151,28 +174,31 @@ public class GameManager : MonoBehaviour
         }, Debug.LogError);
 
         // Load player inventory
-        if (dataAsJson["Inventory"]["Mirrors"].i > 0)
+        if (dataAsJson["Inventory"].HasField("Mirrors") && dataAsJson["Inventory"]["Mirrors"].i > 0)
             CreateInventoryItem(MirrorInventoryItemPrefab, "mirror", (int) dataAsJson["Inventory"]["Mirrors"].i);
 
-        if (dataAsJson["Inventory"]["MirrorFilters"].i > 0)
+        if (dataAsJson["Inventory"].HasField("MirrorFilters") && dataAsJson["Inventory"]["MirrorFilters"].i > 0)
             CreateInventoryItem(FilterMirrorInventoryItemPrefab, "mirror-filter",
                 (int) dataAsJson["Inventory"]["MirrorFilters"].i);
 
-        if (dataAsJson["Inventory"]["Prisms"].i > 0)
+        if (dataAsJson["Inventory"].HasField("Prisms") && dataAsJson["Inventory"]["Prisms"].i > 0)
             CreateInventoryItem(PrismInventoryItemPrefab, "prism", (int) dataAsJson["Inventory"]["Prisms"].i);
 
-        if (dataAsJson["Inventory"]["Filters"].i > 0)
+        if (dataAsJson["Inventory"].HasField("Filters") && dataAsJson["Inventory"]["Filters"].i > 0)
             CreateInventoryItem(FilterInventoryItemPrefab, "filter", (int) dataAsJson["Inventory"]["Filters"].i);
+        
+        if (dataAsJson["Inventory"].HasField("Obstacles") && dataAsJson["Inventory"]["Obstacles"].i > 0)
+            CreateInventoryItem(ObstacleInventoryItemPrefab, "obstacle", (int) dataAsJson["Inventory"]["Obstacles"].i);
 
-        if (dataAsJson["Inventory"]["StandardTurret"].i > 0)
+        if (dataAsJson["Inventory"].HasField("StandardTurret") && dataAsJson["Inventory"]["StandardTurret"].i > 0)
             CreateInventoryItem(StandardTurretInventoryItemPrefab, "standard-turret",
                 (int) dataAsJson["Inventory"]["StandardTurret"].i);
 
-        if (dataAsJson["Inventory"]["MissileTurret"].i > 0)
+        if (dataAsJson["Inventory"].HasField("MissileTurret") && dataAsJson["Inventory"]["MissileTurret"].i > 0)
             CreateInventoryItem(MissileTurretInventoryItemPrefab, "missile-turret",
                 (int) dataAsJson["Inventory"]["MissileTurret"].i);
 
-        if (dataAsJson["Inventory"]["LaserTurret"].i > 0)
+        if (dataAsJson["Inventory"].HasField("LaserTurret") && dataAsJson["Inventory"]["LaserTurret"].i > 0)
             CreateInventoryItem(LaserTurretInventoryItemPrefab, "laser-turret",
                 (int) dataAsJson["Inventory"]["LaserTurret"].i);
 
