@@ -375,8 +375,6 @@ public class GameManager : MonoBehaviour
 
     public void WinLevel()
     {
-        var nextLevel = Int32.Parse(PlayerPrefs.GetString ("currentLevel").Substring (5)) + 1;
-        PlayerPrefs.SetString("currentLevel", String.Format("level{0}", nextLevel));
         WinScreen.SetActive(true);
     }
 
