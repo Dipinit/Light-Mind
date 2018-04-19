@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
             {
                 jsonText = File.ReadAllText(filePath);
             }
-            
+
             if (jsonText == null || jsonText.Length <= 10)
             {
                 SceneManager.LoadScene("Scenes/Editor");
@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
         {
             jsonText = LoadFile(level);
         }
-        
+
         JSONObject dataAsJson = new JSONObject(jsonText);
 
         // Create board from file
@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
 
         if (dataAsJson["Inventory"].HasField("Filters") && dataAsJson["Inventory"]["Filters"].i > 0)
             CreateInventoryItem(FilterInventoryItemPrefab, "filter", (int) dataAsJson["Inventory"]["Filters"].i);
-        
+
         if (dataAsJson["Inventory"].HasField("Obstacles") && dataAsJson["Inventory"]["Obstacles"].i > 0)
             CreateInventoryItem(ObstacleInventoryItemPrefab, "obstacle", (int) dataAsJson["Inventory"]["Obstacles"].i);
 

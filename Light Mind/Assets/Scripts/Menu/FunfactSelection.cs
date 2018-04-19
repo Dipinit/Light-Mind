@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Runtime.InteropServices;
+using System;
 
 public class FunfactSelection : MonoBehaviour {
 	public GameObject FunfactButton;
@@ -10,7 +12,7 @@ public class FunfactSelection : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		int levelReached = PlayerPrefs.GetInt("levelReached", 0);
+		var levelReached = Int32.Parse(PlayerPrefs.GetString ("currentLevel").Substring (5));
 		DirectoryInfo dir = new DirectoryInfo("Assets/StreamingAssets/");
 		FileInfo[] info = dir.GetFiles("*TD.json");
 		var i = 0;
