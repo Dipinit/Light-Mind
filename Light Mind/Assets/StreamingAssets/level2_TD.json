@@ -1,5 +1,5 @@
 {
-  "Name": "Level 3 TD",
+  "Name": "Level 2 TD",
   "FunFact": "Plus vite nous nous déplaçons, plus nous sommes figés dans le temps.",
   "Number": 3,
   "Board": {
@@ -10,28 +10,10 @@
     "CellSize": 4,
     "CellOffset": 1,
     "SpawnPoint": {
-      "X": 3,
-      "Y": 3
+      "X": 0,
+      "Y": 0
     },
     "Paths": [
-      {
-        "X1": 3,
-        "Y1": 3,
-        "X2": 7,
-        "Y2": 3
-      },
-      {
-        "X1": 7,
-        "Y1": 0,
-        "X2": 7,
-        "Y2": 3
-      },
-      {
-        "X1": 0,
-        "Y1": 0,
-        "X2": 7,
-        "Y2": 0
-      },
       {
         "X1": 0,
         "Y1": 0,
@@ -41,40 +23,79 @@
       {
         "X1": 0,
         "Y1": 7,
-        "X2": 7,
+        "X2": 2,
         "Y2": 7
       },
       {
-        "X1": 7,
-        "Y1": 5,
-        "X2": 7,
+        "X1": 2,
+        "Y1": 0,
+        "X2": 2,
         "Y2": 7
+      },
+      {
+        "X1": 2,
+        "Y1": 0,
+        "X2": 4,
+        "Y2": 0
+      },
+      {
+        "X1": 4,
+        "Y1": 0,
+        "X2": 4,
+        "Y2": 7
+      },
+      {
+        "X1": 4,
+        "Y1": 7,
+        "X2": 6,
+        "Y2": 7
+      },
+      {
+        "X1": 6,
+        "Y1": 0,
+        "X2": 6,
+        "Y2": 7
+      },
+      {
+        "X1": 6,
+        "Y1": 0,
+        "X2": 7,
+        "Y2": 0
       }
     ],
     "EndPoint": {
       "X": 7,
-      "Y": 5
+      "Y": 0
     }
   },
   "Inventory": {
-    "Mirrors": 2,
-    "MirrorFilters": 2,
-    "Prisms": 3,
-    "Filters": 2,
-    "StandardTurret": 3,
-    "MissileTurret": 2,
-    "LaserTurret": 1
+    "Mirrors": 1,
+    "MirrorFilters": 1,
+    "Prisms": 0,
+    "Filters": 0,
+    "StandardTurret": 1,
+    "MissileTurret": 0,
+    "LaserTurret": 2
   },
   "Entities": [
     {
+      "Type": "Filter",
+      "X": 3,
+      "Y": 5,
+      "Red": true,
+      "Green": false,
+      "Blue": false,
+      "Draggable": false
+    },
+	{
       "Type": "Light Source",
-      "X": 1,
-      "Y": 2,
-      "Draggable": true,
+      "X": 3,
+      "Y": 3,
+      "Draggable": false,
       "Rays": [
         {
           "Direction": 0,
-          "Enabled": true,
+          "Enabled": false,
           "Red": true,
           "Green": true,
           "Blue": true
@@ -91,7 +112,7 @@
           "Enabled": true,
           "Red": true,
           "Green": true,
-          "Blue": true
+          "Blue": false
         },
         {
           "Direction": 135,
@@ -116,10 +137,10 @@
         },
         {
           "Direction": 270,
-          "Enabled": false,
-          "Red": false,
-          "Green": false,
-          "Blue": false
+          "Enabled": true,
+          "Red": true,
+          "Green": true,
+          "Blue": true
         },
         {
           "Direction": 315,
@@ -142,7 +163,32 @@
         {
           "Hitpoints": 100,
           "Speed": 10,
-          "Color": "Red"
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green"
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green"
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Green"
         }
       ]
     },
@@ -151,14 +197,34 @@
         {
           "Hitpoints": 100,
           "Speed": 10,
-          "Color": "Blue"
+          "Color": "Yellow"
         },
         {
           "Hitpoints": 100,
           "Speed": 10,
-          "Color": "Blue"
+          "Color": "Yellow"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow"
         },
         {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow"
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Yellow"
+        },
+		{
           "Hitpoints": 100,
           "Speed": 10,
           "Color": "Yellow"
@@ -168,21 +234,31 @@
     {
       "Enemies": [
         {
-          "Hitpoints": 150,
-          "Speed": 15,
-          "Color": "Blue"
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Cyan"
         },
         {
-          "Hitpoints": 75,
-          "Speed": 20,
-          "Color": "Yellow"
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Cyan"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Cyan"
+        },
+        {
+          "Hitpoints": 100,
+          "Speed": 10,
+          "Color": "Cyan"
         }
       ]
     }
   ],
   "Info": {
     "Lives": 10,
-    "DefaultSpawnInterval": 3,
+    "DefaultSpawnInterval": 0.5,
     "DefaultHitpoints": 100,
     "DefaultSpeed": 10,
     "DefaultColor": "None"

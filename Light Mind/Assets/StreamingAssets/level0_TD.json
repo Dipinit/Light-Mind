@@ -1,5 +1,5 @@
 {
-  "Name": "Level 1 TD",
+  "Name": "Level 0 TD",
   "FunFact": "En 1999, la physicienne de Harvard, Lene Hau, a été capable de ralentir la lumière à 17 mètres par seconde et, en 2001, a pu complètement l'arrêter.",
   "Number": 0,
   "Board": {
@@ -10,100 +10,53 @@
     "CellSize": 4,
     "CellOffset": 1,
     "SpawnPoint": {
-      "X": 0,
+      "X": 3,
       "Y": 0
     },
     "Paths": [
       {
-        "X1": 0,
+        "X1": 3,
         "Y1": 0,
-        "X2": 4,
-        "Y2": 0
-      },
-      {
-        "X1": 4,
-        "Y1": 0,
-        "X2": 4,
-        "Y2": 7
-      },
-      {
-        "X1": 4,
-        "Y1": 7,
-        "X2": 7,
+        "X2": 3,
         "Y2": 7
       }
     ],
     "EndPoint": {
-      "X": 7,
+      "X": 3,
       "Y": 7
     }
   },
   "Inventory": {
-    "Mirrors": 2,
+    "Mirrors": 1,
     "MirrorFilters": 1,
-    "Prisms": 3,
+    "Prisms": 1,
     "Filters": 1,
-    "StandardTurret": 2,
-    "MissileTurret": 3,
-    "LaserTurret": 1
+    "StandardTurret": 0,
+    "MissileTurret": 0,
+    "LaserTurret": 0
   },
   "Entities": [
     {
-      "Type": "Mirror",
-      "X": 2,
-      "Y": 3,
-      "Orientation": 90,
-      "Draggable": true
-    },
-    {
-      "Type": "Filter",
-      "X": 2,
-      "Y": 2,
-      "Red": true,
-      "Green": false,
-      "Blue": true,
-      "Draggable": true
-    },
-    {
-      "Type": "Obstacle",
-      "X": 6,
-      "Y": 6,
-      "Red": true,
-      "Green": false,
-      "Blue": true,
-      "Draggable": true
-    },
-    {
-      "Type": "Prism",
+      "Type": "Missile Turret",
       "X": 1,
-      "Y": 3,
+      "Y": 5,
       "Red": true,
       "Green": true,
-      "Blue": false,
-      "Draggable": true
-    },
-    {
-      "Type": "Filter Mirror",
-      "X": 3,
-      "Y": 1,
-      "Red": false,
-      "Green": false,
       "Blue": true,
-      "Orientation": 135,
-      "Draggable": true
+      "Draggable": false
     },
-    {
+	{
       "Type": "Light Source",
-      "X": 1,
-      "Y": 2,
-      "Draggable": true,
+      "X": 5,
+      "Y": 3,
+      "Draggable": false,
       "Rays": [
         {
           "Direction": 0,
           "Enabled": true,
-          "Red": false,
-          "Green": true,
-          "Blue": true
+          "Red": true,
+          "Green": false,
+          "Blue": false
         },
         {
           "Direction": 45,
@@ -115,8 +68,8 @@
         {
           "Direction": 90,
           "Enabled": true,
-          "Red": true,
-          "Green": true,
+          "Red": false,
+          "Green": false,
           "Blue": true
         },
         {
@@ -128,23 +81,23 @@
         },
         {
           "Direction": 180,
-          "Enabled": false,
-          "Red": false,
-          "Green": false,
-          "Blue": false
+          "Enabled": true,
+          "Red": true,
+          "Green": true,
+          "Blue": true
         },
         {
           "Direction": 225,
           "Enabled": false,
-          "Red": false,
-          "Green": false,
-          "Blue": false
+          "Red": true,
+          "Green": true,
+          "Blue": true
         },
         {
           "Direction": 270,
           "Enabled": true,
-          "Red": true,
-          "Green": false,
+          "Red": false,
+          "Green": true,
           "Blue": false
         },
         {
@@ -155,33 +108,6 @@
           "Blue": false
         }
       ]
-    },
-    {
-      "Type": "Standard Turret",
-      "X": 6,
-      "Y": 2,
-      "Red": false,
-      "Green": false,
-      "Blue": true,
-      "Draggable": true
-    },
-    {
-      "Type": "Missile Turret",
-      "X": 1,
-      "Y": 7,
-      "Red": false,
-      "Green": true,
-      "Blue": false,
-      "Draggable": true
-    },
-    {
-      "Type": "Laser Turret",
-      "X": 3,
-      "Y": 3,
-      "Red": true,
-      "Green": false,
-      "Blue": false,
-      "Draggable": true
     }
   ],
   "Waves": [
@@ -190,118 +116,18 @@
         {
           "Hitpoints": 100,
           "Speed": 10,
-          "Color": "Blue",
-          "SpawnTime": 3
+          "Color": "Yellow"
         },
         {
           "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Green",
-          "SpawnTime": 1
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Green",
-          "SpawnTime": 1
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Red",
-          "SpawnTime": 5
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 50,
-          "Color": "Cyan",
-          "SpawnTime": 1
-        },
-        {
-          "Hitpoints": 20,
-          "Speed": 120,
-          "Color": "Cyan",
-          "SpawnTime": 0.5
-        },
-        {
-          "Hitpoints": 20,
-          "Speed": 120,
-          "Color": "Cyan",
-          "SpawnTime": 0.5
-        },
-        {
-          "Hitpoints": 20,
-          "Speed": 120,
-          "Color": "Cyan",
-          "SpawnTime": 0.5
-        },
-        {
-          "Hitpoints": 20,
-          "Speed": 120,
-          "Color": "Cyan",
-          "SpawnTime": 0.5
-        },
-        {
-          "Hitpoints": 20,
-          "Speed": 120,
-          "Color": "Cyan",
-          "SpawnTime": 0.5
-        }
-      ]
-    },
-    {
-      "Enemies": [
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Red",
-          "SpawnTime": 1
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Red",
-          "SpawnTime": 1
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Yellow",
-          "SpawnTime": 1
-        }
-      ]
-    },
-    {
-      "Enemies": [
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Blue",
-          "SpawnTime": 0.5
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Yellow",
-          "SpawnTime": 0.5
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Yellow",
-          "SpawnTime": 0.5
-        },
-        {
-          "Hitpoints": 100,
-          "Speed": 10,
-          "Color": "Yellow",
-          "SpawnTime": 0.5
+          "Speed": 3,
+          "Color": "Blue"
         }
       ]
     }
   ],
   "Info": {
-    "Lives": 10,
+    "Lives": 2,
     "DefaultSpawnInterval": 3,
     "DefaultHitpoints": 100,
     "DefaultSpeed": 10,
