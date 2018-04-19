@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using System;
 
 namespace Menu
 {
@@ -14,8 +13,7 @@ namespace Menu
 		// Use this for initialization
 		public void Start()
 		{
-			var levelReached = Int32.Parse(PlayerPrefs.GetString ("currentLevel").Substring (5));
-
+			var levelReached = PlayerPrefs.GetInt("levelReached", 0);
 			BetterStreamingAssets.Initialize();
 			var paths = BetterStreamingAssets.GetFiles("/", "*TD.json", SearchOption.TopDirectoryOnly);
 			JSONObject customLevels = LevelManager.GetCustomLevels();
