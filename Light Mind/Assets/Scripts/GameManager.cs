@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            MainMenu.ReturnToMenu();
+            SceneManager.LoadScene("Scenes/Editor");
         }
     }
 
@@ -120,14 +120,14 @@ public class GameManager : MonoBehaviour
             
             if (jsonText == null || jsonText.Length <= 10)
             {
-                MainMenu.ReturnToMenu();
+                SceneManager.LoadScene("Scenes/Editor");
             }
 
             return jsonText;
         }
         catch (Exception e)
         {
-            MainMenu.ReturnToMenu();
+            SceneManager.LoadScene("Scenes/Editor");
         }
 
         return "";

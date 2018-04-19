@@ -21,22 +21,22 @@ namespace Menu
   			SceneManager.LoadScene("Scenes/Game");
   		}
 
-        static public void ReplayLevel()
+        public void ReplayLevel()
   		{
   			SceneManager.LoadScene("Scenes/Game");
   		}
 
-        static public void ReturnToMenu()
+        public void ReturnToMenu()
         {
             SceneManager.LoadScene("Scenes/Menu/MainMenu");
         }
 
-        static public void LevelEditor()
+        public void LevelEditor()
         {
             SceneManager.LoadScene("Scenes/Editor");
         }
 
-        static public void QuitGame()
+        public void QuitGame()
         {
             Application.Quit();
         }
@@ -46,7 +46,7 @@ namespace Menu
             source.PlayOneShot(click);
         }
 
-        static public void Resume()
+        public void Resume()
         {
             GameManager.Instance.PauseLevel ();
         }
