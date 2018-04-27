@@ -44,6 +44,9 @@ namespace Behaviors
             transform.LookAt(_target);
         }
 
+        /// <summary>
+        /// Effects of a bullet hitting a target.
+        /// </summary>
         private void HitTarget()
         {
             var effectInstance = Instantiate(ImpactEffect, transform.position, transform.rotation);
@@ -61,6 +64,9 @@ namespace Behaviors
             Destroy(gameObject);
         }
 
+        /// <summary>
+        /// Effect of an exploding bullet.
+        /// </summary>
         private void Explode()
         {
             var hitColliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
@@ -73,6 +79,10 @@ namespace Behaviors
             }
         }
 
+        /// <summary>
+        /// Deal the damage to an ennemy.
+        /// </summary>
+        /// <param name="enemy"></param>
         private void Damage(Component enemy)
         {
             var enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
@@ -88,6 +98,11 @@ namespace Behaviors
             ));
         }
 
+        /// <summary>
+        /// Calculate the damage dealt to an ennemy.
+        /// </summary>
+        /// <param name="enemyColor"></param>
+        /// <returns></returns>
         private int CalculateDamage(RayColor enemyColor)
         {
             var damage = 0;

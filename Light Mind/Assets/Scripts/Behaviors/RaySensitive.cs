@@ -68,8 +68,11 @@ namespace Behaviors
         {
             return this.GetType().Name;
         }
-        
-        // Launched when a ray hits the object
+
+        /// <summary>
+        /// Launched when a ray hits the object
+        /// </summary>
+        /// <param name="ray"></param>
         public virtual void HitEnter(Ray ray)
         {
             for (int i = 0; i < ReceveidRays.Count; i++)
@@ -92,8 +95,11 @@ namespace Behaviors
                 ray.Direction
             ));
         }
-        
-        // Launched when a ray stops hitting the object
+
+        /// <summary>
+        /// Launched when a ray stops hitting the object.
+        /// </summary>
+        /// <param name="ray"></param>
         public virtual void HitExit(Ray ray)
         {
             foreach (var emittedRay in EmittedRays)
