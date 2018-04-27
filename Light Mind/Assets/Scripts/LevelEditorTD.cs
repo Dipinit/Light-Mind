@@ -122,9 +122,11 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		else if (Instance != this)
 			Destroy(gameObject);
 	}
-	
-	// Use this for initialization
-	public void Start ()
+
+    /// <summary>
+    /// Use this for initialization of the level editor.
+    /// </summary>
+    public void Start ()
 	{		
 		// Level data
 		_levelData = new JSONObject();
@@ -208,7 +210,9 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	}
 	
 	/* Step 10 */
-
+    /// <summary>
+    /// Load the first step to create a level.
+    /// </summary>
 	public void ValidateStep10()
 	{
 		_levelData["Board"]["Size"]["X"].i = (int) _levelWidth.GetComponentInChildren<Slider>().value;
@@ -232,19 +236,27 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentStep = 60;
 	}
 
+    /// <summary>
+    /// Change the height of the board.
+    /// </summary>
 	public void UpdateBoardHeight()
 	{
 		_levelHeight.GetComponentInChildren<Text>().text = String.Format("Height: {0}", _levelHeight.GetComponentInChildren<Slider>().value);
 	}
 	
+    /// <summary>
+    /// Change the width of the board.
+    /// </summary>
 	public void UpdateBoardWidth()
 	{
 		_levelWidth.GetComponentInChildren<Text>().text = String.Format("Width: {0}", _levelWidth.GetComponentInChildren<Slider>().value);
 	}
-	
-	/* Step 20 */
 
-	public void ValideStep20()
+    /* Step 20 */
+    /// <summary>
+    /// Load the first part of the second step to create a level.
+    /// </summary>
+    public void ValideStep20()
 	{
 		if (_selectedCell == null) return;
 		
@@ -263,9 +275,11 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentStep = 21;
 	}
 
-	/* Step 21 */
-
-	public void ValideStep21()
+    /* Step 21 */
+    /// <summary>
+    /// Load the second part of the second step to create a level.
+    /// </summary>
+    public void ValideStep21()
 	{
 		if (_selectedCell == null) return;
 		
@@ -281,10 +295,12 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Step220.SetActive(true);
 		_currentStep = 220;
 	}
-	
-	/* Step 22 */
 
-	public void ValideStep22()
+    /* Step 22 */
+    /// <summary>
+    /// Load the third part of the second step to create a level.
+    /// </summary>
+    public void ValideStep22()
 	{
 		foreach (var enemyPath in _enemyPaths)
 		{
@@ -352,7 +368,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Step221.SetActive(false);
 		_currentStep = 220;
 	}
-
+    /// <summary>
+    /// Apply the color to the path selected.
+    /// </summary>
+    /// <param name="boardPath">A matrix representif the new path for ennemies.</param>
 	public void colorSelectedCellOnPath(BoardPath boardPath)
 	{
 		for (int x = boardPath.Start.x; x <= boardPath.End.x; x++)
@@ -363,17 +382,18 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 				Debug.Log(cell);
 				if (cell != null)
 				{
-					Debug.Log("mdr");
 					Debug.Log(cell);
 					cell.SelectCell();
 				}
 			}
 		}
 	}
-	
-	/* Step 30 */
 
-	public void ValidateStep30()
+    /* Step 30 */
+    /// <summary>
+    /// Load the third step to create a level.
+    /// </summary>
+    public void ValidateStep30()
 	{
 		if (_waves.Count <= 0) return;
 		
@@ -387,6 +407,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentStep = 40;
 	}
 
+    /// <summary>
+    /// The number of a type of ennemy to add to a wave.
+    /// </summary>
+    /// <param name="enemyCode">Represents the type of ennemy.</param>
 	public void AddEnemyToWave(string enemyCode)
 	{
 		JSONObject enemy = new JSONObject();
@@ -396,7 +420,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentWave["Enemies"].Add(enemy);
 		UpdateCurrentWaveText();
 	}
-
+    
+    /// <summary>
+    /// Prints the number of ennemy to the wave.
+    /// </summary>
 	private void UpdateCurrentWaveText()
 	{
 		int red = 0;
@@ -432,11 +459,17 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_currentWaveText.text = String.Format("Current wave:{0}{1}", Environment.NewLine, sb.ToString());
 	}
 
+    /// <summary>
+    /// Prints the number of waves to be played.
+    /// </summary>
 	private void UpdateTotalWavesText()
 	{
 		_totalWavesText.text = String.Format("Total: {0} wave(s)", _waves.Count);
 	}
 	
+    /// <summary>
+    /// Add a wave.
+    /// </summary>
 	public void AddWave()
 	{
 		string waveString = _currentWave.ToString();
@@ -455,6 +488,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		SelectCell(eventData);
 	}
 
+    /// <summary>
+    /// Select a cell to create a path to ennemies.
+    /// </summary>
+    /// <param name="eventData"></param>
 	private void SelectCell(PointerEventData eventData)
 	{
 		Debug.Log("click");
@@ -476,7 +513,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		
 		Debug.Log(_selectedCell);
 	}
-
+    
+    /// <summary>
+    /// Reset a selected cell.
+    /// </summary>
 	private void ResetSelectedCell()
 	{
 		_selectedCell.ResetCellColor();
@@ -484,6 +524,11 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Debug.Log(_selectedCell);
 	}
 
+    /// <summary>
+    /// Translate a 3 dimensional view to a 2 dimensional view.
+    /// </summary>
+    /// <param name="worldVector"></param>
+    /// <returns></returns>
 	private Vector2Int WorldVector3ToCellVector2(Vector3 worldVector)
 	{
 		Vector2Int cellVector = new Vector2Int(
@@ -551,6 +596,12 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Step40.SetActive(true);
 	}
 
+    /// <summary>
+    /// Add a ray to the light source on the board.
+    /// </summary>
+    /// <param name="laser">Represents the laser to add.</param>
+    /// <param name="color">The color of the laser.</param>
+    /// <param name="direction">The direction of the laser from the light source.</param>
 	private void AddRayToLightSource(Laser laser, RayColor color, Direction direction)
 	{
 		laser.AddSource(new RaySource(direction, color != RayColor.NONE, color));
@@ -607,6 +658,9 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 	}
 	
 	// Load player inventory
+    /// <summary>
+    /// Load a full inventory (99 items).
+    /// </summary>
 	private void LoadFullInventory()
 	{
 		CreateInventoryItem(MirrorInventoryItemPrefab, "mirror", 99);
@@ -619,6 +673,12 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		CreateInventoryItem(ObstacleInventoryItemPrefab, "obstacle", 99);
 	}
 	
+    /// <summary>
+    /// Create the inventory to the level to create.
+    /// </summary>
+    /// <param name="itemPrefab">The prefab of the inventory.</param>
+    /// <param name="itemCode">The code representing the item.</param>
+    /// <param name="count">The number of item.</param>
 	private void CreateInventoryItem(GameObject itemPrefab, string itemCode, int count)
 	{
 		GameObject itemGameObject = Instantiate(itemPrefab, Inventory.transform);
@@ -627,6 +687,9 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		inventoryItem.ItemCode = itemCode;
 	}
 
+    /// <summary>
+    /// Save all the items.
+    /// </summary>
 	private void SaveItems()
 	{
 		foreach (Transform item in ItemsContainer.transform)
@@ -639,6 +702,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Debug.Log(_levelData.ToString());
 	}
 
+    /// <summary>
+    /// Save an item.
+    /// </summary>
+    /// <param name="item">Item to be saved.</param>
 	private void SaveItem(Transform item)
 	{
 		JSONObject jsonObject = new JSONObject();
@@ -663,6 +730,11 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		_levelData["Entities"].Add(jsonObject);
 	}
 
+    /// <summary>
+    /// Save a mirror and its orientation.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveMirrorItem(Transform item, JSONObject jsonObject)
 	{
 		Mirror mirror = item.GetComponent<Mirror>();
@@ -670,6 +742,11 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		jsonObject.AddField("Orientation", (int) mirror.Orientation);		
 	}
 	
+    /// <summary>
+    /// Save a filter and its color.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveFilterItem(Transform item, JSONObject jsonObject)
 	{
 		Filter filter = item.GetComponent<Filter>();
@@ -677,12 +754,23 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		SaveItemColor(jsonObject, filter.Color);
 	}
 
+    /// <summary>
+    /// Save a prism and its color.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SavePrismItem(Transform item, JSONObject jsonObject)
 	{
 		Prism prism = item.GetComponent<Prism>();
 		jsonObject.AddField("Type", "Prism");
 		SaveItemColor(jsonObject, prism.Color);
 	}
+
+    /// <summary>
+    /// Save a filter mirror with its orientation and color.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveFilterMirrorItem(Transform item, JSONObject jsonObject)
 	{
 		FilterMirror filterMirror = item.GetComponent<FilterMirror>();
@@ -691,26 +779,51 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		jsonObject.AddField("Orientation", (int) filterMirror.Orientation);
 	}
 
+    /// <summary>
+    /// Save an obstacle.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveObstacleItem(Transform item, JSONObject jsonObject)
 	{
 		jsonObject.AddField("Type", "Obstacle");
 	}
 	
+    /// <summary>
+    /// Save a turret.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveStandardTurretItem(Transform item, JSONObject jsonObject)
 	{
 		jsonObject.AddField("Type", "Standard Turret");
 	}
 	
+    /// <summary>
+    /// Save a missile turret.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveMissileTurretItem(Transform item, JSONObject jsonObject)
 	{
 		jsonObject.AddField("Type", "Missile Turret");
 	}
 	
+    /// <summary>
+    /// Save a laser turret.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveLaserTurretItem(Transform item, JSONObject jsonObject)
 	{
 		jsonObject.AddField("Type", "Laser Turret");
 	}
 
+    /// <summary>
+    /// Save a light source with its colors and orientation.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="jsonObject"></param>
 	private void SaveLightSourceItem(Transform item, JSONObject jsonObject)
 	{
 		Laser laser = item.GetComponent<Laser>();
@@ -728,6 +841,11 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		}
 	}
 
+    /// <summary>
+    /// Save the color of the set item.
+    /// </summary>
+    /// <param name="jsonObject"></param>
+    /// <param name="color"></param>
 	private void SaveItemColor(JSONObject jsonObject, RayColor color)
 	{
 		jsonObject.AddField("Red", color.R);
@@ -753,41 +871,65 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		Debug.Log(_levelData.ToString());
 	}
 
+    /// <summary>
+    /// Update the mirror to the board.
+    /// </summary>
 	public void UpdateMirror()
 	{
 		_Mirror.GetComponentInChildren<Text>().text = String.Format("Mirrors: {0}", _Mirror.GetComponentInChildren<Slider>().value);
 	}
 
+    /// <summary>
+    /// Update the filter to the board.
+    /// </summary>
 	public void UpdateFilter()
 	{
 		_Filter.GetComponentInChildren<Text>().text = String.Format("Filters: {0}", _Filter.GetComponentInChildren<Slider>().value);
 	}
 
+    /// <summary>
+    /// Update the prism to the board.
+    /// </summary>
 	public void UpdatePrism()
 	{
 		_Prism.GetComponentInChildren<Text>().text = String.Format("Prisms: {0}", _Prism.GetComponentInChildren<Slider>().value);
 	}
 
+    /// <summary>
+    /// Update the filter mirror to the board.
+    /// </summary>
 	public void UpdateFilterMirror()
 	{
 		_FilterMirror.GetComponentInChildren<Text>().text = String.Format("Filter-mirrors: {0}", _FilterMirror.GetComponentInChildren<Slider>().value);
 	}
 
+    /// <summary>
+    /// Update the turret to the board.
+    /// </summary>
 	public void UpdateStandardTurret()
 	{
 		_StandardTurret.GetComponentInChildren<Text>().text = String.Format("Standard turrets: {0}", _StandardTurret.GetComponentInChildren<Slider>().value);
 	}
 
+    /// <summary>
+    /// Update the missile turret to the board.
+    /// </summary>
 	public void UpdateMissileTurret()
 	{
 		_MissileTurret.GetComponentInChildren<Text>().text = String.Format("Missile turrets: {0}", _MissileTurret.GetComponentInChildren<Slider>().value);
 	}
 
+    /// <summary>
+    /// Update the laser turret to the board.
+    /// </summary>
 	public void UpdateLaserTurret()
 	{
 		_LaserTurret.GetComponentInChildren<Text>().text = String.Format("Laser turrets: {0}", _LaserTurret.GetComponentInChildren<Slider>().value);
 	}
 	
+    /// <summary>
+    /// Update the obstacle to the board.
+    /// </summary>
 	public void UpdateObstacle()
 	{
 		_Obstacle.GetComponentInChildren<Text>().text = String.Format("Ostacles: {0}", _Obstacle.GetComponentInChildren<Slider>().value);
@@ -810,26 +952,42 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 
 	}
 	
+    /// <summary>
+    /// Update the name of the level.
+    /// </summary>
+    /// <param name="input"></param>
 	public void UpdateLevelName(string input)
 	{
 		_currentLevelName = input;
 	}
 
+    /// <summary>
+    /// Update the number of lives of the player.
+    /// </summary>
 	public void UpdateLives()
 	{
 		_currentLives.GetComponentInChildren<Text>().text = String.Format("Lives: {0}", _currentLives.GetComponentInChildren<Slider>().value);
 	}
 
+    /// <summary>
+    /// Update the time between the spawns of ennemies.
+    /// </summary>
 	public void UpdateDefaultSpawnInterval()
 	{
 		_defaultSpawnInterval.GetComponentInChildren<Text>().text = String.Format("Spawn interval: {0}", _defaultSpawnInterval.GetComponentInChildren<Slider>().value);
 	}
 	
+    /// <summary>
+    /// Update the life of ennemies.
+    /// </summary>
 	public void UpdateDefaultHitpoints()
 	{
 		_defaultHitpoints.GetComponentInChildren<Text>().text = String.Format("Enemies life: {0}", _defaultHitpoints.GetComponentInChildren<Slider>().value);
 	}
 	
+    /// <summary>
+    /// Update the default speed to a level.
+    /// </summary>
 	public void UpdateDefaultSpeed()
 	{
 		_defaultSpeed.GetComponentInChildren<Text>().text = String.Format("Enemies speed: {0}", _defaultSpeed.GetComponentInChildren<Slider>().value);
@@ -845,6 +1003,10 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		SceneManager.LoadScene("Scenes/Menu/MainMenu");
 	}
 	
+    /// <summary>
+    /// Select an item to add.
+    /// </summary>
+    /// <param name="item">Represents the item.</param>
 	public void SelectItem(GameObject item)
 	{
 		if (_selectedItem != null && (item.GetInstanceID() == _selectedItem.GetInstanceID())) return;
@@ -858,19 +1020,30 @@ public class LevelEditorTD : MonoBehaviour, IPointerClickHandler
 		if (ib.IsColorable) ShowColorPanel();
 		else HideColorPanel();
 	}
+    
 
+    /// <summary>
+    /// Instantiate the color panel.
+    /// </summary>
 	private void ShowColorPanel()
 	{
 		Inventory.SetActive(false);
 		ColorPicker.SetActive(true);
 	}
 
+    /// <summary>
+    /// Hide the color panel.
+    /// </summary>
 	public void HideColorPanel()
 	{
 		ColorPicker.SetActive(false);
 		Inventory.SetActive(true);
 	}
 
+    /// <summary>
+    /// Apply a ray color to an item.
+    /// </summary>
+    /// <param name="rayColor">Color of the ray.</param>
 	public void SetSelectedItemColor(RayColor rayColor)
 	{
 		var ib = _selectedItem.GetComponent<ItemBase>();

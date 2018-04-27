@@ -57,9 +57,6 @@ public class GameManager : MonoBehaviour
 
     private GameObject _selectedItem;
 
-    /// <summary>
-    /// Initialize the game state by loading a GameObject, a BoardManager and the TowerDefense Manager.
-    /// </summary>
     private void Awake()
     {
         if (Instance == null)
