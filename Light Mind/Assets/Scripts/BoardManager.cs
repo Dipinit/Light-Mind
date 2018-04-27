@@ -63,6 +63,9 @@ public class BoardManager : MonoBehaviour
         AdjustCamera();
     }
 
+    /// <summary>
+    /// Create cells of the board.
+    /// </summary>
     public void CreateBoardCells()
     {
         if (!Board)
@@ -85,6 +88,9 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Create the ennemies spawner.
+    /// </summary>
     public void CreateBoardSpawner()
     {
         // Create spawner
@@ -95,6 +101,9 @@ public class BoardManager : MonoBehaviour
                 CellToWorldPosition(SpawnPoint.y));
     }
 
+    /// <summary>
+    /// Create the end of the path for the ennemies.
+    /// </summary>
     public void CreateBoardEnder()
     {
         // Create ender
@@ -105,6 +114,9 @@ public class BoardManager : MonoBehaviour
                 CellToWorldPosition(EndPoint.y));
     }
 
+    /// <summary>
+    /// Create the paths for the ennemies.
+    /// </summary>
     public void CreateBoardEnemyPaths()
     {
         // Create enemy walkable paths
