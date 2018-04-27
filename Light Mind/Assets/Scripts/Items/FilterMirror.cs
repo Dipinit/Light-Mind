@@ -23,6 +23,11 @@ namespace Items
             UpdateEmittedRays();
         }
         
+        /// <summary>
+        /// Compute the reflection direction of a ray.
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
         private Direction GetReflectionDirection(Ray ray)
         {
             switch (Orientation)

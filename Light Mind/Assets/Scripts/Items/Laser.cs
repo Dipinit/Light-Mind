@@ -40,6 +40,10 @@ namespace Items
             }
         }
 
+        /// <summary>
+        /// Add a new ray source into the board.
+        /// </summary>
+        /// <param name="source"></param>
         public void AddSource(RaySource source)
         {
             Sources.Add(new RaySource(

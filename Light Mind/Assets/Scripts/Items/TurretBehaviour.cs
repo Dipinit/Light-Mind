@@ -71,6 +71,9 @@ namespace Items
             }
         }
 
+        /// <summary>
+        /// Activate the laser.
+        /// </summary>
         private void ToggleLaser()
         {
             if (!LineRenderer.enabled)
@@ -89,6 +92,9 @@ namespace Items
             ImpactEffect.transform.rotation = Quaternion.LookRotation(direction);
         }
 
+        /// <summary>
+        /// Send the laser in a direction.
+        /// </summary>
         private void ShootLaser()
         {
             if (!Enabled || !UseLaser || _currentTarget == null) return;
@@ -117,9 +123,11 @@ namespace Items
             ));
         }
 
+        /// <summary>
+        /// Lock on the nearest ennemy
+        /// </summary>
         private void LockOnTarget()
         {
-            // Lock on nearest enemy
             var directionToTarget = _currentTarget.position - transform.position;
             var lookRotation = Quaternion.LookRotation(directionToTarget);
             var rotation = Quaternion.Lerp(PartToRotate.rotation, lookRotation, Time.deltaTime * RotateSpeed)
@@ -128,6 +136,9 @@ namespace Items
             PartToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
         }
 
+        /// <summary>
+        /// Search for an ennemy.
+        /// </summary>
         private void UpdateTarget()
         {
             var shortestDistance = Mathf.Infinity;
@@ -152,6 +163,9 @@ namespace Items
             }
         }
 
+        /// <summary>
+        /// Shoot a single bullet.
+        /// </summary>
         private void ShootBullet()
         {
             var bullet = Instantiate(BulletPrefab, FirePoint.position, FirePoint.rotation);
@@ -167,7 +181,10 @@ namespace Items
             Gizmos.DrawWireSphere(transform.position, Range);
         }
 
-        // Launched when a ray hits the mirror
+        /// <summary>
+        /// Launched when a ray hits the mirror
+        /// </summary>
+        /// <param name="ray"></param>
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
@@ -206,6 +223,9 @@ namespace Items
             }
         }
 
+        /// <summary>
+        /// Calculate the total color of the received rays
+        /// </summary>
         private void CalculateColor()
         {
             if (ReceveidRays.Count > 0)
@@ -230,10 +250,12 @@ namespace Items
                 SetLineRendererColor(Color);
             }
         }
-
+        /// <summary>
+        /// Set a gradient with the same color at the beginning and the end (we have to use a Gradient...).
+        /// </summary>
+        /// <param name="color"></param>
         private void SetLineRendererColor(RayColor color)
         {
-            // Set a gradient with the same color at the beginning and the end (we have to use a Gradient...)
             var gradient = new Gradient();
             gradient.SetKeys(
                 new[]

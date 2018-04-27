@@ -17,7 +17,10 @@ namespace Items
             _renderers = GetComponentsInChildren<MeshRenderer>();
         }
 
-        // Update the current filter color
+        /// <summary>
+        /// Update the current filter color.
+        /// </summary>
+        /// <param name="color"></param>
         public override void SetColor(RayColor color)
         {
             base.SetColor(color);
@@ -31,7 +34,11 @@ namespace Items
             UpdateEmittedRays();
         }
 
-        // Calculate the filtered color
+        /// <summary>
+        /// Compute the filtered color.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         private RayColor FilterColor(RayColor color)
         {
             // Calculate the filtered color
@@ -39,8 +46,11 @@ namespace Items
 
             return filteredColor;
         }
-        
-        // Launched when a ray hits the mirror
+
+        /// <summary>
+        /// Launched when a ray hits the mirror.
+        /// </summary>
+        /// <param name="ray"></param>
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);

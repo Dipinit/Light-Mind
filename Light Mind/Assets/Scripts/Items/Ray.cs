@@ -31,6 +31,13 @@ namespace Items
 
 		public Vector3 VectorOffset = new Vector3(0.0f, 1.0f, 0.0f);
 
+        /// <summary>
+        /// Defined a ray
+        /// </summary>
+        /// <param name="rayEmitter">Source of the ray.</param>
+        /// <param name="color">Color of the ray.</param>
+        /// <param name="direction">Direction of the ray from the source.</param>
+        /// <param name="parent">The ray received.</param>
 		public Ray(RaySensitive rayEmitter, RayColor color, Direction direction, Ray parent)
 		{
 			RayEmitter = rayEmitter;
@@ -70,9 +77,11 @@ namespace Items
 		{
 			Enabled = true;
 			LineRenderer.enabled = true;
-		}
+        }
 
-		// Draw a line in a direction
+        /// <summary>
+        /// Draw a line in a direction
+        /// </summary>
 		public void Emit()
 		{
 			if (Enabled)
@@ -144,6 +153,9 @@ namespace Items
 			}
 		}
 
+        /// <summary>
+        /// Delete a received ray.
+        /// </summary>
 		public void DeleteRayReceiver()
 		{
 			if (RayReceiver != null)
@@ -153,7 +165,9 @@ namespace Items
 			}
 		}
 
-		// Set the line renderer color
+        /// <summary>
+		/// Set the line renderer color
+        /// </summary>
 		private void SetGradientColor()
 		{
 			// Set a gradient with the same color at the beginning and the end (we have to use a Gradient...)

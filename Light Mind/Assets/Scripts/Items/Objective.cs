@@ -28,7 +28,10 @@ namespace Items
             CheckCompletion();
         }
 
-        // Update the current objective color
+        /// <summary>
+        /// Update the current objective color.
+        /// </summary>
+        /// <param name="color"></param>
         public override void SetColor(RayColor color)
         {
             base.SetColor(color);
@@ -37,7 +40,9 @@ namespace Items
             _meshRenderer.material.color = color.GetColor();
         }
 
-        // Check if the objective is completed
+        /// <summary>
+        /// Check if the objective is completed.
+        /// </summary>
         private void CheckCompletion()
         {
             bool redCompletion = !Color.R;
@@ -79,8 +84,11 @@ namespace Items
         public override void HandleReceivedRay(Ray ray)
         {
         }
-        
-        // Launched when a ray hits the filter
+
+        /// <summary>
+        /// Launched when a ray hits the filter.
+        /// </summary>
+        /// <param name="ray"></param>
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);

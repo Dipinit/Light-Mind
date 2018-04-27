@@ -28,14 +28,22 @@ namespace Items
                 EmitNewRay(reflectionDirection, ray.Color, ray);
             }
         }
-        
-        // Launched when a ray hits the mirror
+
+        /// <summary>
+        /// Launched when a ray hits the mirror.
+        /// </summary>
+        /// <param name="ray"></param>
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);
             HandleReceivedRay(ray);
         }
         
+        /// <summary>
+        /// Compute the angle of the ray with a reflection.
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
         private Direction GetReflectionDirection(Ray ray)
         {
             switch (Orientation)

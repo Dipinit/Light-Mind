@@ -62,7 +62,9 @@ namespace Items
             _lastClickTime = Time.time;
         }
 
-        // Rotate the object of 90° degrees
+        /// <summary>
+        /// Rotate the object by 90° degrees
+        /// </summary>
         private void Rotate()
         {
             if (!IsOrientable) return;
@@ -99,9 +101,11 @@ namespace Items
             }
         }
 
+        /// <summary>
+        /// Update the RayColor if a color filter setting was changed.
+        /// </summary>
         private void UpdateColor()
         {
-            // Update the RayColor if a color filter setting was changed
             if (_color.R != Color.R || _color.G != Color.G || _color.B != Color.B)
             {
                 SetColor(Color);
@@ -114,7 +118,9 @@ namespace Items
             _color = color;
         }
 
-        // Update the actual object rotation
+        /// <summary>
+        /// Update the actual object rotation
+        /// </summary>
         private void UpdateOrientation()
         {
             // If the orientation is not new, exit
