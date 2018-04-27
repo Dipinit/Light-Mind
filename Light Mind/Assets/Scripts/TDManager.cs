@@ -62,9 +62,10 @@ public class TDManager : MonoBehaviour
         SetUpWaves (data);
     }
 
-    /**
-     * Parses the given JSON Object to fill the EnemyWaves.
-     **/
+    /// <summary>
+    /// Parses the given JSON Object to fill the EnemyWaves.
+    /// </summary>
+    /// <param name="data"></param>
     private void SetUpWaves(JSONObject data) {
         Debug.Log(data["Waves"].Count);
         // JSON Structure is as followed: Waves > (Multiple) Enemies > (Array) OBJECT (HP, SPEED, COLOR)
@@ -89,9 +90,10 @@ public class TDManager : MonoBehaviour
         return new Enemy (hitpoints, speed, color, spawnTime);
     }
 
-    /**
-     * Sets up specific settings (Players Lives, Spawn Interval, ...)
-     **/
+    /// <summary>
+    /// Sets up specific settings (Players Lives, Spawn Interval, ...).
+    /// </summary>
+    /// <param name="data"></param>
     private void SetUpGameInfo(JSONObject data) {
         _defaultSpawnInterval = data["Info"].GetField("DefaultSpawnInterval").n;
         _defaultHitpoints = (int) data["Info"].GetField("DefaultHitpoints").i;
@@ -109,9 +111,9 @@ public class TDManager : MonoBehaviour
         return _spawnPoint != null ? _spawnPoint : GameObject.FindGameObjectWithTag("Spawn Point");
     }
 
-    /**
-     * Updates GUI for wave-fighting gameplay and calls the Enemy Spawner
-     **/
+    /// <summary>
+    /// Updates GUI for wave-fighting gameplay and calls the Enemy Spawner.
+    /// </summary>
     private void StartPlayingPhase()
     {
         //Prevent User from placing tower while State is Spawning/Playing
@@ -124,9 +126,9 @@ public class TDManager : MonoBehaviour
         StartWave(_enemyWaves[CurrentWave - 1]);
     }
 
-    /**
-     * Update GUI for the "Building" phase of that game.
-     **/
+    /// <summary>
+    /// Update GUI for the "Building" phase of that game.
+    /// </summary>
     private void StartPausedPhase()
     {
         GoButton.gameObject.SetActive(true);
@@ -181,10 +183,11 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    /**
-     * Removes an enemy from the local tracking enemy color dictionary.
-     * Should be called every time an enemy is destroyed (killed or reached end of TD)
-     **/
+    /// <summary>
+    /// Removes an enemy from the local tracking enemy color dictionary.
+    /// Should be called every time an enemy is destroyed (killed or reached end of TD).
+    /// </summary>
+    /// <param name="color"></param>
     public void UpdateDeath(RayColor color) {
         _dicoEnemyColors [color] -= 1;
         WaveText.text = string.Format("Wave : {0}/{1}{2}{3}", CurrentWave, WavesTotal, Environment.NewLine, GetNextWaveColors());
@@ -202,10 +205,11 @@ public class TDManager : MonoBehaviour
         _dicoEnemyColors.Add (RayColor.NONE, 0);
     }
 
-    /**
-     * Determines how many enemies of each colors are in the given wave.
-     * Returns a String to be when displaying the next wave message.
-     **/
+    /// <summary>
+    /// Determines how many enemies of each colors are in the given wave.
+    /// Returns a String to be when displaying the next wave message.
+    /// </summary>
+    /// <param name="wave"></param>
     private void SetUpEnemyColorDico(IEnumerable<Enemy> wave)
     {
         ResetEnemyColorDico ();
@@ -217,9 +221,10 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    /**
-     * Produces the "Next Wave: ..." string. Reads all the info from the local _dictionary
-     **/
+    /// <summary>
+    /// Produces the "Next Wave: ..." string. Reads all the info from the local _dictionary.
+    /// </summary>
+    /// <returns></returns>
     private string GetNextWaveColors() {
         int red, white, blue, yellow, green, cyan, magenta, none;
 
@@ -235,9 +240,9 @@ public class TDManager : MonoBehaviour
         return sb.ToString();
     }
         
-    /**
-     * Determines which method to call depending on current GameState
-     **/
+    /// <summary>
+    /// Determines which method to call depending on current GameState.
+    /// </summary>
     public void CallNextPhase()
     {
         switch (GameState)
@@ -262,10 +267,10 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    /**
-     * Handles level being replayed.
-     * Will crash if trying to "continue" on the last level. Easily handled by adding a variable maxLevel.
-     **/
+    /// <summary>
+    /// Handles level being replayed.
+    /// Will crash if trying to "continue" on the last level. Easily handled by adding a variable maxLevel.
+    /// </summary>
     private void HandleLevelProgression() {
         var levelReached = PlayerPrefs.HasKey ("levelReached") ? PlayerPrefs.GetInt ("levelReached") : 0;
         if (PlayerPrefs.GetInt("currentLevelIsCustom", 1) == 0)
@@ -279,10 +284,13 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    /**
-     * Converts a List of Enemy into EnemyPrefab and instanciate them with specific values.
-     * During the Spawning, the GameState should be State.Spawning, this stops win condition checking.
-     **/
+    
+    /// <summary>
+    /// Converts a List of Enemy into EnemyPrefab and instanciate them with specific values.
+    /// During the Spawning, the GameState should be State.Spawning, this stops win condition checking.
+    /// </summary>
+    /// <param name="wave">Represents a single wave.</param>
+    /// <returns></returns>
     private IEnumerator SpawnEnemies(IList<Enemy> wave)
     {
         GameState = State.Spawning;
