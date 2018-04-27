@@ -57,6 +57,9 @@ public class GameManager : MonoBehaviour
 
     private GameObject _selectedItem;
 
+    /// <summary>
+    /// Initialize the game state by loading a GameObject, a BoardManager and the TowerDefense Manager.
+    /// </summary>
     private void Awake()
     {
         if (Instance == null)
@@ -79,6 +82,9 @@ public class GameManager : MonoBehaviour
         TdManager = GetComponent<TDManager>();
     }
 
+    /// <summary>
+    /// Load a scene.
+    /// </summary>
     private void Start()
     {
         var currentLevel = PlayerPrefs.GetString("currentLevel");
@@ -94,6 +100,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Load a level
+    /// </summary>
+    /// <param name="level">Name of the level saved in the corresponding JSON file.</param>
+    /// <returns></returns>
     public static string LoadFile(string level)
     {
         var fileName = string.Format("{0}_TD.json", level);
@@ -134,6 +145,10 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Load the level saved in the corresponding JSON file.
+    /// </summary>
+    /// <param name="level">Name of the level saved in the corresponding JSON file.</param>
     public void LoadLevel(string level)
     {
         string jsonText;
@@ -308,6 +323,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instantiate the inventory containing all the items for a level.
+    /// </summary>
+    /// <param name="itemPrefab">The Prefab containing the items.</param>
+    /// <param name="itemCode">A string representing the items to be instantiated.</param>
+    /// <param name="count">The number of items to instantiate.</param>
     private void CreateInventoryItem(GameObject itemPrefab, string itemCode, int count)
     {
         GameObject itemGameObject = Instantiate(itemPrefab, Inventory.transform);
@@ -334,6 +355,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Load the selected item to be place on the board.
+    /// </summary>
+    /// <param name="item">Represent the item clicked.</param>
     public void SelectItem(GameObject item)
     {
         if (_selectedItem != null && (item.GetInstanceID() == _selectedItem.GetInstanceID())) return;
@@ -348,18 +373,28 @@ public class GameManager : MonoBehaviour
         else HideColorPanel();
     }
 
+    /// <summary>
+    /// Instantiate the color panel to choose the color to apply on an item.
+    /// </summary>
     private void ShowColorPanel()
     {
         Inventory.SetActive(false);
         ColorPicker.SetActive(true);
     }
 
+    /// <summary>
+    /// Destroy the color panel.
+    /// </summary>
     public void HideColorPanel()
     {
         ColorPicker.SetActive(false);
         Inventory.SetActive(true);
     }
 
+    /// <summary>
+    /// Apply the color picked to an item.
+    /// </summary>
+    /// <param name="rayColor">Represents the color of the ray.</param>
     public void SetSelectedItemColor(RayColor rayColor)
     {
         var ib = _selectedItem.GetComponent<ItemBase>();
@@ -373,22 +408,35 @@ public class GameManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Instantiate the winning window.
+    /// </summary>
     public void WinLevel()
     {
         WinScreen.SetActive(true);
     }
 
-
+    /// <summary>
+    /// Instantiate the loosing window.
+    /// </summary>
     public void LoseLevel()
     {
         LoseScreen.SetActive(true);
     }
 
+    /// <summary>
+    /// Instantiate the pausing window.
+    /// </summary>
     public void PauseLevel()
     {
         PauseScreen.SetActive(!PauseScreen.activeSelf);
     }
 
+    /// <summary>
+    /// Add an amount of an item into the inventory.
+    /// </summary>
+    /// <param name="itemCode">The item to be added.</param>
+    /// <param name="quantity">The quantity to add.</param>
     public void AddItemToInventory(string itemCode, int quantity)
     {
         // Find inventory item
