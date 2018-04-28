@@ -23,6 +23,11 @@ public class CameraShake : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Shakes the camera.
+    /// </summary>
+    /// <param name="shakeAm"></param>
+    /// <param name="shakeDur"></param>
     public void CamShake(float shakeAm, float shakeDur)
     {
         shakeAmount = shakeAm;

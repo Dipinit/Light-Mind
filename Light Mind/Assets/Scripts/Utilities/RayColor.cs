@@ -24,6 +24,13 @@ namespace Assets.Scripts.Utilities
         public bool B;
         public float Alpha;
 
+        /// <summary>
+        /// Set the color of a ray.
+        /// </summary>
+        /// <param name="r">Is the ray composed of red ?</param>
+        /// <param name="g">Is the ray composed of green ?</param>
+        /// <param name="b">Is the ray composed of blue ?</param>
+        /// <param name="alpha">Amount of alpha.</param>
         public RayColor(bool r, bool g, bool b, float alpha)
         {
             R = r;
@@ -32,6 +39,10 @@ namespace Assets.Scripts.Utilities
             Alpha = alpha;
         }
 
+        /// <summary>
+        /// Get the color of a ray.
+        /// </summary>
+        /// <returns></returns>
         public Color GetColor()
         {
             return new Color(R ? 1F : 0F, G ? 1F : 0F, B ? 1F : 0F);
@@ -50,6 +61,10 @@ namespace Assets.Scripts.Utilities
             return obj.R == R && obj.G == G && obj.B == B && obj.Alpha == Alpha;
         }
 
+        /// <summary>
+        /// Get the color of a ray.
+        /// </summary>
+        /// <returns></returns>
         public string GetName()
         {
             if (R && G && B) return "White";
@@ -62,16 +77,33 @@ namespace Assets.Scripts.Utilities
             return "None";
         }
 
+        /// <summary>
+        /// Add a color to a ray.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public static RayColor Add(RayColor x, RayColor y)
         {
             return new RayColor(x.R || y.R, x.G || y.G, x.B || y.B, (x.Alpha + y.Alpha) / 2);
         }
         
+        /// <summary>
+        /// Eliminate a color of a ray.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public static RayColor Substract(RayColor x, RayColor y)
         {
             return new RayColor(x.R && !y.R, x.G && !y.G, x.B && !y.B, (x.Alpha + y.Alpha) / 2);
         }
 
+        /// <summary>
+        /// Parse a ray.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public static RayColor Parse(string color) {
             if (color != null && color.Length > 0) {
                 switch (color.ToLower ())
