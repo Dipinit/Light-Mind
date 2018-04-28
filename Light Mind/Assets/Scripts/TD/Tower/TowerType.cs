@@ -16,7 +16,7 @@ namespace Assets.Scripts.Utilities
         /// </summary>
         /// <param name="attackSpeed">Cool time before next attack.</param>
         /// <param name="range">Range of the attack.</param>
-        /// <param name="AOE"></param>
+        /// <param name="AOE">Area of effect.</param>
 		public TowerTypes (float attackSpeed, float range, float AOE) {
 			this.attackSpeed = attackSpeed;
 			this.range = range;
