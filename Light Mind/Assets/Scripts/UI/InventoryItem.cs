@@ -85,7 +85,7 @@ namespace UI
             {
                 Debug.Log("Item not dragged out of panel, aborting.");
 
-                // TODO: Mettre une animation de retour vers la position de départ de l'objet
+                // TODO: Put an return animation to the start position of the object.
                 ItemQuantity++;
                 Destroy(_instanciatedItem);
             }

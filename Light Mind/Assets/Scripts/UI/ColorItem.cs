@@ -6,6 +6,9 @@ public class ColorItem : MonoBehaviour
 {
     public RayColor Color;
 
+    /// <summary>
+    /// Change the color of an item.
+    /// </summary>
     public void ChangeColor()
     {
         Debug.LogWarning(Color.GetName());
@@ -21,6 +24,10 @@ public class ColorItem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set hthe color of an item.
+    /// </summary>
+    /// <param name="color"></param>
     public void SetColor(RayColor color)
     {
         Color = color;

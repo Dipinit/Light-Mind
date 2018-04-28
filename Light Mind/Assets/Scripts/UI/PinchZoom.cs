@@ -36,6 +36,9 @@ namespace UI
             }
         }
 
+        /// <summary>
+        /// Handle the touch for phone devices.
+        /// </summary>
         private void HandleTouch()
         {
             // TODO: Handle panning (code below is never called)
@@ -102,6 +105,10 @@ namespace UI
             ZoomCamera(scroll, ZoomSpeedMouse);
         }
     
+        /// <summary>
+        /// Handle the camera rotation for a pan effect.
+        /// </summary>
+        /// <param name="newPanPosition"></param>
         void PanCamera(Vector3 newPanPosition) {
             // Determine how much to move the camera
             Vector3 offset = _camera.ScreenToViewportPoint(_lastPanPosition - newPanPosition);
@@ -121,6 +128,11 @@ namespace UI
             _lastPanPosition = newPanPosition;
         }
     
+        /// <summary>
+        /// Set the zoom of the camera.
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="speed"></param>
         void ZoomCamera(float offset, float speed) {
             if (offset == 0) {
                 return;

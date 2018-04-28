@@ -29,6 +29,9 @@ namespace UI
             _closestCell = null;
         }
 
+        /// <summary>
+        /// Highlight a cell that can accept an item.
+        /// </summary>
         private void HighlightNearestCell()
         {
             if (_closestCell) _closestCell.ResetCellColor();

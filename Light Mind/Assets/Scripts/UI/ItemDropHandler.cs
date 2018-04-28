@@ -7,6 +7,10 @@ namespace UI
 {
     public class ItemDropHandler : MonoBehaviour, IDropHandler
     {
+        /// <summary>
+        /// Drop an item from the inventory to the board.
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnDrop(PointerEventData eventData)
         {
             var inventoryPanel = transform as RectTransform;
