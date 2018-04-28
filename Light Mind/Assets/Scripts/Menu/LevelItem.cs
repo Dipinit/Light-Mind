@@ -23,16 +23,28 @@ namespace Menu
             SceneManager.LoadScene("Scenes/Game");
         }
 
+        /// <summary>
+        /// Set the name of the level.
+        /// </summary>
+        /// <param name="levelName"></param>
         public void SetName(string levelName)
         {
             GetComponentInChildren<Text>().text = levelName;
         }
 
+        /// <summary>
+        /// Set the filename of the level.
+        /// </summary>
+        /// <param name="filename"></param>
         public void SetFilename(string filename)
         {
             Filename = filename;
         }
 
+        /// <summary>
+        /// Set the level as loadable.
+        /// </summary>
+        /// <param name="interactable"></param>
         public void SetInteractable(bool interactable)
         {
             var button = GetComponentInChildren<Button>();
