@@ -12,6 +12,13 @@ public class Enemy {
     public int Hitpoints;
     public float SpawnTime;
 
+    /// <summary>
+    /// Set ennemies properties.
+    /// </summary>
+    /// <param name="hitpoints">Life of an ennemy.</param>
+    /// <param name="speed">Speed of an ennemy.</param>
+    /// <param name="color">Color of an ennemy.</param>
+    /// <param name="spawnTime">Time before the ennemy spawn after the previous ennemy.</param>
     public Enemy (int hitpoints, float speed, RayColor color, float spawnTime) {
         this.Hitpoints = hitpoints;
         this.Speed = speed;

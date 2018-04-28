@@ -11,6 +11,12 @@ namespace Assets.Scripts.Utilities
 		public float range;
 		public float AOE;
 
+        /// <summary>
+        /// Set properties of a tower.
+        /// </summary>
+        /// <param name="attackSpeed">Cool time before next attack.</param>
+        /// <param name="range">Range of the attack.</param>
+        /// <param name="AOE"></param>
 		public TowerTypes (float attackSpeed, float range, float AOE) {
 			this.attackSpeed = attackSpeed;
 			this.range = range;

@@ -17,9 +17,12 @@ namespace Items
 			IsColorable = false;
 		}
 
+        /// <summary>
+        /// Effect - Recolor tower to boost dmg
+        /// </summary>
+        /// <param name="ray"></param>
 		public override void HandleReceivedRay(Ray ray)
 		{
-			// Effect - Recolor tower to boost dmg
 			this.color = ray.Color;
             //TODO Recolor
 		}
