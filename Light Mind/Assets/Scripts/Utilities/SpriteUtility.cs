@@ -5,6 +5,15 @@ namespace Assets.Scripts.Utilities
 {
     public static class SpriteUtility
     {
+        /// <summary>
+        /// Load a sprite.
+        /// </summary>
+        /// <param name="filePath">Path of the sprite.</param>
+        /// <param name="width">Width of the sprite.</param>
+        /// <param name="height">Height of the sprite.</param>
+        /// <param name="pixelsPerUnit">Pixels per unit.</param>
+        /// <param name="spriteType">Type of sprite.</param>
+        /// <returns></returns>
         public static Sprite LoadSprite(string filePath, int width, int height, float pixelsPerUnit = 100.0f,
             SpriteMeshType spriteType = SpriteMeshType.Tight)
         {

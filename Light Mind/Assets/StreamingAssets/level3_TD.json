@@ -1,0 +1,312 @@
+{
+  "Name": "Level 3 TD",
+  "FunFact": "rot13('Whyrf Nhoreg jnf hfryrff');",
+  "Number": 3,
+  "Board": {
+    "Size": {
+      "X": 10,
+      "Y": 10
+    },
+    "CellSize": 4,
+    "CellOffset": 1,
+    "SpawnPoint": {
+      "X": 0,
+      "Y": 0
+    },
+    "Paths": [
+      {
+        "X1": 0,
+        "Y1": 0,
+        "X2": 0,
+        "Y2": 5
+      },
+	  {
+        "X1": 0,
+        "Y1": 4,
+        "X2": 5,
+        "Y2": 5
+      },
+	  {
+        "X1": 5,
+        "Y1": 1,
+        "X2": 5,
+        "Y2": 4
+      },
+	  {
+        "X1": 5,
+        "Y1": 1,
+        "X2": 8,
+        "Y2": 1
+      },
+	  {
+        "X1": 8,
+        "Y1": 1,
+        "X2": 8,
+        "Y2": 7
+      },
+	  {
+        "X1": 0,
+        "Y1": 7,
+        "X2": 8,
+        "Y2": 7
+      },
+	  {
+        "X1": 0,
+        "Y1": 7,
+        "X2": 0,
+        "Y2": 9
+      },
+	  {
+        "X1": 0,
+        "Y1": 9,
+        "X2": 9,
+        "Y2": 9
+      }
+    ],
+    "EndPoint": {
+      "X": 9,
+      "Y": 9
+    }
+  },
+  "Inventory": {
+    "Mirrors": 2,
+    "MirrorFilters": 2,
+    "Prisms": 2,
+    "Filters": 2,
+    "StandardTurret": 2,
+    "MissileTurret": 2,
+    "LaserTurret": 2
+  },
+  "Entities": [
+    {
+      "Type": "Light Source",
+      "X": 6,
+      "Y": 3,
+      "Draggable": true,
+      "Rays": [
+        {
+          "Direction": 0,
+          "Enabled": true,
+          "Red": true,
+          "Green": true,
+          "Blue": false
+        },
+        {
+          "Direction": 45,
+          "Enabled": false,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 90,
+          "Enabled": true,
+          "Red": true,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 135,
+          "Enabled": true,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 180,
+          "Enabled": true,
+          "Red": false,
+          "Green": true,
+          "Blue": false
+        },
+        {
+          "Direction": 225,
+          "Enabled": false,
+          "Red": true,
+          "Green": true,
+          "Blue": true
+        },
+        {
+          "Direction": 270,
+          "Enabled": false,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        },
+        {
+          "Direction": 315,
+          "Enabled": false,
+          "Red": false,
+          "Green": false,
+          "Blue": false
+        }
+      ]
+    }
+  ],
+  "Waves": [
+    {
+      "Enemies": [
+        {
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Red"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Blue"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Cyan"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Magenta"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Yellow"
+        }
+      ]
+    },
+    {
+      "Enemies": [
+        {
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Red"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Blue"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Cyan"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Magenta"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Yellow"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Red"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Blue"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Cyan"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Magenta"
+        },
+		{
+          "Hitpoints": 100,
+          "Speed": 15,
+          "Color": "Yellow"
+        }
+      ]
+    },
+    {
+      "Enemies": [
+        {
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Red"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Blue"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Cyan"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Magenta"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Yellow"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Green"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Red"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Blue"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Cyan"
+        },
+		{
+          "Hitpoints": 150,
+          "Speed": 30,
+          "Color": "Magenta"
+        }
+      ]
+    }
+  ],
+  "Info": {
+    "Lives": 10,
+    "DefaultSpawnInterval": 0.5,
+    "DefaultHitpoints": 100,
+    "DefaultSpeed": 10,
+    "DefaultColor": "None"
+  }
+}

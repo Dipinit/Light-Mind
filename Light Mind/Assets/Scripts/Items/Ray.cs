@@ -29,6 +29,15 @@ namespace Items
 
 		public int Id;
 
+		public Vector3 VectorOffset = new Vector3(0.0f, 1.0f, 0.0f);
+
+        /// <summary>
+        /// Defined a ray
+        /// </summary>
+        /// <param name="rayEmitter">Source of the ray.</param>
+        /// <param name="color">Color of the ray.</param>
+        /// <param name="direction">Direction of the ray from the source.</param>
+        /// <param name="parent">The ray received.</param>
 		public Ray(RaySensitive rayEmitter, RayColor color, Direction direction, Ray parent)
 		{
 			RayEmitter = rayEmitter;
@@ -36,7 +45,7 @@ namespace Items
 				color,
 				direction
 			));
-			LineRendererParent.transform.position = rayEmitter.transform.position;
+			LineRendererParent.transform.position = rayEmitter.transform.position + VectorOffset;
 			LineRendererParent.transform.rotation = rayEmitter.transform.rotation;
 			LineRendererParent.transform.parent = rayEmitter.transform;
 			LineRenderer = LineRendererParent.AddComponent<LineRenderer>();
@@ -68,9 +77,11 @@ namespace Items
 		{
 			Enabled = true;
 			LineRenderer.enabled = true;
-		}
+        }
 
-		// Draw a line in a direction
+        /// <summary>
+        /// Draw a line in a direction
+        /// </summary>
 		public void Emit()
 		{
 			if (Enabled)
@@ -89,29 +100,37 @@ namespace Items
 				// Set the line renderer position count to two positions (only one segment)
 				LineRenderer.positionCount = 2;
 
+				int layerMask = 1 << LayerMask.NameToLayer("ActiveItems");
+
 				// Check if the ray hits an object in the input direction
 				RaycastHit hit;
-				if (Physics.Raycast(LineRenderer.transform.position, DirectionUtility.GetDirectionAsVector3(Direction),
-					out hit))
+				if (Physics.Raycast(
+					LineRenderer.transform.position,
+					DirectionUtility.GetDirectionAsVector3(Direction),
+					out hit,
+					Mathf.Infinity,
+					layerMask))
 				{
 					// If the ray hits an object with a collider
 					if (hit.collider)
 					{
 						// Set the end position to the object that was hit position
-						LineRenderer.SetPosition(1,
-							hit.point + 0.5F * DirectionUtility.GetDirectionAsVector3(Direction));
+						LineRenderer.SetPosition(1, hit.transform.position + VectorOffset);
 
 						// Check if the object that was hit is a HitObject
-						var obj = hit.transform.gameObject;
-						var rayReceiver = obj.GetComponent<RaySensitive>();
-						if (rayReceiver == null || rayReceiver == RayReceiver) return;
-
+						var rayReceiver = hit.transform.gameObject.GetComponent<RaySensitive>();
+						
+						// If the receiver hit by the ray is the current receiver
+						if (rayReceiver != null && rayReceiver == RayReceiver) return;
+						
 						DeleteRayReceiver();
 
-						// Store the new HitObject
-						RayReceiver = rayReceiver;
-						RayReceiver.HitEnter(this);
-
+						if (rayReceiver != null)
+						{
+							// Store the new HitObject
+							RayReceiver = rayReceiver;
+							RayReceiver.HitEnter(this);
+						}
 					}
 					// If the ray hits an object with not collider and object and a current HitObject is set
 					else
@@ -134,6 +153,9 @@ namespace Items
 			}
 		}
 
+        /// <summary>
+        /// Delete a received ray.
+        /// </summary>
 		public void DeleteRayReceiver()
 		{
 			if (RayReceiver != null)
@@ -143,7 +165,9 @@ namespace Items
 			}
 		}
 
-		// Set the line renderer color
+        /// <summary>
+		/// Set the line renderer color
+        /// </summary>
 		private void SetGradientColor()
 		{
 			// Set a gradient with the same color at the beginning and the end (we have to use a Gradient...)
@@ -163,6 +187,14 @@ namespace Items
 
 		public static void Delete(Ray ray)
 		{
+			if (ray.RayReceiver != null)
+			{
+				Debug.Log("RayReceiver is not null");
+			}
+			else
+			{
+				Debug.Log("RayReceiver is null");
+			}
 			ray.DeleteRayReceiver();
 			UnityEngine.Object.Destroy(ray.LineRendererParent);
 		}

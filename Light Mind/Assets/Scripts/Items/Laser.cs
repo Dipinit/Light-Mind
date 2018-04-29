@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Utilities;
 using Behaviors;
+using UnityEngine;
 
 namespace Items
 {
@@ -10,19 +11,16 @@ namespace Items
         public List<RaySource> Sources;
         private List<RaySource> _sources;
         
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
-            InitSources();
-            ResetRays();
+            base.Awake();
+            Sources = new List<RaySource>();
+            _sources = new List<RaySource>();
         }
-        
-        private void InitSources()
+
+        public void Start()
         {
-            if (Sources == null)
-                Sources = new List<RaySource>();
-            if (_sources == null)
-                _sources = new List<RaySource>();
+            ResetRays();
         }
 
         public override void ResetRays()
@@ -42,10 +40,12 @@ namespace Items
             }
         }
 
+        /// <summary>
+        /// Add a new ray source into the board.
+        /// </summary>
+        /// <param name="source"></param>
         public void AddSource(RaySource source)
         {
-            InitSources();
-
             Sources.Add(new RaySource(
                 source.Direction,
                 source.Enabled,

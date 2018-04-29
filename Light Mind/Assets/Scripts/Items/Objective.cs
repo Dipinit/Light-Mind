@@ -5,59 +5,49 @@ namespace Items
 {
     public class Objective : ItemBase
     {
-        // Public ray color settings
-        public bool Red = true;
-        public bool Green = true;
-        public bool Blue = true;
         public bool Completed;
 
 		private GameManager _gameManager;
-
-        // The current objective color
-        private RayColor _color;
 
         // The Mesh Renderer of the GameObject. Used to change its color based on the filter colors.
         private MeshRenderer _meshRenderer;
 
         // Use this for initialization
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
-            
-            _meshRenderer = GetComponent<MeshRenderer>();
-            SetColor();
+            base.Awake();
+            IsColorable = false;
+            IsOrientable = false;
+            _meshRenderer = GetComponentInChildren<MeshRenderer>();
         }
 
         // Update is called once per frame
         public override void Update()
         {
             base.Update();
-            
-            // Update the RayColor if a color filter setting was changed
-            if (_color.R != Red || _color.G != Green || _color.B != Blue)
-            {
-                SetColor();
-            }
-
             CheckCompletion();
         }
 
-        // Update the current objective color
-        private void SetColor()
+        /// <summary>
+        /// Update the current objective color.
+        /// </summary>
+        /// <param name="color"></param>
+        public override void SetColor(RayColor color)
         {
-            // Calculate the color based on filter color settings
-            _color = new RayColor(Red, Green, Blue, 0.9f);
+            base.SetColor(color);
             
             // Changed the color of the object
-            _meshRenderer.material.color = _color.GetColor();
+            _meshRenderer.material.color = color.GetColor();
         }
 
-        // Check if the objective is completed
+        /// <summary>
+        /// Check if the objective is completed.
+        /// </summary>
         private void CheckCompletion()
         {
-            bool redCompletion = !Red;
-            bool greenCompletion = !Green;
-            bool blueCompletion = !Blue;
+            bool redCompletion = !Color.R;
+            bool greenCompletion = !Color.G;
+            bool blueCompletion = !Color.B;
             
             foreach (var ray in ReceveidRays)
             {
@@ -94,8 +84,11 @@ namespace Items
         public override void HandleReceivedRay(Ray ray)
         {
         }
-        
-        // Launched when a ray hits the filter
+
+        /// <summary>
+        /// Launched when a ray hits the filter.
+        /// </summary>
+        /// <param name="ray"></param>
         public override void HitEnter(Ray ray)
         {
             base.HitEnter(ray);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Assets.Scripts.Utilities;
 using UnityEngine;
 using Ray = Items.Ray;
@@ -7,6 +8,8 @@ namespace Behaviors
 {
     public class RaySensitive : MonoBehaviour
     {
+        public string ItemCode;
+        
         public List<Ray> ReceveidRays;
         public List<Ray> EmittedRays;
         protected MeshCollider _meshCollider;
@@ -14,9 +17,8 @@ namespace Behaviors
         public AudioSource[] AudioSources;
         public ParticleSystem ParticleSystem;
         public bool ColliderEnabled = false;
-        
-        
-        public virtual void Start()
+
+        public virtual void Awake()
         {
             _meshCollider = GetComponent<MeshCollider>();
             AudioSources = GetComponents<AudioSource>();
@@ -32,6 +34,11 @@ namespace Behaviors
         public virtual void Update ()
         {
             if (_meshCollider) _meshCollider.convex = ColliderEnabled;
+         
+            if (EmittedRays == null)
+                EmittedRays = new List<Ray>();
+            if (ReceveidRays == null)
+                ReceveidRays = new List<Ray>();
             
             for (int i = 0; i < EmittedRays.Count; i++)
             {
@@ -46,13 +53,14 @@ namespace Behaviors
         public void Disable()
         {
             DestroyEmittedRays();
+            gameObject.layer = LayerMask.NameToLayer("InactiveItems");
             ColliderEnabled = false;
-
         }
 
         public void Enable()
         {
             ColliderEnabled = true;
+            gameObject.layer = LayerMask.NameToLayer("ActiveItems");
             ResetRays();
         }
 
@@ -60,8 +68,11 @@ namespace Behaviors
         {
             return this.GetType().Name;
         }
-        
-        // Launched when a ray hits the object
+
+        /// <summary>
+        /// Launched when a ray hits the object
+        /// </summary>
+        /// <param name="ray"></param>
         public virtual void HitEnter(Ray ray)
         {
             for (int i = 0; i < ReceveidRays.Count; i++)
@@ -84,8 +95,11 @@ namespace Behaviors
                 ray.Direction
             ));
         }
-        
-        // Launched when a ray stops hitting the object
+
+        /// <summary>
+        /// Launched when a ray stops hitting the object.
+        /// </summary>
+        /// <param name="ray"></param>
         public virtual void HitExit(Ray ray)
         {
             foreach (var emittedRay in EmittedRays)

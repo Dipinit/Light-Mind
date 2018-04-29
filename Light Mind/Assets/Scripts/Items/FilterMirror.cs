@@ -7,33 +7,15 @@ namespace Items
     [RequireComponent(typeof(ParticleSystem))]
     public class FilterMirror : ItemBase
     {
-        // Global 
-        private RayColor _color;
-
-        private MeshRenderer _meshRenderer;
-
-        public bool Red;
-        public bool Green;
-        public bool Blue;
+        private MeshRenderer[] _renderers;
 
         // Use this for initialization
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
-            
-            _meshRenderer = GetComponent<MeshRenderer>();
-            SetColor();
-        }
-
-        public override void Update()
-        {
-            base.Update();
-
-            // Update the RayColor if a color filter setting was changed
-            if (_color.R != Red || _color.G != Green || _color.B != Blue)
-            {
-                SetColor();
-            }
+            base.Awake();
+            IsColorable = true;
+            IsOrientable = true;
+            _renderers = GetComponentsInChildren<MeshRenderer>();
         }
         
         protected override void OnOrientationChange()
@@ -41,6 +23,11 @@ namespace Items
             UpdateEmittedRays();
         }
         
+        /// <summary>
+        /// Compute the reflection direction of a ray.
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
         private Direction GetReflectionDirection(Ray ray)
         {
             switch (Orientation)
@@ -168,14 +155,15 @@ namespace Items
         }
 
         // Update the current filter color
-        private void SetColor()
+        public override void SetColor(RayColor color)
         {
-            // Calculate the color based on filter color settings
-            _color = new RayColor(Red, Green, Blue, 0.9f);
-            
+           base.SetColor(color);
             // Changed the color of the object
-            _meshRenderer.material.color = _color.GetColor();
-
+            foreach (var renderer in _renderers)
+            {
+                renderer.material.color = color.GetColor();
+            }
+            
             UpdateEmittedRays();
         }
 
@@ -183,7 +171,7 @@ namespace Items
         private RayColor GetFilteredColor(RayColor color)
         {
             // Calculate the filtered color
-            var filteredColor = new RayColor(Red && color.R, Green && color.G, Blue && color.B, 0.9f);
+            var filteredColor = new RayColor(Color.R && color.R, Color.G && color.G, Color.B && color.B, RayColor.DEFAULT_ALPHA);
 
             return filteredColor;
         }
@@ -192,7 +180,7 @@ namespace Items
         private RayColor GetReflectedColor(RayColor color)
         {
             // Calculate the filtered color
-            var reflectedColor = new RayColor(!Red && color.R, !Green && color.G, !Blue && color.B, 0.9f);
+            var reflectedColor = new RayColor(!Color.R && color.R, !Color.G && color.G, !Color.B && color.B, RayColor.DEFAULT_ALPHA);
 
             return reflectedColor;
         }

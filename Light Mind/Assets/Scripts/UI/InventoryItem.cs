@@ -1,4 +1,5 @@
-﻿using Behaviors;
+﻿using System;
+using Behaviors;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ namespace UI
 
         public GameObject ItemPrefab;
         public int ItemQuantity;
+        public String ItemCode;
 
         // Use this for initialization
         private void Start()
@@ -52,8 +54,14 @@ namespace UI
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (ItemQuantity <= 0) return;
+            
+            GameObject itemsContainer =
+                BoardManager.Instance.EditorMode
+                    ? LevelEditorTD.Instance.ItemsContainer
+                    : GameManager.Instance.ItemsContainer;
+            
             ItemQuantity--;
-            _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity, GameManager.Instance.ItemsContainer.transform);
+            _instanciatedItem = Instantiate(ItemPrefab, Input.mousePosition, Quaternion.identity, itemsContainer.transform);
             RaySensitive raySensitive = _instanciatedItem.GetComponent<RaySensitive>();
             if (raySensitive && raySensitive.MeshCollider) raySensitive.MeshCollider.convex = false;
 
@@ -77,7 +85,7 @@ namespace UI
             {
                 Debug.Log("Item not dragged out of panel, aborting.");
 
-                // TODO: Mettre une animation de retour vers la position de départ de l'objet
+                // TODO: Put an return animation to the start position of the object.
                 ItemQuantity++;
                 Destroy(_instanciatedItem);
             }
